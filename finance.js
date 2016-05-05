@@ -6,7 +6,7 @@ var mysql = require('mysql')
 var connection = mysql.createConnection({
 	host: 'localhost',
 	user: 'root',
-	password: process.env.MYSQL_PASSWD,
+	password: '',
 	database: 'ticktalk'
 	});
 
@@ -39,13 +39,13 @@ request({
 
 			connection.query('INSERT INTO stocks (issuer_name, symbol, price, ts, time_alt, `change`, chg_percent, day_high, day_low, year_high, year_low, type, volume) VALUES (\''+issuer_name+'\',\''+symbol+'\','+price+','+ts+',FROM_UNIXTIME(\''+time_alt+'\'),'+change+','+chg_percent+','+day_high+','+day_low+','+year_high+','+year_low+',\''+type+'\','+volume+')', function(err, rows, data) {
 				if (err) {
-					console.log("Error inserting stock data into database.");
 					console.log(err);			
 				}
 			});
 		
 			if (i == stockDataList.length - 1) {
 				connection.end();
+				console.log("Stock prices retrieved successfully.");
 			}
 		}
 	}

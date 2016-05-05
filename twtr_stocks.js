@@ -9,11 +9,12 @@ var client = new Twitter({
    access_token_secret: process.env.TWITTER_ACCESS_TOKEN_SECRET
 });
 
-var matchString = 'tesla';
+var match = /(\$BA|\$UNH|\$WFC|\$T|\$BP|\$PCG|\$KO|\$IBM|\$MSFT|\$MAR)/;
+var match2 = '\$MSFT'
 
-client.stream('statuses/filter', {track: matchString}, function(stream) {
+client.stream('statuses/filter', {track: match2}, function(stream) {
     stream.on('data', function(tweet) {
-        console.log(tweet.text);
+        console.log(tweet);
     });
     
     stream.on('error', function(error) {
