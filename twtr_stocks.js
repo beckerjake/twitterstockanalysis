@@ -20,7 +20,7 @@ var client = new Twitter({
 });
 
 function getBoolVal(str) {
-	return str == 'true' ? true : false;
+	return str == 'true' ? 1 : 0;
 }
 
 function storeTweetInDB(twt) {
@@ -41,6 +41,12 @@ function storeTweetInDB(twt) {
 		var statuses_count = parseInt(twt['user']['statuses_count']);
 		var possibly_sensitive = getBoolVal(twt['possibly_sensitive']);
 		var timestamp = parseInt(twt['timestamp']) / 1000;		// convert ms to s
+
+		connection.query('INSERT INTO tweets (tweet_id, text, user_id, name, user_name, location, description, protected, verified, followers_count, friends_count, listed_count, favourites_count, statuses_count, possibly_sensitive, time) VALUES (\''+pkey+'\',\''+text+'\',\''+user+'\',\''+name+'\',\''+username+'\',\''+loc+'\',\''+description+'\','+protectd+','+verified+','+followers_count+','+friends_count+','+listed_count+','+favourites_count+','+statuses_count+','+possibly_sensitive+',FROM_UNIXTIME(\''+timestamp+'\')'), function(err, rows, data) {
+					if (err) {
+						console.log(err);
+					}
+				}
 
 	/*
 	connection.query('INSERT INTO stocks (issuer_name, symbol, price, ts, time_alt, `change`, chg_percent, day_high, day_low, year_high, year_low, type, volume) VALUES (\''+issuer_name+'\',\''+symbol+'\','+price+','+ts+',FROM_UNIXTIME(\''+time_alt+'\'),'+change+','+chg_percent+','+day_high+','+day_low+','+year_high+','+year_low+',\''+type+'\','+volume+')', function(err, rows, data) {
