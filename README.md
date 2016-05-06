@@ -9,3 +9,8 @@ See twtr_stocks.js for the names of the environment variables.
 
 The script can be run with '$ node twtr_stocks.js'
 The text of tweets matching the tracking string (specified in the file) will be logged to the console.
+
+Resources:
+
+'Making a javascript string sql friendly' :
+    http://stackoverflow.com/questions/7744912/making-a-javascript-string-sql-friendly
