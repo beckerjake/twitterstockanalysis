@@ -19,6 +19,8 @@ var client = new Twitter({
    access_token_secret: process.env.TWITTER_ACCESS_TOKEN_SECRET
 });
 
+var stocksToTrack = ['\$BA', '\$UNH', '\$WFC', '\$T', '\$BP', '\$PCG', '\$KO', '\$IBM', '\$MSFT', '\$MAR', '\$ATVI', '\$ED', '\$FISV', '\$CERN', '\$MHK', '\$MSI'];
+
 function getBoolVal(str) {
 	return str ? 1 : 0;
 }
@@ -73,15 +75,19 @@ function storeTweetInDB(twt) {
 		var favourites_count = parseInt(twt['user']['favourites_count']);
 		var statuses_count = parseInt(twt['user']['statuses_count']);
 		var possibly_sensitive = getBoolVal(twt['possibly_sensitive']);
-		var tweetTime = Math.floor(parseInt(twt['timestamp_ms']) / 1000);		// convert ms to s
+		var tweetTime = Math.floor(parseInt(twt['timestamp_ms']) / 1000);		// convert ms to s	
 		
-		console.log('INSERT INTO tweets (tweet_id, tweet_text, user_id, name, user_name, location, description, protected, verified, followers_count, friends_count, listed_count, favourites_count, statuses_count, possibly_sensitive, tweet_time) VALUES (\''+pkey+'\',\''+tweetText+'\',\''+user+'\',\''+name+'\',\''+username+'\',\''+loc+'\',\''+description+'\','+protectd+','+verified+','+followers_count+','+friends_count+','+listed_count+','+favourites_count+','+statuses_count+','+possibly_sensitive+',FROM_UNIXTIME('+tweetTime+'))');
-		
-		connection.query('INSERT INTO tweets (tweet_id, tweet_text, user_id, name, user_name, location, description, protected, verified, followers_count, friends_count, listed_count, favourites_count, statuses_count, possibly_sensitive, tweet_time) VALUES (\''+pkey+'\',\''+tweetText+'\',\''+user+'\',\''+name+'\',\''+username+'\',\''+loc+'\',\''+description+'\','+protectd+','+verified+','+followers_count+','+friends_count+','+listed_count+','+favourites_count+','+statuses_count+','+possibly_sensitive+',FROM_UNIXTIME('+tweetTime+'))', function(err, rows, data) {
-			if (err) {
-				console.log(err);
+		for (var i = 0; i < stocksToTrack.length; i++) {
+			var stock_symbol = stocksToTrack[i];
+			
+			if (tweetText.indexOf(stock_symbol) > -1) {
+				connection.query('INSERT INTO tweets (tweet_id, stock_symbol, tweet_text, user_id, name, user_name, location, description, protected, verified, followers_count, friends_count, listed_count, favourites_count, statuses_count, possibly_sensitive, tweet_time) VALUES (\''+pkey+'\',\''+stock_symbol+'\',\''+tweetText+'\',\''+user+'\',\''+name+'\',\''+username+'\',\''+loc+'\',\''+description+'\','+protectd+','+verified+','+followers_count+','+friends_count+','+listed_count+','+favourites_count+','+statuses_count+','+possibly_sensitive+',FROM_UNIXTIME('+tweetTime+'))', function(err, rows, data) {
+					if (err) {
+						console.log(err);
+					}
+				});
 			}
-		});
+		}
 	}	
 }
 
