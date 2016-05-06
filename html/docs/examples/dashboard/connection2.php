@@ -22,17 +22,36 @@ if (!$con) {
 }
 
 
-$sql = "SELECT *";
+$sql = "SELECT * ticktalk.stocks";
 $result = mysqli_query($con, $sql);
 
 if (mysqli_num_rows($result) > 0) {
     // output data of each row
+			echo "<table border='1' >
+<tr>
+<td align=center> <b>Company No</b></td>
+<td align=center><b>Ticker</b></td>
+<td align=center><b>Price</b></td>";
     while($row = mysqli_fetch_assoc($result)) {
-        echo "id: " . $row["id"]. " - Name: " . $row["firstname"]. " " . $row["lastname"]. "<br>";
+		  
+    echo "<tr>";
+    echo "<td align=center>".$row["issuer_name"]."</td>";
+    echo "<td align=center>".$row["symbol"]."</td>";
+    echo "<td align=center>".$row["price"]."</td>";
+    //echo "<td align=center>$data[3]</td>";
+    //echo "<td align=center>$data[4]</td>";
+    echo "</tr>";
+}
+echo "</table>";
+		
+       // echo "Company: " . $row["issuer_name"]. " - Ticker: " . $row["symbol"]. " - Price: " . $row["price"]. "<br>";
     }
 } else {
     echo "0 results";
 }
+
+
+
 
 
 
