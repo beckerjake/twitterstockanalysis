@@ -366,15 +366,15 @@
 
 $("#display").click(function() {                
 
-      alert("foo");
+      //alert("foo");
 
       $.ajax({    //create an ajax request to load_page.php
         type: "GET",
-        url: "http://52.27.111.35/docs/examples/dashboard/connection2.php",             
+        url: "docs/examples/dashboard/connection2.php",             
         dataType: "html",   //expect html to be returned                
         success: function(response){                    
             $("#responsecontainer").html(response); 
-            alert(response);
+            //alert(response);
         }
 
 

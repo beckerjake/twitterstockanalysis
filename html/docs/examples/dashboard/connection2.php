@@ -22,7 +22,7 @@ if (!$con) {
 }
 
 
-$sql = "SELECT * ticktalk.stocks";
+$sql = "SELECT * FROM  ticktalk.stocks";
 $result = mysqli_query($con, $sql);
 
 if (mysqli_num_rows($result) > 0) {
@@ -46,7 +46,7 @@ echo "</table>";
 		
        // echo "Company: " . $row["issuer_name"]. " - Ticker: " . $row["symbol"]. " - Price: " . $row["price"]. "<br>";
     }
-} else {
+ else {
     echo "0 results";
 }
 

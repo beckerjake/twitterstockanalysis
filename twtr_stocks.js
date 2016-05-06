@@ -20,18 +20,51 @@ var client = new Twitter({
 });
 
 function getBoolVal(str) {
-	return str == 'true' ? 1 : 0;
+	return str ? 1 : 0;
+}
+
+function mysql_real_escape_string (str) {
+	return str.replace(/[\0\x08\x09\x1a\n\r"'\\\%]/g, function (char) {
+		switch (char) {
+			case "\0":
+				return "\\0";
+			case "\x08":
+				return "\\b";
+			case "\x09":
+				return "\\t";
+			case "\x1a":
+				return "\\z";
+			case "\n":
+				return "\\n";
+			case "\r":
+				return "\\r";
+			case "\"":
+			case "'":
+			case "\\":
+			case "%":
+				return "\\"+char;
+		}
+	});
 }
 
 function storeTweetInDB(twt) {
 	if (twt['lang'] == 'en') {
 		var pkey = twt['id_str'];
-		var text = twt['text'];
-		var user = twt['user']['id_str'];
-		var name = twt['user']['name'];
-		var username = twt['user']['screen_name'];
-		var loc = twt['user']['location'];
-		var description = twt['user']['description'];
+		var tweetText = mysql_real_escape_string(twt['text']);
+		var user = mysql_real_escape_string(twt['user']['id_str']);
+		var name = mysql_real_escape_string(twt['user']['name']);
+		var username = mysql_real_escape_string(twt['user']['screen_name']);
+		var loc = "";
+		
+		if (twt['user']['location'] != null) {
+			loc = mysql_real_escape_string(twt['user']['location']);
+		}
+
+		var description = "";
+		if (twt['user']['description'] != null) {
+			description = mysql_real_escape_string(twt['user']['description']);
+		}
+		
 		var protectd = getBoolVal(twt['user']['protected']);
 		var verified = getBoolVal(twt['user']['verified']);
 		var followers_count = parseInt(twt['user']['followers_count']);
@@ -40,22 +73,16 @@ function storeTweetInDB(twt) {
 		var favourites_count = parseInt(twt['user']['favourites_count']);
 		var statuses_count = parseInt(twt['user']['statuses_count']);
 		var possibly_sensitive = getBoolVal(twt['possibly_sensitive']);
-		var timestamp = parseInt(twt['timestamp']) / 1000;		// convert ms to s
-
-		connection.query('INSERT INTO tweets (tweet_id, text, user_id, name, user_name, location, description, protected, verified, followers_count, friends_count, listed_count, favourites_count, statuses_count, possibly_sensitive, time) VALUES (\''+pkey+'\',\''+text+'\',\''+user+'\',\''+name+'\',\''+username+'\',\''+loc+'\',\''+description+'\','+protectd+','+verified+','+followers_count+','+friends_count+','+listed_count+','+favourites_count+','+statuses_count+','+possibly_sensitive+',FROM_UNIXTIME(\''+timestamp+'\')'), function(err, rows, data) {
-					if (err) {
-						console.log(err);
-					}
-				}
-
-	/*
-	connection.query('INSERT INTO stocks (issuer_name, symbol, price, ts, time_alt, `change`, chg_percent, day_high, day_low, year_high, year_low, type, volume) VALUES (\''+issuer_name+'\',\''+symbol+'\','+price+','+ts+',FROM_UNIXTIME(\''+time_alt+'\'),'+change+','+chg_percent+','+day_high+','+day_low+','+year_high+','+year_low+',\''+type+'\','+volume+')', function(err, rows, data) {
-			                if (err) {
-									                    console.log(err);
-														                }
-																		            });
-	*/
-	}
+		var tweetTime = Math.floor(parseInt(twt['timestamp_ms']) / 1000);		// convert ms to s
+		
+		console.log('INSERT INTO tweets (tweet_id, tweet_text, user_id, name, user_name, location, description, protected, verified, followers_count, friends_count, listed_count, favourites_count, statuses_count, possibly_sensitive, tweet_time) VALUES (\''+pkey+'\',\''+tweetText+'\',\''+user+'\',\''+name+'\',\''+username+'\',\''+loc+'\',\''+description+'\','+protectd+','+verified+','+followers_count+','+friends_count+','+listed_count+','+favourites_count+','+statuses_count+','+possibly_sensitive+',FROM_UNIXTIME('+tweetTime+'))');
+		
+		connection.query('INSERT INTO tweets (tweet_id, tweet_text, user_id, name, user_name, location, description, protected, verified, followers_count, friends_count, listed_count, favourites_count, statuses_count, possibly_sensitive, tweet_time) VALUES (\''+pkey+'\',\''+tweetText+'\',\''+user+'\',\''+name+'\',\''+username+'\',\''+loc+'\',\''+description+'\','+protectd+','+verified+','+followers_count+','+friends_count+','+listed_count+','+favourites_count+','+statuses_count+','+possibly_sensitive+',FROM_UNIXTIME('+tweetTime+'))', function(err, rows, data) {
+			if (err) {
+				console.log(err);
+			}
+		});
+	}	
 }
 
 client.stream('statuses/filter', {track: '\$BA, \$UNH, \$WFC, \$T, \$BP, \$PCG, \$KO, \$IBM, \$MSFT, \$MAR, \$ATVI, \$ED, \$FISV, \$CERN, \$MHK, \$MSI'}, function(stream) {
@@ -64,7 +91,6 @@ client.stream('statuses/filter', {track: '\$BA, \$UNH, \$WFC, \$T, \$BP, \$PCG, 
    	});
     
     stream.on('error', function(error) {
-		connection.end();
         throw error;
     });
 });
