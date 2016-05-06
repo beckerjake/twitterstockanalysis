@@ -12,7 +12,7 @@ var connection = mysql.createConnection({
 
 connection.connect();
 
-var url = "http://finance.yahoo.com/webservice/v1/symbols/BA,UNH,WFC,T,BP,PCG,KO,IBM,MSFT,MAR/quote?format=json&view=detail"
+var url = "http://finance.yahoo.com/webservice/v1/symbols/BA,UNH,WFC,T,BP,PCG,KO,IBM,MSFT,MAR,ATVI,ED,FISV,CERN,MHK,MSI/quote?format=json&view=detail"
 
 request({
 	url: url,
