@@ -6,6 +6,7 @@ class StockDaySummary:
 #day delta, day % delta, date in question, stock name, start price, and end price
 #date is in form 'YYYY-MM-DD'
     
+    errorReturnList = ['NULL', 'NULL','NULL','NULL','NULL','NULL']
 
     def __init__(self, day, stockSymbol, databaseName, tableName, user, password, host):
         self.date = day
@@ -26,14 +27,15 @@ class StockDaySummary:
 #set up cursor
         self.cur = self.db.cursor()
 
-#this makes call to other modules to get the stock data and then does computations, and returns a list of form [date, stockSymbol, startPrice, endPrice, dayD, dayPD, firstHourD, firstHourPD]
-#return an empty list on error
+#this makes call to other modules to get the stock data and then does computations, and returns a list of form [startPrice, endPrice, dayD, dayPD, firstHourD, firstHourPD]
+#return list with every category null on error
     def returnStockDaySummary(self):
-        stockDaySummary = [self.date, self.stockSymbol]
+        
+        stockDaySummary = []
         stockPrices = self.getStockInfo()
         if len(stockPrices) != 3:
-            print("incorrect number of stock prices returned in StockDaySummary.returnStockDaySummary\nReturning empty list")
-            return []
+            print("incorrect number of stock prices returned in StockDaySummary.returnStockDaySummary\nReturning null values in list")
+            return self.errorReturnList
 #add start and end prices
         stockDaySummary.append(stockPrices[0])
         stockDaySummary.append(stockPrices[2])
@@ -45,7 +47,6 @@ class StockDaySummary:
         stockDaySummary.append(stockPrices[1] - stockPrices[0])
 #% change in price over the first hour
         stockDaySummary.append((stockPrices[1] - stockPrices[0])/stockPrices[1])
-        print stockDaySummary
         return stockDaySummary
         
 
@@ -72,6 +73,4 @@ class StockDaySummary:
                 break
         return stockPrices
     def test(self):
-        self.returnStockDaySummary()
-a = StockDaySummary("2016-05-11","KO", "ticktalk", "stocks", "root", "" ,"localhost")
-a.test()
+        print self.returnStockDaySummary()
