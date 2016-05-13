@@ -9,12 +9,6 @@ from StockDaySummary import StockDaySummary
 #New/current days are added with all stock price information as NULL
 #date we are creating rows for is specified by the command line
 
-#list of stocks that we will query from our database
-stocks = ['BA','UNH','WFC','T','BP','PCG','KO','IBM','MSFT','MAR']
-
-#connect to database
-db = pymysql.connect(autocommit=True, host="localhost", user="root", passwd="", db="ticktalk")
-cur = db.cursor()
 
 #returns true if date is in 'YYYY-MM-DD' format, false otherwise
 def checkDate(date):
@@ -30,11 +24,8 @@ def checkDate(date):
         return False
     return True
 
-#grab date
-script, date = argv
-#if we don't have a legit date, exit
-if not checkDate(date):
-    sys.exit("Incorrectly formatted date!")
+#list of stocks that we will query from our database
+stocks = ['BA','UNH','WFC','T','BP','PCG','KO','IBM','MSFT','MAR']
 
 #returns a sql insert action string for daySummaries
 def sqlInsert(tableName, fieldValues):
@@ -46,14 +37,25 @@ def sqlInsert(tableName, fieldValues):
     insertStatement = insertStatement[:-2]
     insertStatement += ")"
     return insertStatement
+
+def main(arg1):
+#connect to database
+    db = pymysql.connect(autocommit=True, host="localhost", user="root", passwd="", db="ticktalk")
+    cur = db.cursor()
+#grab date
+    date = arg1
+#if we don't have a legit date, exit
+    if not checkDate(date):
+        sys.exit("Incorrectly formatted date!")
 #for every stock
-for i in range(len(stocks)):
+    for i in range(len(stocks)):
 #create stock and tweet day summary objects
-    tweetSum = TweetDaySummary(date, stocks[i], "ticktalk", "tweets", "root", "", "localhost")
-    stockSum = StockDaySummary(date, stocks[i], "ticktalk", "stocks", "root", "", "localhost")
-    daySummary = tweetSum.returnTweetDaySummary()
-    daySummary += stockSum.returnStockDaySummary()
+        tweetSum = TweetDaySummary(date, stocks[i], "ticktalk", "tweets", "root", "", "localhost")
+        stockSum = StockDaySummary(date, stocks[i], "ticktalk", "stocks", "root", "", "localhost")
+        daySummary = tweetSum.returnTweetDaySummary()
+        daySummary += stockSum.returnStockDaySummary()
 #add to database
-    cur.execute(sqlInsert("daySummaries", daySummary))
+        cur.execute(sqlInsert("daySummaries", daySummary))
+
 
 

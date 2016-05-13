@@ -119,4 +119,4 @@ def moveTweetsToNewDatabase(inputTableName,cursor, outputTableName, numTweets):
         cursor.execute("update " + inputTableName + " set score=" + str(score)+ " where tweet_id = " + row[0])
         
 
-moveTweetsToNewDatabase("tweets",cur, "", 500)
+moveTweetsToNewDatabase("tweets",cur, "", 1900)

@@ -61,7 +61,9 @@ class StockDaySummary:
         stockPrices = [] 
 #compute the timestamp of the next day
         nextDay = self.date[:-2] + "%02d" % (int(self.date[-2:]) + 1)
+        print nextDay
         queryString = "select price, time_alt from " + self.__tableName + " where symbol = \"" + self.stockSymbol + "\" and time_alt >= \"" + self.date + "\" and time_alt < \"" + nextDay + "\""
+        print queryString
         self.cur.execute(queryString)
         for row in self.cur.fetchall():
             if row[1].hour == openHour:
