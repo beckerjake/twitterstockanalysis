@@ -29,8 +29,10 @@ stocks = ['BA','UNH','WFC','T','BP','PCG','KO','IBM','MSFT','MAR']
 
 #returns a sql insert action string for daySummaries
 def sqlInsert(tableName, fieldValues):
-    insertStatement = "insert into " + tableName + " VALUES (0,\"" + fieldValues[0] + "\",\"" + fieldValues[1] + "\","
-    for i in range(2, len(fieldValues)):
+    insertStatement = "insert into " + tableName + " VALUES (0, "
+    for i in range(0, 3):
+        insertStatement += "\"" + fieldValues[i] + "\","
+    for i in range(3, len(fieldValues)):
         insertStatement += str(fieldValues[i])
         insertStatement += ", "
    #take out the last comma and space
@@ -54,7 +56,11 @@ def main(arg1):
         stockSum = StockDaySummary(date, stocks[i], "ticktalk", "stocks", "root", "", "localhost")
         daySummary = tweetSum.returnTweetDaySummary()
         daySummary += stockSum.returnStockDaySummary()
+        #change around the position of stockName
+        daySummary.insert(2, daySummary[-1])
+        del daySummary[-1]
 #add to database
+        print daySummary
         cur.execute(sqlInsert("daySummaries", daySummary))
 
 

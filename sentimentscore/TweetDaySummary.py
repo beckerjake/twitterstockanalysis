@@ -124,31 +124,39 @@ class TweetDaySummary:
 #TODO weekends should have more associated tweets and span a longer time
     def getMarketCloseToOpenTimes(self,date):
 #define constants
-        daysInEachMonth = [31,28,31,30,31,30,31,31,30,31,30,31]
         startHour = " 20:00:00"
         endDate = date + " 13:30:00"
 #grab numbers out of date
         year = int(date[:4])
         month = int(date[5:7])
         day = int(date[8:])
-#check if first day of month and year
-        if day == 1 and month == 1:
-            year -= 1
-            day = 31
-            month = 12
-#check if first day of month
-        elif day == 1:
-            month -= 1
-            day = daysInEachMonth[month - 1]
-        else:
-            day -= 1
+        listDate = [year, month, day]
+        dayOfWeek = datetime.date(year, month,day).weekday()
+        if dayOfWeek < 5 and dayOfWeek > 0:
+            newDay = self.getPreviousDay(listDate)
+        else:#weekend, decrease the day three times
+            newDay = self.getPreviousDay(self.getPreviousDay(self.getPreviousDay(listDate)))
+        year = newDay[0]
+        month = newDay[1]
+        day = newDay[2]
 
         startDate = str(year) + '-' + "%02d" % month + '-' + "%02d" % day + startHour
-        print startDate
-        print endDate
         return [startDate, endDate]
+
+
+    def getPreviousDay(self,date):
+        daysInEachMonth = [31,28,31,30,31,30,31,31,30,31,30,31]
+#check if first day of month and year
+        if date[2] == 1 and date[1] == 1:
+            date[0] -= 1
+            date[2] = 31
+            date[1] = 12
+#check if first day of month
+        elif date[2] == 1:
+            date[1] -= 1
+            date[2] = daysInEachMonth[month - 1]
+        else:
+            date[2] -= 1
+        return date
 a = TweetDaySummary("2016-05-09",'MSFT','ticktalk','tweets','root','','localhost')
-print a.returnTweetDaySummary()
-
-
-
+print a.test('2016-05-10')
