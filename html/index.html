@@ -125,12 +125,11 @@
 <script>
   $( document ).ready(function() 
   {
- 
+ /*
        $("td[colspan=3]").find("p").hide();
 	   
 		$("table").click(function(event) 
 		{
-					//alert("table_begin");
 
 			var $target = $(event.target);
 			if ( $target.closest("td").attr("colspan") > 1 ) 
@@ -142,7 +141,7 @@
 				$target.closest("tr").next().find("p").slideToggle();
 			}                    
 		});
-
+*/
 		
 
 		$.ajax({    //create an ajax request to load_page.php
@@ -181,14 +180,11 @@
   
 
 <script>
- $( responsecontainer ).on('click', function() {
+ $( document ).on('click', function() {
 	$("a[id^=show_]").click(function(event) 
 		{
-			alert("click_begin");
 			$("#extra_" + $(this).attr('id').substr(5)).slideToggle("slow");
-			alert("click_end");
 			event.preventDefault();
-			alert("click_final");
 		});
 	});
 </script>  
