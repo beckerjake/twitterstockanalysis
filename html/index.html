@@ -156,19 +156,19 @@
 			}
 		});
 
-		
-		$("a[id^=show_]").click(function() 
+		/*
+		$("a[id^=show_]").click(function(event) 
 		//$("display").click(function(event) 
 		//$("#display").click(function()
 		{
 			alert("click_begin");
 			$("#extra_" + $(this).attr('id').substr(5)).slideToggle("slow");
 			alert("click_end");
-			//event.preventDefault();
+			event.preventDefault();
 			alert("click_final");
 		});
 		
-		
+		*/
 		
  
 });
@@ -178,7 +178,20 @@
 		  
 		  
           <div class="table-responsive" id="responsecontainer" align="center" >
-            
+  
+
+<script>
+ $( document ).ready(function() {
+	$("a[id^=show_]").click(function(event) 
+		{
+			alert("click_begin");
+			$("#extra_" + $(this).attr('id').substr(5)).slideToggle("slow");
+			alert("click_end");
+			event.preventDefault();
+			alert("click_final");
+		});
+	});
+</script>  
 			<!-- 
 			<table class="table table-striped" >
               <thead>
