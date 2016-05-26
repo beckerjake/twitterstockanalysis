@@ -55,7 +55,7 @@ if (mysqli_num_rows($result) > 0)
           echo "        <td>".$row["symbol"]."</td>";
           echo "        <td>Neutral</td>";
           echo "        <td>".$row["end_price"]."</td>";
-          echo "        <td><a href=\"#\" id=\"show_1\">Show Data</a></td>";
+          echo "        <td><a href=\"#\" id=\"show_".$counter."\">Show Data</a></td>";
           echo "      </tr>";
           echo "      <tr>";
           echo "        <td colspan=\"5\">";
