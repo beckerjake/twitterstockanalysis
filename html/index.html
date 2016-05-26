@@ -180,12 +180,12 @@
   
 
 <script>
- $( document ).on( function() {
-	$("a[id^=show_]").click(function(event) 
-		{
+ $( responsecontainer ).on("click", "a[id^=show_]",function(event) {
+	//$("a[id^=show_]").click(function(event) 
+		//{
 			$("#extra_" + $(this).attr('id').substr(5)).slideToggle("slow");
 			event.preventDefault();
-		});
+		//});
 	});
 </script>  
 			<!-- 
