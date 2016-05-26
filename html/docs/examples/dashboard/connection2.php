@@ -32,7 +32,7 @@ $result = mysqli_query($con, $sql);
 if (mysqli_num_rows($result) > 0) 
 {
     // output data of each row
-	echo "<table class=\"table table-striped\" border='1' >
+	echo "<table class=\"table table-striped\" >
 			<thead>
 				<tr>
 					<th align=center> <b>Company</b></th>
