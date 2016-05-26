@@ -32,13 +32,17 @@ $result = mysqli_query($con, $sql);
 if (mysqli_num_rows($result) > 0) 
 {
     // output data of each row
-	echo "<table border='1' >
-			<tr>
-			<td align=center> <b>Company</b></td>
-			<td align=center><b>Symbol</b></td>
-			<td align=center><b>Sentiment</b></td>
-			<td align=center><b>Closing Price</b></td>
-			<td align=center><b>More Data</b></td>"
+	echo "<table class=\"table table-striped\" border='1' >
+			<thead>
+				<tr>
+					<th align=center> <b>Company</b></th>
+					<th align=center><b>Symbol</b></th>
+					<th align=center><b>Sentiment</b></th>
+					<th align=center><b>Closing Price</b></th>
+					<th align=center><b>More Data</b></th>
+				</tr>
+			</thead>
+			"
 			;
     while($row = mysqli_fetch_assoc($result)) {
 		  
