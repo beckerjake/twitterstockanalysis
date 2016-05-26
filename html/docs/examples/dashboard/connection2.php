@@ -34,9 +34,12 @@ if (mysqli_num_rows($result) > 0)
     // output data of each row
 	echo "<table border='1' >
 			<tr>
-			<td align=center> <b>Company No</b></td>
-			<td align=center><b>Ticker</b></td>
-			<td align=center><b>Price</b></td>";
+			<td align=center> <b>Company</b></td>
+			<td align=center><b>Symbol</b></td>
+			<td align=center><b>Sentiment</b></td>
+			<td align=center><b>Closing Price</b></td>
+			<td align=center><b>More Data</b></td>"
+			;
     while($row = mysqli_fetch_assoc($result)) {
 		  
 		  
@@ -44,7 +47,7 @@ if (mysqli_num_rows($result) > 0)
           echo "        <td>".$row["stockName"]."</td>";
           echo "        <td>".$row["symbol"]."</td>";
           echo "        <td>Neutral</td>";
-          echo "        <td>".$row["price"]."</td>";
+          echo "        <td>".$row["end_price"]."</td>";
           echo "        <td><a href=\"#\" id=\"show_1\">Show Data</a></td>";
           echo "      </tr>";
           echo "      <tr>";
