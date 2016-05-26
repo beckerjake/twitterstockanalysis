@@ -44,8 +44,11 @@ if (mysqli_num_rows($result) > 0)
 			</thead>
 			"
 			;
+			
+			$counter = 0;
     while($row = mysqli_fetch_assoc($result)) {
 		  
+		  $counter = $counter + 1;
 		  
 		  echo "<tr>";
           echo "        <td>".$row["stockName"]."</td>";
@@ -56,7 +59,7 @@ if (mysqli_num_rows($result) > 0)
           echo "      </tr>";
           echo "      <tr>";
           echo "        <td colspan=\"5\">";
-          echo "          <div id=\"extra_1\" style=\"display: none;\">";
+          echo "          <div id=\"extra_".$counter."\" style=\"display: none;\">";
           echo "            <br>hidden row";
           echo "            <br>hidden row";
           echo "            <br>hidden row";
