@@ -149,12 +149,13 @@
 			success: function(response)
 			{                    
 				$("#responsecontainer").html(response); 
-				alert("ajax'ed");
+				//alert("ajax'ed");
 			}
 		});
 
 		
-		$("a[id^=show_]").click(function(event) 
+		//$("a[id^=show_]").click(function(event) 
+		$("display").click(function(event) 
 		{
 			alert("click_begin");
 			$("#extra_" + $(this).attr('id').substr(5)).slideToggle("slow");
