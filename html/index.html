@@ -363,8 +363,22 @@
     $("#extra_" + $(this).attr('id').substr(5)).slideToggle("slow");
     event.preventDefault();
 
+	
+	$.ajax({    //create an ajax request to load_page.php
+        type: "GET",
+        url: "docs/examples/dashboard/connection2.php",             
+        dataType: "html",   //expect html to be returned                
+        success: function(response){                    
+            $("#responsecontainer").html(response); 
+            //alert(response);
+        }
+
+
+    });
+	
 })
 
+/*
 $("#display").click(function() {                
 
       //alert("foo");
@@ -382,7 +396,7 @@ $("#display").click(function() {
     });
 });
 
-
+*/
 
 
  
