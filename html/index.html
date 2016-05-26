@@ -123,12 +123,15 @@
 
 
 <script>
-  $( document ).ready(function() {
+  $( document ).ready(function() 
+  {
  
        $("td[colspan=3]").find("p").hide();
 	   
 		$("table").click(function(event) 
 		{
+					alert("table_begin");
+
 			var $target = $(event.target);
 			if ( $target.closest("td").attr("colspan") > 1 ) 
 			{
@@ -154,14 +157,20 @@
 		});
 
 		
-		//$("a[id^=show_]").click(function(event) 
-		$("display").click(function(event) 
+		$("a[id^=show_]").click(function(event) 
+		//$("display").click(function(event) 
 		{
 			alert("click_begin");
 			$("#extra_" + $(this).attr('id').substr(5)).slideToggle("slow");
 			alert("click_end");
 			event.preventDefault();
 			alert("click_final");
+		});
+		
+		
+		
+		 $("#display").click(function() {                  
+			alert("foo");
 		});
  
 });
