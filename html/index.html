@@ -110,7 +110,9 @@
           </div>
 
           <h2 class="sub-header">All Stocks</h2>
-          <div class="table-responsive">
+		  
+		  
+          <div class="table-responsive" id="responsecontainer" align="center" >
             <table class="table table-striped">
               <thead>
                 <tr>
@@ -121,6 +123,8 @@
                   <th>Data</th>
                 </tr>
               </thead>
+			  
+			  
               <tbody>
                 <tr>
                   <td>AT&T</td>
@@ -348,57 +352,36 @@
  
        $("td[colspan=3]").find("p").hide();
 	   
-    $("table").click(function(event) {
-        //event.stopPropagation();
-        //alert("foo");
-        var $target = $(event.target);
-        if ( $target.closest("td").attr("colspan") > 1 ) {
-            $target.slideUp();
-        } else {
-            $target.closest("tr").next().find("p").slideToggle();
-        }                    
-    });
+		$("table").click(function(event) 
+		{
+			var $target = $(event.target);
+			if ( $target.closest("td").attr("colspan") > 1 ) 
+			{
+				$target.slideUp();
+			} 
+			else 
+			{
+				$target.closest("tr").next().find("p").slideToggle();
+			}                    
+		});
 
-    $("a[id^=show_]").click(function(event) {
-    $("#extra_" + $(this).attr('id').substr(5)).slideToggle("slow");
-    event.preventDefault();
+		
+		$("a[id^=show_]").click(function(event) 
+		{
+			$("#extra_" + $(this).attr('id').substr(5)).slideToggle("slow");
+			event.preventDefault();
+		})
 
-	
-})
 
-
-$.ajax({    //create an ajax request to load_page.php
-        type: "GET",
-        url: "docs/examples/dashboard/connection2.php",             
-        dataType: "html",   //expect html to be returned                
-        success: function(response){                    
-            $("#responsecontainer").html(response); 
+		$.ajax({    //create an ajax request to load_page.php
+			type: "GET",
+			url: "docs/examples/dashboard/connection2.php",             
+			dataType: "html",   //expect html to be returned                
+			success: function(response){                    
+				$("#responsecontainer").html(response); 
             //alert(response);
-        }
-
-
-    });
-
-/*
-$("#display").click(function() {                
-
-      //alert("foo");
-
-      $.ajax({    //create an ajax request to load_page.php
-        type: "GET",
-        url: "docs/examples/dashboard/connection2.php",             
-        dataType: "html",   //expect html to be returned                
-        success: function(response){                    
-            $("#responsecontainer").html(response); 
-            //alert(response);
-        }
-
-
-    });
-});
-
-*/
-
+			}
+		});
 
  
 });
@@ -411,9 +394,9 @@ $("#display").click(function() {
        <td> <input type="button" id="display" value="Display All Data" /> </td>
    </tr>
 </table>
-<div id="responsecontainer" align="center">
+<!-- <div id="responsecontainer" align="center">
 
-</div>
+</div> -->
 
   </body>
 </html>
