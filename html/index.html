@@ -141,6 +141,19 @@
 		});
 
 		
+
+		$.ajax({    //create an ajax request to load_page.php
+			type: "GET",
+			url: "docs/examples/dashboard/connection2.php",             
+			dataType: "html",   //expect html to be returned                
+			success: function(response)
+			{                    
+				$("#responsecontainer").html(response); 
+				alert("ajax'ed");
+			}
+		});
+
+		
 		$("a[id^=show_]").click(function(event) 
 		{
 			alert("click_begin");
@@ -149,18 +162,6 @@
 			event.preventDefault();
 			alert("click_final");
 		});
-
-
-		$.ajax({    //create an ajax request to load_page.php
-			type: "GET",
-			url: "docs/examples/dashboard/connection2.php",             
-			dataType: "html",   //expect html to be returned                
-			success: function(response){                    
-				$("#responsecontainer").html(response); 
-            alert("ajax'ed");
-			}
-		});
-
  
 });
 </script>
