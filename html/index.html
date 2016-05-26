@@ -143,8 +143,11 @@
 		
 		$("a[id^=show_]").click(function(event) 
 		{
+			alert("click_begin");
 			$("#extra_" + $(this).attr('id').substr(5)).slideToggle("slow");
+			alert("click_end");
 			event.preventDefault();
+			alert("click_final");
 		});
 
 
@@ -154,7 +157,7 @@
 			dataType: "html",   //expect html to be returned                
 			success: function(response){                    
 				$("#responsecontainer").html(response); 
-            //alert(response);
+            alert("ajax'ed");
 			}
 		});
 
