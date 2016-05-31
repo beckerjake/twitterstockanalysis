@@ -131,7 +131,7 @@ if (mysqli_num_rows($result) > 0)
 			}  */
 			
 			
-			$xml = simplexml_load_string($xmlstr);
+			$xml = simplexml_load_string($xml_file);
 			$channel = $xml->channel;
 			$channel_title = $channel->title;
 			$channel_description = $channel->description;
