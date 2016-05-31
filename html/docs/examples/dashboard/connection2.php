@@ -135,7 +135,7 @@ file_put_contents ("error_log.txt","9",FILE_APPEND);	 */
 				}
 			}  */
 			
-/* file_put_contents ("error_log.txt","10",FILE_APPEND);			
+file_put_contents ("error_log.txt","10",FILE_APPEND);			
 			$xml = simplexml_load_string($xml_file);
 			file_put_contents ("error_log.txt","11",FILE_APPEND);
 			$channel = $xml->channel;
@@ -143,7 +143,7 @@ file_put_contents ("error_log.txt","9",FILE_APPEND);	 */
 			$channel_description = $channel->description;
 file_put_contents ("error_log.txt","12",FILE_APPEND);
 			echo "<h1>".$channel_title."</h1>";
-			echo "<h2>".$channel_description."</h2>"; */
+			echo "<h2>".$channel_description."</h2>";
 
 			foreach ($channel->item as $item)
 			{
