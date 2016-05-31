@@ -90,7 +90,13 @@ if (mysqli_num_rows($result) > 0)
 
 			$path = $path_prefix.$path.$path_suffix;
 
-			$xml = simplexml_load_file ($path);
+			$xml_file = file_get_contents($path);
+			if($xml_file)
+			{
+				echo "read";
+			}
+			
+			$xml = simplexml_load_string($xml_file);
 			$channel = $xml->channel;
 			$channel_title = $channel->title;
 			$channel_description = $channel->description;
