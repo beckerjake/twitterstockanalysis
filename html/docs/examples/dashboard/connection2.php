@@ -25,7 +25,7 @@ if (!$con)
 $url = "https://publish.twitter.com/oembed?url=https%3A%2F%2Ftwitter.com%2FInterior%2Fstatus%2F507185938620219395";
 $json = file_get_contents($url);
 $json_data = json_decode($json, true);
-$tweet = $json_data["access_token"];
+$tweet = $json_data["html"];
 
 
 //$sql = "SELECT TOP " .$numStocks. " * FROM  ticktalk.stocks";
