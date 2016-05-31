@@ -1,6 +1,6 @@
-// https://www.npmjs.com/package/twitter
+// https://github.com/topheman/twitter-stream-channels
 
-var Twitter = require('twitter');
+var TwitterStreamChannels = require('twitter-stream-channels');
 var mysql = require('mysql');
 
 var connection = mysql.createConnection({
@@ -12,14 +12,33 @@ var connection = mysql.createConnection({
 
 connection.connect();
 
-var client = new Twitter({
+var client = new TwitterStreamChannels({
    consumer_key: process.env.TWITTER_CONSUMER_KEY,
    consumer_secret: process.env.TWITTER_CONSUMER_SECRET,
    access_token_key: process.env.TWITTER_ACCESS_TOKEN_KEY,
    access_token_secret: process.env.TWITTER_ACCESS_TOKEN_SECRET
 });
 
-var stocksToTrack = ['\$BA', '\$UNH', '\$WFC', '\$T', '\$BP', '\$PCG', '\$KO', '\$IBM', '\$MSFT', '\$MAR', '\$ATVI', '\$ED', '\$FISV', '\$CERN', '\$MHK', '\$MSI'];
+var channels = {
+	"keywords_ba": 		['\$BA','boeing', 'planes', 'airbus', 'airlines'],
+	"keywords_unh": 	['\$UNH'],
+	"keywords_wfc": 	['\$WFC'],
+	"keywords_t": 		['\$T'],
+	"keywords_bp": 		['\$BP', 'BP', 'oil', 'petroleum'],
+	"keywords_pcg": 	['\$PCG'],
+	"keywords_ko": 		['\$KO'],
+	"keywords_ibm": 	['\$IBM'],
+	"keywords_msft": 	['\$MSFT'],
+	"keywords_mar": 	['\$MAR'],
+	"keywords_atvi": 	['\$ATVI'],
+	"keywords_ed": 		['\$ED'],
+	"keywords_fisv": 	['\$FISV'],
+	"keywords_cern": 	['\$CERN'],
+	"keywords_mhk": 	['\$MHK'],
+	"keywords_msi": 	['\$MSI']
+};
+
+var stream = client.streamChannels({track:channels});
 
 function getBoolVal(str) {
 	return str ? 1 : 0;
@@ -49,7 +68,7 @@ function mysql_real_escape_string (str) {
 	});
 }
 
-function storeTweetInDB(twt) {
+function storeTweetInDB(twt, sym) {
 	if (twt['lang'] == 'en') {
 		var pkey = twt['id_str'];
 		var tweetText = mysql_real_escape_string(twt['text']);
@@ -75,29 +94,81 @@ function storeTweetInDB(twt) {
 		var favourites_count = parseInt(twt['user']['favourites_count']);
 		var statuses_count = parseInt(twt['user']['statuses_count']);
 		var possibly_sensitive = getBoolVal(twt['possibly_sensitive']);
-		var tweetTime = Math.floor(parseInt(twt['timestamp_ms']) / 1000);		// convert ms to s	
+		var tweetTime = Math.floor(parseInt(twt['timestamp_ms']) / 1000);		// convert ms to s
 		
-		for (var i = 0; i < stocksToTrack.length; i++) {
-			var stock_symbol = stocksToTrack[i];
-			
-			if (tweetText.indexOf(stock_symbol) > -1) {
-				connection.query('INSERT INTO tweets (tweet_id, stock_symbol, tweet_text, user_id, name, user_name, location, description, protected, verified, followers_count, friends_count, listed_count, favourites_count, statuses_count, possibly_sensitive, tweet_time) VALUES (\''+pkey+'\',\''+stock_symbol+'\',\''+tweetText+'\',\''+user+'\',\''+name+'\',\''+username+'\',\''+loc+'\',\''+description+'\','+protectd+','+verified+','+followers_count+','+friends_count+','+listed_count+','+favourites_count+','+statuses_count+','+possibly_sensitive+',FROM_UNIXTIME('+tweetTime+'))', function(err, rows, data) {
-					if (err) {
-						console.log(err);
-					}
-				});
-			}
+		var symbol_mentioned = 0;
+		if (tweetText.indexOf(sym) > -1) {
+			symbol_mentioned = 1;
 		}
-	}	
+	
+		connection.query('INSERT INTO tweets (tweet_id, stock_symbol, tweet_text, user_id, name, user_name, location, description, protected, verified, followers_count, friends_count, listed_count, favourites_count, statuses_count, possibly_sensitive, tweet_time, symbol_mentioned) VALUES (\''+pkey+'\',\''+sym+'\',\''+tweetText+'\',\''+user+'\',\''+name+'\',\''+username+'\',\''+loc+'\',\''+description+'\','+protectd+','+verified+','+followers_count+','+friends_count+','+listed_count+','+favourites_count+','+statuses_count+','+possibly_sensitive+',FROM_UNIXTIME('+tweetTime+'),'+symbol_mentioned+')', function(err, rows, data) {
+			if (err) {
+				console.log(err);
+			}
+		});
+	}
 }
 
-client.stream('statuses/filter', {track: '\$BA, \$UNH, \$WFC, \$T, \$BP, \$PCG, \$KO, \$IBM, \$MSFT, \$MAR, \$ATVI, \$ED, \$FISV, \$CERN, \$MHK, \$MSI'}, function(stream) {
-	stream.on('data', function(tweet) {
-        storeTweetInDB(tweet);
-   	});
-    
-    stream.on('error', function(error) {
-        throw error;
-    });
+stream.on('channels/keywords_ba', function(tweet) {
+	storeTweetInDB(tweet, "\$BA");
 });
 
+stream.on('channels/keywords_unh', function(tweet) {
+	storeTweetInDB(tweet, "\$UNH");
+});
+
+stream.on('channels/keywords_wfc', function(tweet) {
+	storeTweetInDB(tweet, "\$WFC");
+});
+
+stream.on('channels/keywords_t', function(tweet) {
+	storeTweetInDB(tweet, "\$T");
+});
+
+stream.on('channels/keywords_bp', function(tweet) {
+	storeTweetInDB(tweet, "\$BP");
+});
+
+stream.on('channels/keywords_pcg', function(tweet) {
+	storeTweetInDB(tweet, "\$PCG");
+});
+
+stream.on('channels/keywords_ko', function(tweet) {
+	storeTweetInDB(tweet, "\$KO");
+});
+
+stream.on('channels/keywords_ibm', function(tweet) {
+	storeTweetInDB(tweet, "\$IBM");
+});
+
+stream.on('channels/keywords_msft', function(tweet) {
+	storeTweetInDB(tweet, "\$MSFT");
+});
+
+stream.on('channels/keywords_mar', function(tweet) {
+	storeTweetInDB(tweet, "\$MAR");
+});
+
+stream.on('channels/keywords_atvi', function(tweet) {
+	storeTweetInDB(tweet, "\$ATVI");
+});
+
+stream.on('channels/keywords_ed', function(tweet) {
+	storeTweetInDB(tweet, "\$ED");
+});
+
+stream.on('channels/keywords_fisv', function(tweet) {
+	storeTweetInDB(tweet, "\$FISV");
+});
+
+stream.on('channels/keywords_cern', function(tweet) {
+	storeTweetInDB(tweet, "\$CERN");
+});
+
+stream.on('channels/keywords_mhk', function(tweet) {
+	storeTweetInDB(tweet, "\$MHK");
+});
+
+stream.on('channels/keywords_msi', function(tweet) {
+	storeTweetInDB(tweet, "\$MSI");
+});
