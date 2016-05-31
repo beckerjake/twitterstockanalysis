@@ -111,7 +111,7 @@ if (mysqli_num_rows($result) > 0)
 			}
 			
 			
-			$xmlstr = get_xml_from_url('http://www.camara.gov.br/SitCamaraWS/Deputados.asmx/ObterDeputados');
+			$xmlstr = get_xml_from_url($path);
 
 			print_r($xmlstr);
 			
@@ -131,7 +131,7 @@ if (mysqli_num_rows($result) > 0)
 			}  */
 			
 			
-			$xml = simplexml_load_string($xml_file);
+			$xml = simplexml_load_string($xmlstr);
 			$channel = $xml->channel;
 			$channel_title = $channel->title;
 			$channel_description = $channel->description;
