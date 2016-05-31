@@ -1,8 +1,7 @@
-// https://github.com/topheman/twitter-stream-channels
-
 var TwitterStreamChannels = require('twitter-stream-channels');
 var mysql = require('mysql');
 
+// Initialize the MySQL connection
 var connection = mysql.createConnection({
 	host: 'localhost',
 	user: 'root',
@@ -12,6 +11,7 @@ var connection = mysql.createConnection({
 
 connection.connect();
 
+// Initialize the TwitterStreamChannels client
 var client = new TwitterStreamChannels({
    consumer_key: process.env.TWITTER_CONSUMER_KEY,
    consumer_secret: process.env.TWITTER_CONSUMER_SECRET,
@@ -19,6 +19,7 @@ var client = new TwitterStreamChannels({
    access_token_secret: process.env.TWITTER_ACCESS_TOKEN_SECRET
 });
 
+// Keywords to listen for, organized into 'channels' by relevant stock.
 var channels = {
 	"keywords_ba": 		['\$BA','Boeing'],
 	"keywords_unh": 	['\$UNH', 'United Healthcare'],
@@ -38,12 +39,18 @@ var channels = {
 	"keywords_msi": 	['\$MSI', 'Motorola Solutions']
 };
 
+// Initialize the stream channels
 var stream = client.streamChannels({track:channels});
 
+// Helper function that converts a string to an int
+//	Returns 1 if input string is not null
+//	Returns 0 if input string is null
 function getBoolVal(str) {
 	return str ? 1 : 0;
 }
 
+// Helper function to make strings play nicely with MySQL
+// Source: http://stackoverflow.com/questions/7744912/making-a-javascript-string-sql-friendly
 function mysql_real_escape_string (str) {
 	return str.replace(/[\0\x08\x09\x1a\n\r"'\\\%]/g, function (char) {
 		switch (char) {
@@ -68,7 +75,15 @@ function mysql_real_escape_string (str) {
 	});
 }
 
+// Function that takes two arguments (below)
+//	and stores the tweet's important fields in the database.
+//
+//	Converts tweet JSON objects into a format that can be used in a MySQL query.
+//
+//	twt: tweet streamed from Twitter API as JSON
+//	sym: string containining the relevant stock symbol for the tweet
 function storeTweetInDB(twt, sym) {
+	// We only want to store tweets that are in English
 	if (twt['lang'] == 'en') {
 		var pkey = twt['id_str'];
 		var tweetText = mysql_real_escape_string(twt['text']);
@@ -96,6 +111,8 @@ function storeTweetInDB(twt, sym) {
 		var possibly_sensitive = getBoolVal(twt['possibly_sensitive']);
 		var tweetTime = Math.floor(parseInt(twt['timestamp_ms']) / 1000);		// convert ms to s
 		
+		// If the stock symbol ($SYMBOL notation) was used in the tweet,
+		//	we have a specific field to note that.
 		var symbol_mentioned = 0;
 		if (tweetText.indexOf(sym) > -1) {
 			symbol_mentioned = 1;
@@ -109,6 +126,9 @@ function storeTweetInDB(twt, sym) {
 	}
 }
 
+// Begin streaming tweets
+//	Using a different stream for each stock that we are tracking
+//	allows us to easily organize tweets by their stock symbol.
 stream.on('channels/keywords_ba', function(tweet) {
 	storeTweetInDB(tweet, "\$BA");
 });

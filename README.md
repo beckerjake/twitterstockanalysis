@@ -12,5 +12,18 @@ The text of tweets matching the tracking string (specified in the file) will be 
 
 Resources:
 
+Node Twitter streaming APIs:
+    https://www.npmjs.com/package/twitter
+    https://github.com/topheman/twitter-stream-channels
+
 'Making a javascript string sql friendly' :
     http://stackoverflow.com/questions/7744912/making-a-javascript-string-sql-friendly
+    
+SQL updating
+    http://www.w3schools.com/sql/sql_update.asp
+    
+MySQL error code 1175
+    http://stackoverflow.com/questions/11448068/mysql-error-code-1175-during-update-in-mysql-workbench
+    
+MySQl - selecting by newest timestamp
+    http://stackoverflow.com/questions/11912221/mysql-select-by-newest-timestamp
