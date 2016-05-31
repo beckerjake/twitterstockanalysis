@@ -93,29 +93,29 @@ if (mysqli_num_rows($result) > 0)
 			$xml_file = file_get_contents($path);
 			if($xml_file)
 			{
-				echo "read2";
+				file_put_contents ("error_log.txt","2",FILE_APPEND);
 				echo $xml_file;
 			}
 			
 			function get_xml_from_url($url){
-				echo "read3";
+				file_put_contents ("error_log.txt","3",FILE_APPEND);
 				$ch = curl_init();
-echo "read4";
+file_put_contents ("error_log.txt","4",FILE_APPEND);
 				curl_setopt($ch, CURLOPT_URL, $url);
 				curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 				curl_setopt($ch, CURLOPT_USERAGENT, 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.13) Gecko/20080311 Firefox/2.0.0.13');
-echo "read5";
+file_put_contents ("error_log.txt","5",FILE_APPEND);
 				$xmlstr = curl_exec($ch);
 				curl_close($ch);
-echo "read6";
+file_put_contents ("error_log.txt","6",FILE_APPEND);
 				return $xmlstr;
 			}
 			
-echo "read7";			
+file_put_contents ("error_log.txt","7",FILE_APPEND);			
 			$xmlstr = get_xml_from_url($path);
-echo "read8";
+file_put_contents ("error_log.txt","8",FILE_APPEND);
 			print_r($xmlstr);
-echo "read9";			
+file_put_contents ("error_log.txt","9",FILE_APPEND);			
 			/*  if (($response_xml_data = file_get_contents($path)===false){
 				echo "Error fetching XML";
 			} else {
@@ -131,13 +131,13 @@ echo "read9";
 				}
 			}  */
 			
-echo "read10";			
+file_put_contents ("error_log.txt","10",FILE_APPEND);			
 			$xml = simplexml_load_string($xml_file);
-			echo "read11";
+			file_put_contents ("error_log.txt","11",FILE_APPEND);
 			$channel = $xml->channel;
 			$channel_title = $channel->title;
 			$channel_description = $channel->description;
-echo "read12";
+file_put_contents ("error_log.txt","12",FILE_APPEND);
 			echo "<h1>".$channel_title."</h1>";
 			echo "<h2>".$channel_description."</h2>";
 
