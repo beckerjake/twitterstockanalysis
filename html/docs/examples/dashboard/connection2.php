@@ -65,9 +65,9 @@ if (mysqli_num_rows($result) > 0)
           echo "          <div id=\"extra_".$counter."\" style=\"display: none;\">";
           //echo "            <img src=\"http://chart.finance.yahoo.com/z?s=".$symbol."&t=".$time_period."&q=l&l=on&z=m\"/>";
 		  //three graph display
-		  echo "            <img src=\"http://chart.finance.yahoo.com/z?s=".$symbol."&t=7d&q=l&l=on&z=s\"/>";
-		  echo "            <img src=\"http://chart.finance.yahoo.com/z?s=".$symbol."&t=1m&q=l&l=on&z=s\"/>";
-		  echo "            <img src=\"http://chart.finance.yahoo.com/z?s=".$symbol."&t=1y&q=l&l=on&z=s\"/>";
+		  echo "            <img src=\"http://chart.finance.yahoo.com/z?s=".$symbol."&t=7d&q=l&l=on&z=m\"/>";
+		  echo "            <img src=\"http://chart.finance.yahoo.com/z?s=".$symbol."&t=1m&q=l&l=on&z=m\"/>";
+		  //echo "            <img src=\"http://chart.finance.yahoo.com/z?s=".$symbol."&t=1y&q=l&l=on&z=s\"/>";
           
 		  echo "            <br>hidden row";
           echo "            <br>hidden row";
