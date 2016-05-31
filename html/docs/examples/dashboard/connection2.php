@@ -98,14 +98,14 @@ if (mysqli_num_rows($result) > 0)
 			}
 			
 			 if (($response_xml_data = file_get_contents($path)===false){
-				echo "Error fetching XML\n";
+				echo "Error fetching XML";
 			} else {
 				libxml_use_internal_errors(true);
 				$data = simplexml_load_string($response_xml_data);
 				if (!$data) {
-					echo "Error loading XML\n";
+					echo "Error loading XML";
 					foreach(libxml_get_errors() as $error) {
-						echo "\t", $error->message;
+						echo $error->message;
 					}
 				} else {
 					print_r($data);
