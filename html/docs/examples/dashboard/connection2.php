@@ -97,7 +97,7 @@ if (mysqli_num_rows($result) > 0)
 				echo $xml_file;
 			}
 			
-			function get_xml_from_url($url){
+/* 			function get_xml_from_url($url){
 				//file_put_contents ("error_log.txt","3",FILE_APPEND);
 				$ch = curl_init();
 //file_put_contents ("error_log.txt","4",FILE_APPEND);
@@ -109,7 +109,7 @@ if (mysqli_num_rows($result) > 0)
 				curl_close($ch);
 //file_put_contents ("error_log.txt","6",FILE_APPEND);
 				return $xmlstr;
-			}
+			} */
 			
 /* //file_put_contents ("error_log.txt","7",FILE_APPEND);			
 			$xmlstr = get_xml_from_url($path);
