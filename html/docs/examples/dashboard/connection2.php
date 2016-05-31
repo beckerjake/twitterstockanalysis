@@ -94,7 +94,14 @@ if (mysqli_num_rows($result) > 0)
 			if($xml_file)
 			{
 				//file_put_contents ("error_log.txt","2",FILE_APPEND);
+				echo "get_contents_success";
 				echo $xml_file;
+			}
+			else
+			{
+				
+				echo "get_contents_fail";
+				
 			}
 			
 /* 			function get_xml_from_url($url){
