@@ -68,14 +68,47 @@ if (mysqli_num_rows($result) > 0)
           echo "      <tr>";
           echo "        <td colspan=\"5\">";
           echo "          <div id=\"extra_".$counter."\" style=\"display: none;\">";
-          //echo "            <img src=\"http://chart.finance.yahoo.com/z?s=".$symbol."&t=".$time_period."&q=l&l=on&z=m\"/>";
+          
+		  
+		  
+		  
+		  //echo "            <img src=\"http://chart.finance.yahoo.com/z?s=".$symbol."&t=".$time_period."&q=l&l=on&z=m\"/>";
 		  //three graph display
 		  echo "            <img align=\"middle\" src=\"http://chart.finance.yahoo.com/z?s=".$symbol."&t=7d&q=l&l=on&z=m\"/>";
 		  echo "            <img align=\"middle\" src=\"http://chart.finance.yahoo.com/z?s=".$symbol."&t=1m&q=l&l=on&z=m\"/>";
 		  //echo "            <img src=\"http://chart.finance.yahoo.com/z?s=".$symbol."&t=1y&q=l&l=on&z=s\"/>";
 		  //echo " <input type=\"text\" id=\"update\"/><button id=\"btn\">Get</button> <div id=\"embed\"></div>";
           
+		  //for the tweet
+		  
 		  echo $tweet;
+		  
+		  //stuff for headlines
+		  $path_prefix = "https://feeds.finance.yahoo.com/rss/2.0/headline?s=";
+			$ticker = $symbol;
+			$path_suffix = "&lg=us&region=US&lang=en-US";
+
+			$path = $path_prefix.$path.$path_suffix;
+
+			$xml = simplexml_load_file ($path);
+			$channel = $xml->channel;
+			$channel_title = $channel->title;
+			$channel_description = $channel->description;
+
+			echo "<h1>".$channel_title."</h1>";
+			echo "<h2>".$channel_description."</h2>";
+
+			foreach ($channel->item as $item)
+			{
+				$title = $item->title;
+				$link = $item->link;
+				$descr = $item->description;
+
+				echo "<h3><a href='".$link."'>".$title."</a></h3>";
+				echo "<p>".$descr."</p>";
+			}
+		  ////headlines
+		  
 		  
 		  echo "            <br>hidden row";
           echo "            <br>hidden row";
