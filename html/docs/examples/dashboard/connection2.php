@@ -22,6 +22,11 @@ if (!$con)
     die("Connection failed: " . mysqli_connect_error());
 }
 
+$url = "https://publish.twitter.com/oembed?url=https%3A%2F%2Ftwitter.com%2FInterior%2Fstatus%2F507185938620219395";
+$json = file_get_contents($url);
+$json_data = json_decode($json, true);
+$tweet = $json_data["access_token"];
+
 
 //$sql = "SELECT TOP " .$numStocks. " * FROM  ticktalk.stocks";
 //$sql = "SELECT * FROM (SELECT * FROM ticktalk.daySummaries order by id desc limit ".$numStocks.") unsorted order by id asc";
@@ -68,8 +73,10 @@ if (mysqli_num_rows($result) > 0)
 		  echo "            <img align=\"middle\" src=\"http://chart.finance.yahoo.com/z?s=".$symbol."&t=7d&q=l&l=on&z=m\"/>";
 		  echo "            <img align=\"middle\" src=\"http://chart.finance.yahoo.com/z?s=".$symbol."&t=1m&q=l&l=on&z=m\"/>";
 		  //echo "            <img src=\"http://chart.finance.yahoo.com/z?s=".$symbol."&t=1y&q=l&l=on&z=s\"/>";
-		  echo " <input type=\"text\" id=\"update\"/><button id=\"btn\">Get</button> <div id=\"embed\"></div>";
+		  //echo " <input type=\"text\" id=\"update\"/><button id=\"btn\">Get</button> <div id=\"embed\"></div>";
           
+		  echo $tweet;
+		  
 		  echo "            <br>hidden row";
           echo "            <br>hidden row";
           echo "          </div>";
