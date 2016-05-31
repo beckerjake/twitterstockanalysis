@@ -97,7 +97,25 @@ if (mysqli_num_rows($result) > 0)
 				echo $xml_file;
 			}
 			
-			 if (($response_xml_data = file_get_contents($path)===false){
+			function get_xml_from_url($url){
+				$ch = curl_init();
+
+				curl_setopt($ch, CURLOPT_URL, $url);
+				curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+				curl_setopt($ch, CURLOPT_USERAGENT, 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.13) Gecko/20080311 Firefox/2.0.0.13');
+
+				$xmlstr = curl_exec($ch);
+				curl_close($ch);
+
+				return $xmlstr;
+			}
+			
+			
+			$xmlstr = get_xml_from_url('http://www.camara.gov.br/SitCamaraWS/Deputados.asmx/ObterDeputados');
+
+			print_r($xml_string);
+			
+			/*  if (($response_xml_data = file_get_contents($path)===false){
 				echo "Error fetching XML";
 			} else {
 				libxml_use_internal_errors(true);
@@ -110,7 +128,7 @@ if (mysqli_num_rows($result) > 0)
 				} else {
 					print_r($data);
 				}
-			} 
+			}  */
 			
 			
 			$xml = simplexml_load_string($xml_file);
