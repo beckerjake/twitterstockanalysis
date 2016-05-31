@@ -118,9 +118,16 @@ function storeTweetInDB(twt, sym) {
 			symbol_mentioned = 1;
 		}
 	
+		var duplicateFlag = 0;
 		connection.query('INSERT INTO tweets (tweet_id, stock_symbol, tweet_text, user_id, name, user_name, location, description, protected, verified, followers_count, friends_count, listed_count, favourites_count, statuses_count, possibly_sensitive, tweet_time, symbol_mentioned) VALUES (\''+pkey+'\',\''+sym+'\',\''+tweetText+'\',\''+user+'\',\''+name+'\',\''+username+'\',\''+loc+'\',\''+description+'\','+protectd+','+verified+','+followers_count+','+friends_count+','+listed_count+','+favourites_count+','+statuses_count+','+possibly_sensitive+',FROM_UNIXTIME('+tweetTime+'),'+symbol_mentioned+')', function(err, rows, data) {
 			if (err) {
 				console.log(sym + ": " + err);
+				duplicateFlag = 1;
+			}
+		});
+		connection.query('UPDATE tweets SET stock_symbol=\''+sym+'\' WHERE tweet_id=\''+pkey+'\'', function(err, rows, data) {
+			if (err) {
+				console.log(err);
 			}
 		});
 	}
