@@ -143,10 +143,21 @@
 
 			$("#extra_" + $(this).attr('id').substr(5)).slideToggle("slow");
 			event.preventDefault();
+			
+			$(function()
+			{
+				$('#btn').click(function() 
+				{
+					$("#embed").oembed($('#update').val());
+				});
+			});
 
 		});
  
 });
+
+
+
 </script>
 
 		  
