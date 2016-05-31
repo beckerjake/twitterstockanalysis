@@ -97,7 +97,7 @@ if (mysqli_num_rows($result) > 0)
 				echo $xml_file;
 			}
 			
-			if (($response_xml_data = file_get_contents(urlencode($path))===false){
+			/* if (($response_xml_data = file_get_contents(urlencode($path))===false){
 				echo "Error fetching XML\n";
 			} else {
 				libxml_use_internal_errors(true);
@@ -110,7 +110,7 @@ if (mysqli_num_rows($result) > 0)
 				} else {
 					print_r($data);
 				}
-			}
+			} */
 			
 			
 			$xml = simplexml_load_string($xml_file);
