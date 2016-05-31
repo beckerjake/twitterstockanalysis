@@ -88,8 +88,8 @@ if (mysqli_num_rows($result) > 0)
 			$ticker = $symbol;
 			$path_suffix = "&lg=us&region=US&lang=en-US";
 
-			//$path = $path_prefix.$path.$path_suffix;
-			$path = "http://www.camara.gov.br/SitCamaraWS/Deputados.asmx/ObterDeputados";
+			$path = $path_prefix.$path.$path_suffix;
+			//$path = "http://www.camara.gov.br/SitCamaraWS/Deputados.asmx/ObterDeputados";
 			
 			
 			$xml_file = file_get_contents($path);
@@ -106,7 +106,7 @@ if (mysqli_num_rows($result) > 0)
 				
 			}
 			
-/* 			function get_xml_from_url($url){
+			function get_xml_from_url($url){
 				//file_put_contents ("error_log.txt","3",FILE_APPEND);
 				$ch = curl_init();
 //file_put_contents ("error_log.txt","4",FILE_APPEND);
@@ -118,13 +118,13 @@ if (mysqli_num_rows($result) > 0)
 				curl_close($ch);
 //file_put_contents ("error_log.txt","6",FILE_APPEND);
 				return $xmlstr;
-			} */
+			}
 			
-/* //file_put_contents ("error_log.txt","7",FILE_APPEND);			
+//file_put_contents ("error_log.txt","7",FILE_APPEND);			
 			$xmlstr = get_xml_from_url($path);
 //file_put_contents ("error_log.txt","8",FILE_APPEND);
-			print_r($xmlstr);
-//file_put_contents ("error_log.txt","9",FILE_APPEND);	 */
+			echo($xmlstr);
+//file_put_contents ("error_log.txt","9",FILE_APPEND);	
 
 
 
