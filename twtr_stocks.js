@@ -15,27 +15,27 @@ connection.connect();
 var client = new TwitterStreamChannels({
    consumer_key: process.env.TWITTER_CONSUMER_KEY,
    consumer_secret: process.env.TWITTER_CONSUMER_SECRET,
-   access_token_key: process.env.TWITTER_ACCESS_TOKEN_KEY,
+   access_token: process.env.TWITTER_ACCESS_TOKEN_KEY,
    access_token_secret: process.env.TWITTER_ACCESS_TOKEN_SECRET
 });
 
 var channels = {
-	"keywords_ba": 		['\$BA','boeing', 'planes', 'airbus', 'airlines'],
-	"keywords_unh": 	['\$UNH'],
-	"keywords_wfc": 	['\$WFC'],
-	"keywords_t": 		['\$T'],
-	"keywords_bp": 		['\$BP', 'BP', 'oil', 'petroleum'],
-	"keywords_pcg": 	['\$PCG'],
-	"keywords_ko": 		['\$KO'],
-	"keywords_ibm": 	['\$IBM'],
-	"keywords_msft": 	['\$MSFT'],
-	"keywords_mar": 	['\$MAR'],
-	"keywords_atvi": 	['\$ATVI'],
-	"keywords_ed": 		['\$ED'],
-	"keywords_fisv": 	['\$FISV'],
-	"keywords_cern": 	['\$CERN'],
-	"keywords_mhk": 	['\$MHK'],
-	"keywords_msi": 	['\$MSI']
+	"keywords_ba": 		['\$BA','Boeing'],
+	"keywords_unh": 	['\$UNH', 'United Healthcare'],
+	"keywords_wfc": 	['\$WFC', 'Wells Fargo'],
+	"keywords_t": 		['\$T', 'AT&T'],
+	"keywords_bp": 		['\$BP', 'BP'],
+	"keywords_pcg": 	['\$PCG', 'Pacific Gas'],
+	"keywords_ko": 		['\$KO', 'Coca', 'Coke'],
+	"keywords_ibm": 	['\$IBM', 'IBM'],
+	"keywords_msft": 	['\$MSFT', 'Microsoft'],
+	"keywords_mar": 	['\$MAR', 'Marriott'],
+	"keywords_atvi": 	['\$ATVI', 'Activision'],
+	"keywords_ed": 		['\$ED', 'Con Edison', 'Consolidated Edison', 'Con Ed'],
+	"keywords_fisv": 	['\$FISV', 'Fiserv'],
+	"keywords_cern": 	['\$CERN', 'Cerner'],
+	"keywords_mhk": 	['\$MHK', 'Mohawk Industries'],
+	"keywords_msi": 	['\$MSI', 'Motorola Solutions']
 };
 
 var stream = client.streamChannels({track:channels});
@@ -103,7 +103,7 @@ function storeTweetInDB(twt, sym) {
 	
 		connection.query('INSERT INTO tweets (tweet_id, stock_symbol, tweet_text, user_id, name, user_name, location, description, protected, verified, followers_count, friends_count, listed_count, favourites_count, statuses_count, possibly_sensitive, tweet_time, symbol_mentioned) VALUES (\''+pkey+'\',\''+sym+'\',\''+tweetText+'\',\''+user+'\',\''+name+'\',\''+username+'\',\''+loc+'\',\''+description+'\','+protectd+','+verified+','+followers_count+','+friends_count+','+listed_count+','+favourites_count+','+statuses_count+','+possibly_sensitive+',FROM_UNIXTIME('+tweetTime+'),'+symbol_mentioned+')', function(err, rows, data) {
 			if (err) {
-				console.log(err);
+				console.log(sym + ": " + err);
 			}
 		});
 	}
