@@ -14,7 +14,8 @@ Resources:
 
 Node Twitter streaming APIs:
     https://www.npmjs.com/package/twitter
-    https://github.com/topheman/twitter-stream-channels
+    https://www.npmjs.com/package/twitter-stream-channels
+        https://github.com/topheman/twitter-stream-channels
 
 'Making a javascript string sql friendly' :
     http://stackoverflow.com/questions/7744912/making-a-javascript-string-sql-friendly
