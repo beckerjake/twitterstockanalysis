@@ -50,9 +50,12 @@ if (mysqli_num_rows($result) > 0)
 		  
 		  $counter = $counter + 1;
 		  
+		  $symbol = $row["symbol"];
+		  $time_period = "6m";
+		  
 		  echo "<tr>";
           echo "        <td>".$row["stockName"]."</td>";
-          echo "        <td>".$row["symbol"]."</td>";
+          echo "        <td>".$symbol."</td>";
           echo "        <td>Neutral</td>";
           echo "        <td>".$row["end_price"]."</td>";
           echo "        <td><a href=\"#\" id=\"show_".$counter."\">Show Data</a></td>";
@@ -60,7 +63,7 @@ if (mysqli_num_rows($result) > 0)
           echo "      <tr>";
           echo "        <td colspan=\"5\">";
           echo "          <div id=\"extra_".$counter."\" style=\"display: none;\">";
-          echo "            <br>hidden row";
+          echo "            <img src=\"http://chart.finance.yahoo.com/z?s=".$symbol."&t=".$time_period."&q=l&l=on&z=s\"/>";
           echo "            <br>hidden row";
           echo "            <br>hidden row";
           echo "          </div>";
