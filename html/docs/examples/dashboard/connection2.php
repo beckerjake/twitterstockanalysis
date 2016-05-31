@@ -88,8 +88,8 @@ if (mysqli_num_rows($result) > 0)
 			$ticker = $symbol;
 			$path_suffix = "&lg=us&region=US&lang=en-US";
 
-			$path = $path_prefix.$path.$path_suffix;
-			//$path = "http://www.camara.gov.br/SitCamaraWS/Deputados.asmx/ObterDeputados";
+			//path = $path_prefix.$path.$path_suffix;
+			$path = "http://www.camara.gov.br/SitCamaraWS/Deputados.asmx/ObterDeputados";
 			
 			
 			$xml_file = file_get_contents($path);
