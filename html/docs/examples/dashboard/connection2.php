@@ -94,6 +94,7 @@ if (mysqli_num_rows($result) > 0)
 			if($xml_file)
 			{
 				echo "read";
+				echo $xml_file;
 			}
 			
 			$xml = simplexml_load_string($xml_file);
