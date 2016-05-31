@@ -98,23 +98,24 @@ if (mysqli_num_rows($result) > 0)
 			}
 			
 			function get_xml_from_url($url){
+				echo "read3";
 				$ch = curl_init();
-
+echo "read4";
 				curl_setopt($ch, CURLOPT_URL, $url);
 				curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 				curl_setopt($ch, CURLOPT_USERAGENT, 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.13) Gecko/20080311 Firefox/2.0.0.13');
-
+echo "read5";
 				$xmlstr = curl_exec($ch);
 				curl_close($ch);
-
+echo "read6";
 				return $xmlstr;
 			}
 			
-			
+echo "read7";			
 			$xmlstr = get_xml_from_url($path);
-
+echo "read8";
 			print_r($xmlstr);
-			
+echo "read9";			
 			/*  if (($response_xml_data = file_get_contents($path)===false){
 				echo "Error fetching XML";
 			} else {
@@ -130,12 +131,13 @@ if (mysqli_num_rows($result) > 0)
 				}
 			}  */
 			
-			
+echo "read10";			
 			$xml = simplexml_load_string($xml_file);
+			echo "read11";
 			$channel = $xml->channel;
 			$channel_title = $channel->title;
 			$channel_description = $channel->description;
-
+echo "read12";
 			echo "<h1>".$channel_title."</h1>";
 			echo "<h2>".$channel_description."</h2>";
 
