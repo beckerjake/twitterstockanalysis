@@ -113,7 +113,7 @@ if (mysqli_num_rows($result) > 0)
 			
 			$xmlstr = get_xml_from_url('http://www.camara.gov.br/SitCamaraWS/Deputados.asmx/ObterDeputados');
 
-			print_r($xml_string);
+			print_r($xmlstr);
 			
 			/*  if (($response_xml_data = file_get_contents($path)===false){
 				echo "Error fetching XML";
