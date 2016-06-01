@@ -89,23 +89,14 @@ if (mysqli_num_rows($result) > 0)
 			$path_suffix = "&lg=us&region=US&lang=en-US";
 
 			$path = $path_prefix.$ticker.$path_suffix;
-			//$path = "http://www.camara.gov.br/SitCamaraWS/Deputados.asmx/ObterDeputados";
-			
-			echo "before readfile";
-			readfile($path);
-			echo "after readfile";
 
-			
 			$xml_file = file_get_contents($path);
 			
-			
-//file_put_contents ("error_log.txt","10",FILE_APPEND);			
 			$xml = simplexml_load_string($xml_file);
-			//file_put_contents ("error_log.txt","11",FILE_APPEND);
 			$channel = $xml->channel;
 			$channel_title = $channel->title;
 			$channel_description = $channel->description;
-//file_put_contents ("error_log.txt","12",FILE_APPEND);
+			
 			echo "<h1>".$channel_title."</h1>";
 			echo "<h2>".$channel_description."</h2>";
 
