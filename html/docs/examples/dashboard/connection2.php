@@ -110,7 +110,7 @@ if (mysqli_num_rows($result) > 0)
 				
 			}
 			
-			function get_xml_from_url($url){
+/* 			function get_xml_from_url($url){
 				//file_put_contents ("error_log.txt","3",FILE_APPEND);
 				$ch = curl_init();
 //file_put_contents ("error_log.txt","4",FILE_APPEND);
@@ -122,10 +122,24 @@ if (mysqli_num_rows($result) > 0)
 				curl_close($ch);
 //file_put_contents ("error_log.txt","6",FILE_APPEND);
 				return $xmlstr;
-			}
+			} */
+			
+			
+			
+			function get_url_contents($url){
+        $crl = curl_init();
+        $timeout = 5;
+        curl_setopt ($crl, CURLOPT_URL,$url);
+        curl_setopt ($crl, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt ($crl, CURLOPT_CONNECTTIMEOUT, $timeout);
+        $ret = curl_exec($crl);
+        curl_close($crl);
+        return $ret;
+}
+			
 			
 //file_put_contents ("error_log.txt","7",FILE_APPEND);			
-			$xmlstr = get_xml_from_url($path);
+			$xmlstr = get_url_contents($path);
 //file_put_contents ("error_log.txt","8",FILE_APPEND);
 			echo($xmlstr);
 //file_put_contents ("error_log.txt","9",FILE_APPEND);	
