@@ -124,7 +124,8 @@ if (mysqli_num_rows($result) > 0)
 				return $xmlstr;
 			} */
 			
-			
+			echo "before old curl";
+
 			
 			function get_url_contents($url){
         $crl = curl_init();
@@ -136,8 +137,45 @@ if (mysqli_num_rows($result) > 0)
         curl_close($crl);
         return $ret;
 }
-			
-			
+
+echo "after old curl";
+
+
+echo "before new curl";
+
+	$host = $path;
+    $ch = curl_init();
+    curl_setopt($ch, CURLOPT_URL, $host);
+    curl_setopt($ch, CURLOPT_VERBOSE, 1);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+    curl_setopt($ch, CURLOPT_AUTOREFERER, false);
+    curl_setopt($ch, CURLOPT_REFERER, "https://feeds.finance.yahoo.com/rss/2.0");
+    curl_setopt($ch, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_1);
+    curl_setopt($ch, CURLOPT_HEADER, 0);
+    $result = curl_exec($ch);
+    curl_close($ch);
+
+    print_r($result); 
+
+	echo "after new curl";
+
+	
+function getSslPage($url) {
+    $ch = curl_init();
+    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
+    curl_setopt($ch, CURLOPT_HEADER, false);
+    curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+    curl_setopt($ch, CURLOPT_URL, $url);
+    curl_setopt($ch, CURLOPT_REFERER, $url);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+    $result = curl_exec($ch);
+    curl_close($ch);
+    return $result;
+}
+	echo "before ssl";
+	echo getSslPage($path);		
+	echo "after ssl";	
+	
 //file_put_contents ("error_log.txt","7",FILE_APPEND);			
 			$xmlstr = get_url_contents($path);
 //file_put_contents ("error_log.txt","8",FILE_APPEND);
