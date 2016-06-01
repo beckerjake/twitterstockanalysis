@@ -20,6 +20,7 @@ class TweetDaySummary:
 #followers_count, listed_count, statuses_count
 #sum  of total sentiment, positive sentiment, and negative
 #we will also have average tweet_time for neu/pos/neg tweets
+#
 #return an empty list on error
     def returnTweetDaySummary(self):
 #mean of all sentiment scores
@@ -43,14 +44,14 @@ class TweetDaySummary:
             tweetDaySummary[6] += tweets[i][2]*score
             tweetDaySummary[9] += score
 #positive scores
-            if score > 0.31:
+            if score > mean:
                 tweetDaySummary[1] += tweets[i][0]*(score-mean)
                 tweetDaySummary[4] += tweets[i][1]*(score-mean)
                 tweetDaySummary[7] += tweets[i][2]*(score-mean)
                 tweetDaySummary[10] += score
                 positiveTimes.append(tweets[i][4])
 #negative scores
-            elif score < 0.31:
+            elif score < mean:
                 tweetDaySummary[2] += tweets[i][0]*(score-mean)
                 tweetDaySummary[5] += tweets[i][1]*(score-mean)
                 tweetDaySummary[8] += tweets[i][2]*(score-mean)
@@ -85,6 +86,7 @@ class TweetDaySummary:
         tweetDaySummary.append(averageSentiment)
         tweetDaySummary.append(waSentimentByFollowers)
         tweetDaySummary.append(waSentimentByLists)
+        tweetDaySummary.append(len(tweets))
        #add the stock symbol and date
         summaryWithDateAndSymbol = [self.date, self.stockSymbol] + tweetDaySummary 
         return summaryWithDateAndSymbol

@@ -107,8 +107,9 @@ def assignSentimentScore(cleanedText):
 #addFakeTweets(cur, "unscoredtweets")
 #grab all tweets and assign a sentiment score to them
 #tweets come from inputTableName, and go to outputTableName
-def moveTweetsToNewDatabase(inputTableName,cursor, outputTableName, numTweets):
-    queryStatement = "select tweet_id, tweet_text from " + inputTableName + " where score IS NULL limit " + str(numTweets)
+def moveNewTweetsToNewDatabase(inputTableName,cursor, outputTableName, numTweets):
+    queryStatement = "select tweet_id, tweet_text from " + inputTableName + " where score IS NULL limit " + str(numTweets) + ";"
+    print queryStatement
     cursor.execute(queryStatement)
     global scoredTweetFieldTypes
     unscoredtweets = cur.fetchall()
@@ -117,6 +118,23 @@ def moveTweetsToNewDatabase(inputTableName,cursor, outputTableName, numTweets):
         score = assignSentimentScore(cleanText(row[1]))
 #udpate score in the table based on the tweet 
         cursor.execute("update " + inputTableName + " set score=" + str(score)+ " where tweet_id = " + row[0])
+
+
+#addFakeTweets(cur, "unscoredtweets")
+#grab all tweets and assign a sentiment score to them
+#tweets come from inputTableName, and go to outputTableName
+def moveOldTweetsToNewDatabase(inputTableName,cursor, outputTableName, numTweets):
+    queryStatement = "select tweet_id, tweet_text from " + inputTableName + " where symbol_mentioned = 1 and score IS NULL limit " + str(numTweets) + ";"
+    cursor.execute(queryStatement)
+    global scoredTweetFieldTypes
+    unscoredtweets = cur.fetchall()
+    for row in unscoredtweets:
+        print row
+        score = assignSentimentScore(cleanText(row[1]))
+#udpate score in the table based on the tweet 
+        cursor.execute("update " + inputTableName + " set score=" + str(score)+ " where tweet_id = " + row[0])
+    return len(unscoredtweets)
         
 
-moveTweetsToNewDatabase("tweets",cur, "", 2000)
+a = moveOldTweetsToNewDatabase("tweets",cur, "", 2000)
+moveNewTweetsToNewDatabase("tweets", cur, "", 2000 - a) 
