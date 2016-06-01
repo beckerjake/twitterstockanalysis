@@ -97,23 +97,26 @@ if (mysqli_num_rows($result) > 0)
 			$channel_title = $channel->title;
 			$channel_description = $channel->description;
 			
-			echo "<h1>".$channel_title."</h1>";
-			echo "<h2>".$channel_description."</h2>";
+			
+			
+			/* echo "<h1>".$channel_title."</h1>";
+			echo "<h2>".$channel_description."</h2>"; */
 
+			echo "<p><font size=\"6\">".$channel_title."</font></p>";
+			echo "<p><font size=\"5\">".$channel_description."</font></p>";
+			
 			foreach ($channel->item as $item)
 			{
 				$title = $item->title;
 				$link = $item->link;
 				$descr = $item->description;
 
-				echo "<h3><a href='".$link."'>".$title."</a></h3>";
+				echo "<p><font size=\"4\"><a href='".$link."'>".$title."</a></font></p>";
 				echo "<p>".$descr."</p>";
 			}
 		  ////headlines
 		  
 		  
-		  echo "            <br>hidden row";
-          echo "            <br>hidden row";
           echo "          </div>";
           echo "        </td>";
           echo "      </tr>";
