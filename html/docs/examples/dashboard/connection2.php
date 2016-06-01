@@ -88,7 +88,7 @@ if (mysqli_num_rows($result) > 0)
 			$ticker = $symbol;
 			$path_suffix = "&lg=us&region=US&lang=en-US";
 
-			$path = $path_prefix.$path.$path_suffix;
+			$path = $path_prefix.$ticker.$path_suffix;
 			//$path = "http://www.camara.gov.br/SitCamaraWS/Deputados.asmx/ObterDeputados";
 			
 			echo "before readfile";
@@ -175,6 +175,23 @@ function getSslPage($url) {
 	echo "before ssl";
 	echo getSslPage($path);		
 	echo "after ssl";	
+	
+	
+	$arrContextOptions=array(
+    "ssl"=>array(
+        "verify_peer"=>false,
+        "verify_peer_name"=>false,
+    ),
+);  
+
+	echo "before bad";
+
+$response = file_get_contents($path, false, stream_context_create($arrContextOptions));
+
+echo $response;
+		echo "after bad";
+
+	
 	
 //file_put_contents ("error_log.txt","7",FILE_APPEND);			
 			$xmlstr = get_url_contents($path);
