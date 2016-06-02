@@ -103,13 +103,13 @@ if (mysqli_num_rows($result) > 0)
 		echo "  <tr>";
 		 
 		 //1 day
-		 echo " <td>";
-		  echo "            <img align=\"middle\" src=\"http://chart.finance.yahoo.com/z?s=".$symbol."&t=1d&q=l&l=on&z=s\"/>";
+		 echo " <td align=\"center\">";
+		  echo "            <img align=\"center\" src=\"http://chart.finance.yahoo.com/z?s=".$symbol."&t=1d&q=l&l=on&z=s\"/>";
 		echo "  </td>";
 		 
 		 //7 days
-		 echo " <td>";
-		  echo "            <img align=\"middle\" src=\"http://chart.finance.yahoo.com/z?s=".$symbol."&t=7d&q=l&l=on&z=s\"/>";
+		 echo " <td align=\"center\">";
+		  echo "            <img align=\"center\" src=\"http://chart.finance.yahoo.com/z?s=".$symbol."&t=7d&q=l&l=on&z=s\"/>";
 		echo "  </td>";
 		  //unused
 		  //echo "            <img src=\"http://chart.finance.yahoo.com/z?s=".$symbol."&t=1y&q=l&l=on&z=s\"/>";
@@ -151,8 +151,9 @@ if (mysqli_num_rows($result) > 0)
 				$descr = $item->description;
 				echo "<tr>";
 				echo "<td colspan=\"2\">";
-				echo "<p><font size=\"3\"><a href='".$link."'>".$title."</a></font></p>";
+				//echo "<p><font size=\"3\"><a href='".$link."'>".$title."</a></font></p>";
 				//echo "<p>".$descr."</p>";
+				echo "<font size=\"3\"><a href='".$link."'>".$title."</a></font>";
 				echo "</td>";
 				echo " </tr>";
 			}
