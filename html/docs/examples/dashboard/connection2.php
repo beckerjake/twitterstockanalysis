@@ -40,98 +40,90 @@ if (mysqli_num_rows($result) > 0)
 	echo "<table class=\"table table-striped\" >
 			<thead>
 				<tr>
-					<th align=center> <b>Company</b></th>
+					<th align=center><b>Company</b></th>
 					<th align=center><b>Symbol</b></th>
 					<th align=center><b>Sentiment</b></th>
 					<th align=center><b>Closing Price</b></th>
 					<th align=center><b>More Data</b></th>
 				</tr>
-			</thead>
-			"
-			;
+			</thead>";
 			
-			$counter = 0;
+	$counter = 0;
     while($row = mysqli_fetch_assoc($result)) {
 		  
-		  $counter = $counter + 1;
+		$counter = $counter + 1;
 		  
-		  $symbol = $row["symbol"];
-		  $stockName = $row["stockName"];
-		  $time_period = "7d";
+		$symbol = $row["symbol"];
+		$stockName = $row["stockName"];
+		$time_period = "7d";
 		  
-		  //Table Data
-		  
-		  echo "<tr>";
-          echo "        <td>".$stockName."</td>";
-          echo "        <td>".$symbol."</td>";
-          echo "        <td>Neutral</td>";
-          echo "        <td>".$row["end_price"]."</td>";
-          echo "        <td><a href=\"#\" id=\"show_".$counter."\">Show Data</a></td>";
-          echo "      </tr>";
-          echo "      <tr>";
-          echo "        <td colspan=\"5\">";
-		  
-		  
-		  
-		  ////More Data 
-          echo "          <div id=\"extra_".$counter."\" style=\"display: none;\">";
+		//Table Data
+		
+		echo "<tr>";
+			echo "<td>".$stockName."</td>";
+			echo "<td>".$symbol."</td>";
+			echo "<td>Neutral</td>";
+			echo "<td>".$row["end_price"]."</td>";
+			echo "<td><a href=\"#\" id=\"show_".$counter."\">Show Data</a></td>";
+		echo "</tr>";
           
-		  //More Data (Calculated)
-		 /* //echo  "<div class=\"table-responsive\" align=\"center\">";
-		 echo  "<div class=\"table-responsive\">"; //left aligned
-		 echo "  <table class=\"table\">";
-		  echo "<caption> Calculated </caption>";
-		  //for the tweet
-		 echo "  <tr>";
-		 echo "  <td colspan=\"5\">";
-		 //echo "<td>";
-		  echo $tweet;
-		 echo "  </td>";
-		 echo "  </tr>";
+		//More Data
+		echo "<tr>";
+			echo " <td colspan=\"5\">";
+				echo "<div id=\"extra_".$counter."\" style=\"display: none;\">";
+          
+				//More Data (Calculated)
+				/* //echo  "<div class=\"table-responsive\" align=\"center\">";
+					echo  "<div class=\"table-responsive\">"; //left aligned
+					echo "  <table class=\"table\">";
+					echo "<caption> Calculated </caption>";
+					//for the tweet
+					echo "  <tr>";
+					echo "  <td colspan=\"5\">";
+					//echo "<td>";
+					echo $tweet;
+					echo "  </td>";
+					echo "  </tr>";
 		  
-		 echo "  </table>";
-		echo "  </div>"; */
+					echo "  </table>";
+					echo "  </div>"; */
 		
 		echo $tweet;
 		
 		 //More Data (Yahoo-populated)
-		 		 echo  "<div class=\"table-responsive\" align=\"center\">";
+		 echo  "<div class=\"table-responsive\" align=\"center\">";
 
-		 echo " <table class=\"table\">";
-		   echo "<caption> Yahoo Data </caption>";
+			echo " <table class=\"table\">";
+				echo "<caption> Yahoo Data </caption>";
 		 //stock charts
 		 
-		 echo "<thead>";
-			echo " <tr>";
+					echo "<thead>";
+						echo " <tr>";
 			//print header
-			echo "<th colspan=\"2\">";
-			echo "<p><font size=\"4\">Day and Week Charts for ".$stockName."</font></p>";
-			echo "</th>";
-			echo "</tr>";
-			echo "</thead>";
+							echo "<th colspan=\"2\">";
+								echo "<p><font size=\"4\">Day and Week Charts for ".$stockName."</font></p>";
+							echo "</th>";
+						echo "</tr>";
+					echo "</thead>";
 		 
-		echo "  <tr>";
+					echo "  <tr>";
+						//1 day
+						echo " <td align=\"center\">";
+							echo "<br>";
+							echo "<img align=\"center\" src=\"http://chart.finance.yahoo.com/z?s=".$symbol."&t=1d&q=l&l=on&z=s\"/>";
+						echo "  </td>";
+						//7 days
+						echo " <td align=\"center\">";
+							echo "<br>";
+							echo "<img align=\"center\" src=\"http://chart.finance.yahoo.com/z?s=".$symbol."&t=7d&q=l&l=on&z=s\"/>";
+						echo "  </td>";
 		 
-		 //1 day
-		 echo " <td align=\"center\">";
-		 echo "<br>";
-		  echo "            <img align=\"center\" src=\"http://chart.finance.yahoo.com/z?s=".$symbol."&t=1d&q=l&l=on&z=s\"/>";
-		echo "  </td>";
-		 
-		 //7 days
-		 echo " <td align=\"center\">";
-		 echo "<br>";
-		  echo "            <img align=\"center\" src=\"http://chart.finance.yahoo.com/z?s=".$symbol."&t=7d&q=l&l=on&z=s\"/>";
-		echo "  </td>";
-		  //unused
-		  //echo "            <img src=\"http://chart.finance.yahoo.com/z?s=".$symbol."&t=1y&q=l&l=on&z=s\"/>";
-		  //echo "            <img src=\"http://chart.finance.yahoo.com/z?s=".$symbol."&t=".$time_period."&q=l&l=on&z=m\"/>";
-		
-		echo " </tr>";
-		echo "</table>";
+					echo " </tr>";
+			echo "</table>";
 		echo "</div>";
-		  //headlines
 		  
+		  
+		  //headlines
 		  
 		  //consyruct the url with the necessary ticker symbol
 		  $path_prefix = "https://feeds.finance.yahoo.com/rss/2.0/headline?s=";
@@ -153,56 +145,42 @@ if (mysqli_num_rows($result) > 0)
 			
 			//headline table
 			echo  "<div class=\"table-responsive\" align=\"center\">";
-			echo "<table class=\"table table-no-border\">";
-			echo "<thead>";
-			echo " <tr>";
+				echo "<table class=\"table table-no-border\">";
+					echo "<thead>";
+						echo " <tr>";
 			//print header
-			echo "<th colspan=\"2\">";
-			echo "<p><font size=\"5\">".$channel_title."</font></p>";
-			echo "<p><font size=\"4\">".$channel_description."</font></p>";
-			echo "</th>";
-			echo "</tr>";
-			echo "</thead>";
+							echo "<th colspan=\"2\">";
+								//echo "<p><font size=\"5\">".$channel_title."</font></p>"; //unnecessary
+								echo "<p><font size=\"4\">".$channel_description."</font></p>";
+							echo "</th>";
+						echo "</tr>";
+					echo "</thead>";
 			//print headlines
-			//				echo "<tr>";
-
-			foreach ($channel->item as $item)
-			{
-				$title = $item->title;
-				$link = $item->link;
-				$descr = $item->description;
-				echo "<tr>";
-				echo "<td colspan=\"2\">";
-				//echo "<p><font size=\"3\"><a href='".$link."'>".$title."</a></font></p>";
-				//echo "<p>".$descr."</p>";
-				echo "<font size=\"3\"><a href='".$link."'>".$title."</a></font>";
-				echo "</td>";
-				echo " </tr>";
-			}
-			//echo " </tr>";
-		  ////headlines
-		  
-		  
-		  
-		  echo "</table>";
-		  echo "</div>";
+					foreach ($channel->item as $item)
+					{
+						$title = $item->title;
+						$link = $item->link;
+						$descr = $item->description;
+						echo "<tr>";
+							echo "<td colspan=\"2\">";
+								echo "<font size=\"3\"><a href='".$link."'>".$title."</a></font>";
+								//echo "<p><font size=\"3\"><a href='".$link."'>".$title."</a></font></p>";
+								//echo "<p>".$descr."</p>";
+							echo "</td>";
+						echo " </tr>";
+					}
+		  	  
+				echo "</table>";
+			echo "</div>";
 		  
           echo "          </div>";
           echo "        </td>";
           echo "      </tr>";
 		  
-		  /*
-			echo "<tr>";
-			echo "<td align=center>".$row["issuer_name"]."</td>";
-			echo "<td align=center>".$row["symbol"]."</td>";
-			echo "<td align=center>".$row["price"]."</td>";
-			echo "</tr>";
-	*/
 	}
 
 	echo "</table>";
 		
-       // echo "Company: " . $row["issuer_name"]. " - Ticker: " . $row["symbol"]. " - Price: " . $row["price"]. "<br>";
 }
  else 
 {
