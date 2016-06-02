@@ -35,28 +35,29 @@ class TweetDaySummary:
         lists = 0
         for i in range(len(tweets)):
             score = tweets[i][3]
-            allTimes.append(tweets[i][4])
-            followers += tweets[i][0]
-            lists += tweets[i][1] 
+            if score is not None:
+                allTimes.append(tweets[i][4])
+                followers += tweets[i][0]
+                lists += tweets[i][1] 
 #neutral scores
-            tweetDaySummary[0] += tweets[i][0]*score
-            tweetDaySummary[3] += tweets[i][1]*score
-            tweetDaySummary[6] += tweets[i][2]*score
-            tweetDaySummary[9] += score
+                tweetDaySummary[0] += tweets[i][0]*score
+                tweetDaySummary[3] += tweets[i][1]*score
+                tweetDaySummary[6] += tweets[i][2]*score
+                tweetDaySummary[9] += score
 #positive scores
-            if score > mean:
-                tweetDaySummary[1] += tweets[i][0]*(score-mean)
-                tweetDaySummary[4] += tweets[i][1]*(score-mean)
-                tweetDaySummary[7] += tweets[i][2]*(score-mean)
-                tweetDaySummary[10] += score
-                positiveTimes.append(tweets[i][4])
+                if score > mean:
+                    tweetDaySummary[1] += tweets[i][0]*(score-mean)
+                    tweetDaySummary[4] += tweets[i][1]*(score-mean)
+                    tweetDaySummary[7] += tweets[i][2]*(score-mean)
+                    tweetDaySummary[10] += score
+                    positiveTimes.append(tweets[i][4])
 #negative scores
-            elif score < mean:
-                tweetDaySummary[2] += tweets[i][0]*(score-mean)
-                tweetDaySummary[5] += tweets[i][1]*(score-mean)
-                tweetDaySummary[8] += tweets[i][2]*(score-mean)
-                tweetDaySummary[11] += score
-                negativeTimes.append(tweets[i][4])
+                elif score < mean:
+                    tweetDaySummary[2] += tweets[i][0]*(score-mean)
+                    tweetDaySummary[5] += tweets[i][1]*(score-mean)
+                    tweetDaySummary[8] += tweets[i][2]*(score-mean)
+                    tweetDaySummary[11] += score
+                    negativeTimes.append(tweets[i][4])
 
         if len(tweets) > 0:
             averageSentiment = tweetDaySummary[9] / len(tweets)
@@ -110,8 +111,8 @@ class TweetDaySummary:
         times = self.getMarketCloseToOpenTimes(self.date)
         startTime = times[0]
         endTime = times[1]
-        queryString = "select followers_count, listed_count, statuses_count,score, tweet_time from " + self.__tableName + " where stock_symbol = \"$" + self.stockSymbol + "\" and tweet_time >= \"" + startTime + "\" and tweet_time < \"" + endTime + "\""
-        print queryString
+        queryString = "select followers_count, listed_count, statuses_count,score, tweet_time from " + self.__tableName + " where symbol_mentioned = 1 and stock_symbol = \"$" + self.stockSymbol + "\" and tweet_time >= \"" + startTime + "\" and tweet_time < \"" + endTime + "\""
+        #print queryString
         self.cur.execute(queryString)
         for row in self.cur.fetchall():
             tweets.append(row)
@@ -123,7 +124,6 @@ class TweetDaySummary:
 #returns a list with two strings in 'YYYY-MM-DD HH:MM:SS' form
 #Our tweet summary spans from the close of the market the previous day until market open of the day specified
 #considerations, first/last day of month
-#TODO weekends should have more associated tweets and span a longer time
     def getMarketCloseToOpenTimes(self,date):
 #define constants
         startHour = " 20:00:00"
@@ -156,9 +156,9 @@ class TweetDaySummary:
 #check if first day of month
         elif date[2] == 1:
             date[1] -= 1
-            date[2] = daysInEachMonth[month - 1]
+            date[2] = daysInEachMonth[date[1] - 1]
         else:
             date[2] -= 1
         return date
-a = TweetDaySummary("2016-05-09",'MSFT','ticktalk','tweets','root','','localhost')
-print a.test('2016-05-10')
+#a = TweetDaySummary("2016-05-09",'MSFT','ticktalk','tweets','root','','localhost')
+#print a.test('2016-05-10')

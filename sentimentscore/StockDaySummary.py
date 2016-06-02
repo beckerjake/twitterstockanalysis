@@ -6,7 +6,7 @@ class StockDaySummary:
 #day delta, day % delta, date in question, stock name, start price, and end price
 #date is in form 'YYYY-MM-DD'
     
-    errorReturnList = ['NULL', 'NULL','NULL','NULL','NULL','NULL']
+    errorList = [-10,-10,-10,-10,-10,-10,-10]
 
     def __init__(self, day, stockSymbol, databaseName, tableName, user, password, host):
         self.date = day
@@ -27,28 +27,52 @@ class StockDaySummary:
 #set up cursor
         self.cur = self.db.cursor()
 
+    #this is for when we don't have the first hours data yet
+    def errorReturnList(self):
+        self.errorList[0] = self.getStockName()
+        return self.errorList
+
+#this adds n nulls to the list that is passed in
+    def addNNullsToList(self, n, addNullTo):
+        for i in range(n):
+            addNullTo.append(-10)
+        return addNullTo
 #this makes call to other modules to get the stock data and then does computations, and returns a list of form [startPrice, endPrice, dayD, dayPD, firstHourD, firstHourPD]
 #return list with every category null on error
     def returnStockDaySummary(self):
         stockDaySummary = []        
         stockPrices = self.getStockInfo()
-        if len(stockPrices) != 3:
-            print("incorrect number of stock prices returned in StockDaySummary.returnStockDaySummary\nReturning null values in list")
-            return self.errorReturnList
-#add start and end prices
-        stockDaySummary.append(stockPrices[0])
-        stockDaySummary.append(stockPrices[2])
-#change in price over the whole day
-        stockDaySummary.append(stockPrices[2] - stockPrices[0])
-#% change in price over the whole day
-        stockDaySummary.append((stockPrices[2] - stockPrices[0])/stockPrices[2])
+#TODO: return first hour data and current price as end of day data if market is currently open
+        if len(stockPrices) == 3:
+            stockDaySummary.append(str(self.getStockName()))
+#add start price
+            stockDaySummary.append(stockPrices[0])
 #change in price over the first hour
-        stockDaySummary.append(stockPrices[1] - stockPrices[0])
+            stockDaySummary.append(stockPrices[1] - stockPrices[0])
 #% change in price over the first hour
-        stockDaySummary.append((stockPrices[1] - stockPrices[0])/stockPrices[1])
-
-        stockDaySummary.append(str(self.getStockName()))
-        return stockDaySummary
+            stockDaySummary.append((stockPrices[1] - stockPrices[0])/stockPrices[1])
+            #end price
+            stockDaySummary.append(stockPrices[2])
+#change in price over the whole day
+            stockDaySummary.append(stockPrices[2] - stockPrices[0])
+#% change in price over the whole day
+            stockDaySummary.append((stockPrices[2] - stockPrices[0])/stockPrices[2])
+            #below line was used for testing purposes
+            #stockDaySummary = self.addNNullsToList(3, stockDaySummary[:4])
+            return stockDaySummary
+        #only first hour of data is available
+        elif len(stockPrices) == 2:
+            stockDaySummary.append(str(self.getStockName()))
+            #add start price
+            stockDaySummary.append(stockPrices[0])
+#change in price over the first hour
+            stockDaySummary.append(stockPrices[1] - stockPrices[0])
+#% change in price over the first hour
+            stockDaySummary.append((stockPrices[1] - stockPrices[0])/stockPrices[1])
+            stockDaySummary = self.addNNullsToList(3, stockDaySummary)
+            return stockDaySummary
+        print("first hour of today's stock prices not available yet")
+        return self.errorReturnList()
         
 #this function returns the stock name using the member variable symbol
     def getStockName(self):
@@ -103,3 +127,6 @@ class StockDaySummary:
 
     def test(self):
         print self.returnStockDaySummary()
+
+#a = StockDaySummary('2016-06-01','ATVI','ticktalk','stocks','root','','localhost')
+#a.test()
