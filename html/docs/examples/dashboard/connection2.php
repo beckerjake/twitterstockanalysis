@@ -56,12 +56,13 @@ if (mysqli_num_rows($result) > 0)
 		  $counter = $counter + 1;
 		  
 		  $symbol = $row["symbol"];
+		  $stockName = $row["stockName"];
 		  $time_period = "7d";
 		  
 		  //Table Data
 		  
 		  echo "<tr>";
-          echo "        <td>".$row["stockName"]."</td>";
+          echo "        <td>".$stockName."</td>";
           echo "        <td>".$symbol."</td>";
           echo "        <td>Neutral</td>";
           echo "        <td>".$row["end_price"]."</td>";
@@ -99,6 +100,15 @@ if (mysqli_num_rows($result) > 0)
 		 echo " <table class=\"table\">";
 		   echo "<caption> Yahoo Data </caption>";
 		 //stock charts
+		 
+		 echo "<thead>";
+			echo " <tr>";
+			//print header
+			echo "<th colspan=\"2\">";
+			echo "<p><font size=\"4\">Day and Week Charts for ".$stockName."</font></p>";
+			echo "</th>";
+			echo "</tr>";
+			echo "</thead>";
 		 
 		echo "  <tr>";
 		 
