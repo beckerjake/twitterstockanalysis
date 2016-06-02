@@ -114,11 +114,13 @@ if (mysqli_num_rows($result) > 0)
 		 
 		 //1 day
 		 echo " <td align=\"center\">";
+		 echo "<br>";
 		  echo "            <img align=\"center\" src=\"http://chart.finance.yahoo.com/z?s=".$symbol."&t=1d&q=l&l=on&z=s\"/>";
 		echo "  </td>";
 		 
 		 //7 days
 		 echo " <td align=\"center\">";
+		 echo "<br>";
 		  echo "            <img align=\"center\" src=\"http://chart.finance.yahoo.com/z?s=".$symbol."&t=7d&q=l&l=on&z=s\"/>";
 		echo "  </td>";
 		  //unused
