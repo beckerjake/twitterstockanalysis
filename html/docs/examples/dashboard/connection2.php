@@ -76,7 +76,7 @@ if (mysqli_num_rows($result) > 0)
           echo "          <div id=\"extra_".$counter."\" style=\"display: none;\">";
           
 		  //More Data (Calculated)
-		 //echo  "<div class=\"table-responsive\" align=\"center\">";
+		 /* //echo  "<div class=\"table-responsive\" align=\"center\">";
 		 echo  "<div class=\"table-responsive\">"; //left aligned
 		 echo "  <table class=\"table\">";
 		  echo "<caption> Calculated </caption>";
@@ -89,7 +89,10 @@ if (mysqli_num_rows($result) > 0)
 		 echo "  </tr>";
 		  
 		 echo "  </table>";
-		echo "  </div>";
+		echo "  </div>"; */
+		
+		echo $tweet;
+		
 		 //More Data (Yahoo-populated)
 		 		 echo  "<div class=\"table-responsive\" align=\"center\">";
 
@@ -101,12 +104,12 @@ if (mysqli_num_rows($result) > 0)
 		 
 		 //1 day
 		 echo " <td>";
-		  echo "            <img align=\"middle\" src=\"http://chart.finance.yahoo.com/z?s=".$symbol."&t=1d&q=l&l=on&z=m\"/>";
+		  echo "            <img align=\"middle\" src=\"http://chart.finance.yahoo.com/z?s=".$symbol."&t=1d&q=l&l=on&z=s\"/>";
 		echo "  </td>";
 		 
 		 //7 days
 		 echo " <td>";
-		  echo "            <img align=\"middle\" src=\"http://chart.finance.yahoo.com/z?s=".$symbol."&t=7d&q=l&l=on&z=m\"/>";
+		  echo "            <img align=\"middle\" src=\"http://chart.finance.yahoo.com/z?s=".$symbol."&t=7d&q=l&l=on&z=s\"/>";
 		echo "  </td>";
 		  //unused
 		  //echo "            <img src=\"http://chart.finance.yahoo.com/z?s=".$symbol."&t=1y&q=l&l=on&z=s\"/>";
