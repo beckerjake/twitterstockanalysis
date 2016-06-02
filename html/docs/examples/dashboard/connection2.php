@@ -76,7 +76,7 @@ if (mysqli_num_rows($result) > 0)
           echo "          <div id=\"extra_".$counter."\" style=\"display: none;\">";
           
 		  //More Data (Calculated)
-		  
+		  echo "Calculated";
 		 echo "  <table>";
 		  
 		  //for the tweet
@@ -89,7 +89,7 @@ if (mysqli_num_rows($result) > 0)
 		 echo "  </table>";
 		  
 		 //More Data (Yahoo-populated)
-		 
+		   echo "Yahoo Data";
 		 echo " <table>";
 		 
 		 //stock charts
