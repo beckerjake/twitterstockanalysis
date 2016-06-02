@@ -113,6 +113,6 @@ body {
 }
  */
 .table-borderless td, th {
-	border : 0px;
+	border : none;
 }
 
