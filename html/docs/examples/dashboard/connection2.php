@@ -70,20 +70,17 @@ if (mysqli_num_rows($result) > 0)
           echo "      <tr>";
           echo "        <td colspan=\"5\">";
 		  
+		  
+		  
+		  ////More Data 
+          echo "          <div id=\"extra_".$counter."\" style=\"display: none;\">";
+          
 		  //More Data (Calculated)
 		  //for the tweet
 		  echo $tweet;
-		  
-		  
-		  
-		  
-		  ////More Data (Yahoo-populated)
-          echo "          <div id=\"extra_".$counter."\" style=\"display: none;\">";
-          
-		  
 
 		  
-		  
+		 //More Data (Yahoo-populated)
 		 //stock charts
 		 //1 day
 		  echo "            <img align=\"middle\" src=\"http://chart.finance.yahoo.com/z?s=".$symbol."&t=1d&q=l&l=on&z=m\"/>";
