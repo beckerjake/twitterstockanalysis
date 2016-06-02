@@ -76,7 +76,7 @@ if (mysqli_num_rows($result) > 0)
           echo "          <div id=\"extra_".$counter."\" style=\"display: none;\">";
           
 		  //More Data (Calculated)
-		 echo  "<div class=\"table-responsive\">";
+		 echo  "<div class=\"table-responsive\" align=\"center\">";
 		 echo "  <table>";
 		  echo "<caption> Calculated </caption>";
 		  //for the tweet
@@ -90,7 +90,7 @@ if (mysqli_num_rows($result) > 0)
 		 echo "  </table>";
 		echo "  </div>";
 		 //More Data (Yahoo-populated)
-		 		 echo  "<div class=\"table-responsive\">";
+		 		 echo  "<div class=\"table-responsive\" align=\"center\">";
 
 		 echo " <table>";
 		   echo "<caption> Yahoo Data </caption>";
