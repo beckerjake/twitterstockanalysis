@@ -76,13 +76,14 @@ if (mysqli_num_rows($result) > 0)
           echo "          <div id=\"extra_".$counter."\" style=\"display: none;\">";
           
 		  //More Data (Calculated)
-		 echo  "<div class=\"table-responsive\" align=\"center\">";
+		 //echo  "<div class=\"table-responsive\" align=\"center\">";
+		 echo  "<div class=\"table-responsive\">"; //left aligned
 		 echo "  <table>";
 		  echo "<caption> Calculated </caption>";
 		  //for the tweet
 		 echo "  <tr>";
-		 //echo "  <td colspan=\"2\">";
-		 echo "<td>";
+		 echo "  <td colspan=\"5\">";
+		 //echo "<td>";
 		  echo $tweet;
 		 echo "  </td>";
 		 echo "  </tr>";
@@ -135,8 +136,8 @@ if (mysqli_num_rows($result) > 0)
 			echo " <tr>";
 			//print header
 			echo "<td colspan=\"2\">";
-			echo "<p><font size=\"6\">".$channel_title."</font></p>";
-			echo "<p><font size=\"5\">".$channel_description."</font></p>";
+			echo "<p><font size=\"5\">".$channel_title."</font></p>";
+			echo "<p><font size=\"4\">".$channel_description."</font></p>";
 			echo "</td>";
 			echo "</tr>";
 			//print headlines
@@ -147,8 +148,8 @@ if (mysqli_num_rows($result) > 0)
 				$descr = $item->description;
 				echo "<tr>";
 				echo "<td colspan=\"2\">";
-				echo "<p><font size=\"4\"><a href='".$link."'>".$title."</a></font></p>";
-				echo "<p>".$descr."</p>";
+				echo "<p><font size=\"3\"><a href='".$link."'>".$title."</a></font></p>";
+				//echo "<p>".$descr."</p>";
 				echo "</td>";
 				echo " </tr>";
 			}
