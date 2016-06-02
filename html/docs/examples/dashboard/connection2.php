@@ -76,12 +76,12 @@ if (mysqli_num_rows($result) > 0)
           echo "          <div id=\"extra_".$counter."\" style=\"display: none;\">";
           
 		  //More Data (Calculated)
-		  echo "Calculated";
-		 echo "  <table>";
 		  
+		 echo "  <table>";
+		  echo "<caption> Calculated </caption>";
 		  //for the tweet
 		 echo "  <tr>";
-		 echo "  <td>";
+		 echo "  <td colspan=\"2\">";
 		  echo $tweet;
 		 echo "  </td>";
 		 echo "  </tr>";
@@ -89,9 +89,8 @@ if (mysqli_num_rows($result) > 0)
 		 echo "  </table>";
 		  
 		 //More Data (Yahoo-populated)
-		   echo "Yahoo Data";
 		 echo " <table>";
-		 
+		   echo "<caption> Yahoo Data </caption>";
 		 //stock charts
 		 
 		echo "  <tr>";
@@ -132,24 +131,29 @@ if (mysqli_num_rows($result) > 0)
 			//headline table
 			echo " <tr>";
 			//print header
+			echo "<td colspan=\"2\">";
 			echo "<p><font size=\"6\">".$channel_title."</font></p>";
 			echo "<p><font size=\"5\">".$channel_description."</font></p>";
-			
+			echo "</td>";
+			echo "</tr>";
 			//print headlines
 			foreach ($channel->item as $item)
 			{
 				$title = $item->title;
 				$link = $item->link;
 				$descr = $item->description;
-
+				echo "<tr>";
+				echo "<td colspan=\"2\">";
 				echo "<p><font size=\"4\"><a href='".$link."'>".$title."</a></font></p>";
 				echo "<p>".$descr."</p>";
+				echo "</td>";
+				echo " </tr>";
 			}
 		  ////headlines
 		  
-		  echo " </tr>";
 		  
-		  </table>
+		  
+		  echo "</table>";
 		  
 		  
           echo "          </div>";
