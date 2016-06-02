@@ -58,6 +58,8 @@ if (mysqli_num_rows($result) > 0)
 		  $symbol = $row["symbol"];
 		  $time_period = "7d";
 		  
+		  //Table Data
+		  
 		  echo "<tr>";
           echo "        <td>".$row["stockName"]."</td>";
           echo "        <td>".$symbol."</td>";
@@ -67,44 +69,58 @@ if (mysqli_num_rows($result) > 0)
           echo "      </tr>";
           echo "      <tr>";
           echo "        <td colspan=\"5\">";
+		  
+		  //More Data (Calculated)
+		  //for the tweet
+		  echo $tweet;
+		  
+		  
+		  
+		  
+		  ////More Data (Yahoo-populated)
           echo "          <div id=\"extra_".$counter."\" style=\"display: none;\">";
           
 		  
+
 		  
 		  
-		  //echo "            <img src=\"http://chart.finance.yahoo.com/z?s=".$symbol."&t=".$time_period."&q=l&l=on&z=m\"/>";
-		  //three graph display
+		 //stock charts
+		 //1 day
+		  echo "            <img align=\"middle\" src=\"http://chart.finance.yahoo.com/z?s=".$symbol."&t=1d&q=l&l=on&z=m\"/>";
+		 
+		 //7 days
 		  echo "            <img align=\"middle\" src=\"http://chart.finance.yahoo.com/z?s=".$symbol."&t=7d&q=l&l=on&z=m\"/>";
-		  echo "            <img align=\"middle\" src=\"http://chart.finance.yahoo.com/z?s=".$symbol."&t=1m&q=l&l=on&z=m\"/>";
+		  
+		  //unused
 		  //echo "            <img src=\"http://chart.finance.yahoo.com/z?s=".$symbol."&t=1y&q=l&l=on&z=s\"/>";
-		  //echo " <input type=\"text\" id=\"update\"/><button id=\"btn\">Get</button> <div id=\"embed\"></div>";
-          
-		  //for the tweet
+		  //echo "            <img src=\"http://chart.finance.yahoo.com/z?s=".$symbol."&t=".$time_period."&q=l&l=on&z=m\"/>";
+
+
 		  
-		  echo $tweet;
-		  
-		  //stuff for headlines
+		  //headlines
+		  //consyruct the url with the necessary ticker symbol
 		  $path_prefix = "https://feeds.finance.yahoo.com/rss/2.0/headline?s=";
 			$ticker = $symbol;
 			$path_suffix = "&lg=us&region=US&lang=en-US";
 
 			$path = $path_prefix.$ticker.$path_suffix;
 
+			//retrieve the file from the url
 			$xml_file = file_get_contents($path);
 			
+			//extract the data from the file
 			$xml = simplexml_load_string($xml_file);
+			
+			//get data in useable form
 			$channel = $xml->channel;
 			$channel_title = $channel->title;
 			$channel_description = $channel->description;
 			
-			
-			
-			/* echo "<h1>".$channel_title."</h1>";
-			echo "<h2>".$channel_description."</h2>"; */
-
+			//print header
 			echo "<p><font size=\"6\">".$channel_title."</font></p>";
 			echo "<p><font size=\"5\">".$channel_description."</font></p>";
 			
+			//print headlines
 			foreach ($channel->item as $item)
 			{
 				$title = $item->title;
