@@ -76,19 +76,22 @@ if (mysqli_num_rows($result) > 0)
           echo "          <div id=\"extra_".$counter."\" style=\"display: none;\">";
           
 		  //More Data (Calculated)
-		  
+		 echo  "<div class=\"table-responsive\">";
 		 echo "  <table>";
 		  echo "<caption> Calculated </caption>";
 		  //for the tweet
 		 echo "  <tr>";
-		 echo "  <td colspan=\"2\">";
+		 //echo "  <td colspan=\"2\">";
+		 echo "<td>";
 		  echo $tweet;
 		 echo "  </td>";
 		 echo "  </tr>";
 		  
 		 echo "  </table>";
-		  
+		echo "  </div>";
 		 //More Data (Yahoo-populated)
+		 		 echo  "<div class=\"table-responsive\">";
+
 		 echo " <table>";
 		   echo "<caption> Yahoo Data </caption>";
 		 //stock charts
@@ -154,7 +157,7 @@ if (mysqli_num_rows($result) > 0)
 		  
 		  
 		  echo "</table>";
-		  
+		  echo "</div>";
 		  
           echo "          </div>";
           echo "        </td>";
