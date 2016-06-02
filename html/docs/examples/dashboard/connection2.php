@@ -96,7 +96,7 @@ if (mysqli_num_rows($result) > 0)
 		 //More Data (Yahoo-populated)
 		 		 echo  "<div class=\"table-responsive\" align=\"center\">";
 
-		 echo " <table class=\"table table-no-border\">";
+		 echo " <table class=\"table table-no-border\" border=1>";
 		   echo "<caption> Yahoo Data </caption>";
 		 //stock charts
 		 
@@ -104,14 +104,14 @@ if (mysqli_num_rows($result) > 0)
 		echo "  <tr>";
 		 
 		 //1 day
-		 echo " <th align=\"center\">";
+		 echo " <td align=\"center\">";
 		  echo "            <img align=\"center\" src=\"http://chart.finance.yahoo.com/z?s=".$symbol."&t=1d&q=l&l=on&z=s\"/>";
-		echo "  </th>";
+		echo "  </td>";
 		 
 		 //7 days
-		 echo " <th align=\"center\">";
+		 echo " <td align=\"center\">";
 		  echo "            <img align=\"center\" src=\"http://chart.finance.yahoo.com/z?s=".$symbol."&t=7d&q=l&l=on&z=s\"/>";
-		echo "  </th>";
+		echo "  </td>";
 		  //unused
 		  //echo "            <img src=\"http://chart.finance.yahoo.com/z?s=".$symbol."&t=1y&q=l&l=on&z=s\"/>";
 		  //echo "            <img src=\"http://chart.finance.yahoo.com/z?s=".$symbol."&t=".$time_period."&q=l&l=on&z=m\"/>";
