@@ -104,14 +104,14 @@ if (mysqli_num_rows($result) > 0)
 		echo "  <tr>";
 		 
 		 //1 day
-		 echo " <td align=\"center\">";
+		 echo " <th align=\"center\">";
 		  echo "            <img align=\"center\" src=\"http://chart.finance.yahoo.com/z?s=".$symbol."&t=1d&q=l&l=on&z=s\"/>";
-		echo "  </td>";
+		echo "  </th>";
 		 
 		 //7 days
-		 echo " <td align=\"center\">";
+		 echo " <th align=\"center\">";
 		  echo "            <img align=\"center\" src=\"http://chart.finance.yahoo.com/z?s=".$symbol."&t=7d&q=l&l=on&z=s\"/>";
-		echo "  </td>";
+		echo "  </th>";
 		  //unused
 		  //echo "            <img src=\"http://chart.finance.yahoo.com/z?s=".$symbol."&t=1y&q=l&l=on&z=s\"/>";
 		  //echo "            <img src=\"http://chart.finance.yahoo.com/z?s=".$symbol."&t=".$time_period."&q=l&l=on&z=m\"/>";
