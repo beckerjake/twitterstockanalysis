@@ -107,7 +107,12 @@ body {
 /*
  * No-border class
  */
-.table-borderless td,
+/* .table-borderless td,
 .table-borderless th {
     border: 0;
 }
+ */
+.table-borderless td, th {
+	border : 0px;
+}
+
