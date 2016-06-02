@@ -139,13 +139,15 @@ if (mysqli_num_rows($result) > 0)
 			$channel_description = $channel->description;
 			
 			//headline table
+			echo "<thead>";
 			echo " <tr>";
 			//print header
-			echo "<td colspan=\"2\">";
+			echo "<th colspan=\"2\">";
 			echo "<p><font size=\"5\">".$channel_title."</font></p>";
 			echo "<p><font size=\"4\">".$channel_description."</font></p>";
-			echo "</td>";
+			echo "</th>";
 			echo "</tr>";
+			echo "</thead>";
 			//print headlines
 			//				echo "<tr>";
 

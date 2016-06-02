@@ -116,7 +116,7 @@ body {
 	border : none;
 } */
 
-.table-no-border>thead>tr>th, 
+/* .table-no-border>thead>tr>th, */ 
 .table-no-border>tbody>tr>th, 
 .table-no-border>tfoot>tr>th, 
 .table-no-border>thead>tr>td, 
