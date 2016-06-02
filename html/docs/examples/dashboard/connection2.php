@@ -96,11 +96,10 @@ if (mysqli_num_rows($result) > 0)
 		 //More Data (Yahoo-populated)
 		 		 echo  "<div class=\"table-responsive\" align=\"center\">";
 
-		 echo " <table class=\"table table-no-border\" frame=\"above\">";
+		 echo " <table class=\"table\">";
 		   echo "<caption> Yahoo Data </caption>";
 		 //stock charts
 		 
-		echo "<thead>";
 		echo "  <tr>";
 		 
 		 //1 day
@@ -117,7 +116,8 @@ if (mysqli_num_rows($result) > 0)
 		  //echo "            <img src=\"http://chart.finance.yahoo.com/z?s=".$symbol."&t=".$time_period."&q=l&l=on&z=m\"/>";
 		
 		echo " </tr>";
-		  
+		echo "</table>";
+		echo "</div>";
 		  //headlines
 		  
 		  
@@ -140,7 +140,9 @@ if (mysqli_num_rows($result) > 0)
 			$channel_description = $channel->description;
 			
 			//headline table
-
+			echo  "<div class=\"table-responsive\" align=\"center\">";
+			echo "<table class=\"table table-no-border\">";
+			echo "<thead>";
 			echo " <tr>";
 			//print header
 			echo "<th colspan=\"2\">";
