@@ -76,23 +76,39 @@ if (mysqli_num_rows($result) > 0)
           echo "          <div id=\"extra_".$counter."\" style=\"display: none;\">";
           
 		  //More Data (Calculated)
+		  
+		 echo "  <table>";
+		  
 		  //for the tweet
+		 echo "  <tr>";
+		 echo "  <td>";
 		  echo $tweet;
-
+		 echo "  </td>";
+		 echo "  </tr>";
+		  
+		 echo "  </table>";
 		  
 		 //More Data (Yahoo-populated)
+		 
+		 echo " <table>";
+		 
 		 //stock charts
+		 
+		echo "  <tr>";
+		 
 		 //1 day
+		 echo " <td>";
 		  echo "            <img align=\"middle\" src=\"http://chart.finance.yahoo.com/z?s=".$symbol."&t=1d&q=l&l=on&z=m\"/>";
+		echo "  </td>";
 		 
 		 //7 days
+		 echo " <td>";
 		  echo "            <img align=\"middle\" src=\"http://chart.finance.yahoo.com/z?s=".$symbol."&t=7d&q=l&l=on&z=m\"/>";
-		  
+		echo "  </td>";
 		  //unused
 		  //echo "            <img src=\"http://chart.finance.yahoo.com/z?s=".$symbol."&t=1y&q=l&l=on&z=s\"/>";
 		  //echo "            <img src=\"http://chart.finance.yahoo.com/z?s=".$symbol."&t=".$time_period."&q=l&l=on&z=m\"/>";
-
-
+		echo " </tr>";
 		  
 		  //headlines
 		  //consyruct the url with the necessary ticker symbol
@@ -113,6 +129,8 @@ if (mysqli_num_rows($result) > 0)
 			$channel_title = $channel->title;
 			$channel_description = $channel->description;
 			
+			//headline table
+			echo " <tr>";
 			//print header
 			echo "<p><font size=\"6\">".$channel_title."</font></p>";
 			echo "<p><font size=\"5\">".$channel_description."</font></p>";
@@ -128,6 +146,10 @@ if (mysqli_num_rows($result) > 0)
 				echo "<p>".$descr."</p>";
 			}
 		  ////headlines
+		  
+		  echo " </tr>";
+		  
+		  </table>
 		  
 		  
           echo "          </div>";
