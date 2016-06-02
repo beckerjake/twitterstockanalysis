@@ -107,6 +107,7 @@ body {
 /*
  * No-border class
  */
- .table.no-border tr td, .table.no-border tr th {
-  border-width: 0;
+.table-borderless td,
+.table-borderless th {
+    border: 0;
 }

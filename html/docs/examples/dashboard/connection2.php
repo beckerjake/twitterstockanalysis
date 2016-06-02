@@ -114,9 +114,12 @@ if (mysqli_num_rows($result) > 0)
 		  //unused
 		  //echo "            <img src=\"http://chart.finance.yahoo.com/z?s=".$symbol."&t=1y&q=l&l=on&z=s\"/>";
 		  //echo "            <img src=\"http://chart.finance.yahoo.com/z?s=".$symbol."&t=".$time_period."&q=l&l=on&z=m\"/>";
+		
 		echo " </tr>";
 		  
 		  //headlines
+		  
+		  
 		  //consyruct the url with the necessary ticker symbol
 		  $path_prefix = "https://feeds.finance.yahoo.com/rss/2.0/headline?s=";
 			$ticker = $symbol;
@@ -152,11 +155,11 @@ if (mysqli_num_rows($result) > 0)
 				$link = $item->link;
 				$descr = $item->description;
 				echo "<tr>";
-				echo "<no-border colspan=\"2\">";
+				echo "<td colspan=\"2\">";
 				//echo "<p><font size=\"3\"><a href='".$link."'>".$title."</a></font></p>";
 				//echo "<p>".$descr."</p>";
 				echo "<font size=\"3\"><a href='".$link."'>".$title."</a></font>";
-				echo "</no-border>";
+				echo "</td>";
 				echo " </tr>";
 			}
 			//echo " </tr>";
