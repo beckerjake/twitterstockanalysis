@@ -144,22 +144,22 @@ if (mysqli_num_rows($result) > 0)
 			echo "</td>";
 			echo "</tr>";
 			//print headlines
-							echo "<tr>";
+			//				echo "<tr>";
 
 			foreach ($channel->item as $item)
 			{
 				$title = $item->title;
 				$link = $item->link;
 				$descr = $item->description;
-				//echo "<tr>";
-				//echo "<td colspan=\"2\">";
+				echo "<tr>";
+				echo "<no-border colspan=\"2\">";
 				//echo "<p><font size=\"3\"><a href='".$link."'>".$title."</a></font></p>";
 				//echo "<p>".$descr."</p>";
-				echo "<font size=\"3\"><a href='".$link."'>".$title."</a></font><br>";
-				//echo "</td>";
-				//echo " </tr>";
+				echo "<font size=\"3\"><a href='".$link."'>".$title."</a></font>";
+				echo "</no-border>";
+				echo " </tr>";
 			}
-			echo " </tr>";
+			//echo " </tr>";
 		  ////headlines
 		  
 		  

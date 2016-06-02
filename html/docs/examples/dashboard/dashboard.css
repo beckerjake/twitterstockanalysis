@@ -103,3 +103,10 @@ body {
   display: inline-block;
   border-radius: 50%;
 }
+
+/*
+ * No-border class
+ */
+ .table.no-border tr td, .table.no-border tr th {
+  border-width: 0;
+}
