@@ -100,6 +100,7 @@ if (mysqli_num_rows($result) > 0)
 		   echo "<caption> Yahoo Data </caption>";
 		 //stock charts
 		 
+		echo "<thead>";
 		echo "  <tr>";
 		 
 		 //1 day
@@ -139,7 +140,7 @@ if (mysqli_num_rows($result) > 0)
 			$channel_description = $channel->description;
 			
 			//headline table
-			echo "<thead>";
+
 			echo " <tr>";
 			//print header
 			echo "<th colspan=\"2\">";
