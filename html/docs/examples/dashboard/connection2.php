@@ -78,7 +78,7 @@ if (mysqli_num_rows($result) > 0)
 		  //More Data (Calculated)
 		 //echo  "<div class=\"table-responsive\" align=\"center\">";
 		 echo  "<div class=\"table-responsive\">"; //left aligned
-		 echo "  <table>";
+		 echo "  <table class=\"table\">";
 		  echo "<caption> Calculated </caption>";
 		  //for the tweet
 		 echo "  <tr>";
@@ -93,7 +93,7 @@ if (mysqli_num_rows($result) > 0)
 		 //More Data (Yahoo-populated)
 		 		 echo  "<div class=\"table-responsive\" align=\"center\">";
 
-		 echo " <table>";
+		 echo " <table class=\"table\">";
 		   echo "<caption> Yahoo Data </caption>";
 		 //stock charts
 		 
