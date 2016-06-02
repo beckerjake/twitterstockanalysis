@@ -96,7 +96,7 @@ if (mysqli_num_rows($result) > 0)
 		 //More Data (Yahoo-populated)
 		 		 echo  "<div class=\"table-responsive\" align=\"center\">";
 
-		 echo " <table class=\"table\">";
+		 echo " <table class=\"table\" \"table-borderless\">";
 		   echo "<caption> Yahoo Data </caption>";
 		 //stock charts
 		 
