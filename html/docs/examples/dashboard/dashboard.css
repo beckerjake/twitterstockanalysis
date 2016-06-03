@@ -126,6 +126,6 @@ body {
 }
 
 .carousel-inner > .item > div {
-    margin: 0 auto;
+    margin: auto;
 }
 
