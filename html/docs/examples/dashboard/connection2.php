@@ -186,16 +186,13 @@ if (mysqli_num_rows($result) > 0)
 		";
 		
 		
-		echo "<ul class=\"bxslider\">";
-			/* echo "<li>".$tweet."</li>";
-			echo "<li>".$tweet."</li>";
-			echo "<li>".$tweet."</li>"; */
-			
+		/echo "<ul class=\"bxslider\">";
+	
 			echo "<li>tweet</li>";
 			echo "<li>tweet</li>";
 			echo "<li>tweet</li>";
 			
-		echo "</ul>";
+		echo "</ul>"; 
 		
 		//echo $tweet;
 		
