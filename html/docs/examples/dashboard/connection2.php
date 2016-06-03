@@ -107,13 +107,13 @@ if (mysqli_num_rows($result) > 0)
 					<text text-anchor=\"middle\" x=\"100\" y=\"100\" fill=\"white\">".$per_neg_tweets."</text>
 					<style><![CDATA[text{font: bold 36px Helvetica, sans-serif;}]]></style>
 				</svg>
-				<svg height=".$spacer_side_length." width=".$spacer_side_length.">
+				<svg height=".$spacer_side_length." width=".$spacer_side_length."></svg>
 				<svg height=".$svg_side_length." width=".$svg_side_length.">
 					<circle cx=\"100\" cy=\"100\" r=".$default_rad." stroke=\"black\" stroke-width=\"0\" fill=\"grey\" />
 					<text text-anchor=\"middle\" x=\"100\" y=\"100\" fill=\"white\">".$per_daily_avg."</text>
 					<style><![CDATA[text{font: bold 36px Helvetica, sans-serif;}]]></style>
 				</svg>
-				<svg height=".$spacer_side_length." width=".$spacer_side_length.">
+				<svg height=".$spacer_side_length." width=".$spacer_side_length."></svg>
 				<svg height=".$svg_side_length." width=".$svg_side_length.">
 					<circle cx=\"100\" cy=\"100\" r=".$default_rad." stroke=\"black\" stroke-width=\"0\" fill=\"lightgreen\" />
 					<text text-anchor=\"middle\" x=\"100\" y=\"100\" fill=\"white\">".$per_pos_tweets."</text>
