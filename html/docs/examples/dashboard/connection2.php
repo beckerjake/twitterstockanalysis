@@ -103,11 +103,11 @@ if (mysqli_num_rows($result) > 0)
   <!-- Wrapper for slides -->
   <div class=\"carousel-inner\" role=\"listbox\">
     <div class=\"item active\">
-      text 1
+      ".$tweet."
     </div>
 
     <div class=\"item\">
-      text 2
+      ".$tweet."
     </div>
 
     <div class=\"item\">
