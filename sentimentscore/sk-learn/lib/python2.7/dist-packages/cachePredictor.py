@@ -44,13 +44,11 @@ r2 = 1 - resid / (len(y) * std(y) ** 2)
 #list of stocks that we will query from our database
 
 class Predictor:
-    def __init__(self, day, stockSymbols, databaseName, inputTableName, historyTableName, outputTableName, user, password, host):
+    def __init__(self, day, stockSymbols, databaseName, inputTableName, user, password, host):
         self.date = day
         self.stockSymbols = stockSymbols
         self.database = databaseName
-        self.__outputTableName = outputTableName
         self.__inputTableName = inputTableName
-        self.__historyTableName = historyTableName
         #list of all daysummaries
         self.daySummaries = []
         self.cleanDaySummaries = []    
@@ -65,25 +63,23 @@ class Predictor:
         #20 40 60 80
         self.dayPercentiles = []
         self.hourPercentiles = []
+        self.mentionFilter = -1
+        self.listedFilter = -1
         #connect to database
         connectString = "host=\"" + host + "\", user=\"" + user + "\", passwd=\"" + password + "\", db=\"" + databaseName + "\""
         self.db = pymysql.connect(host=host, user=user, passwd=password, db=databaseName)
 #set up cursor
         self.cur = self.db.cursor()
-        self.loadData()
-    def loadData(self):
+        self.performPrediction()
+    def performPrediction(self):
         self.loadDaySummaries()
         self.loadCleanDaySummaries()
-        self.loadYArrays()
-        self.loadXArrays()
-        self.createCorrelationMatrix()
-        self.bestR2Indices = self.getBestR2Indices()
         self.computePercentiles()
-    def test(self):
-        self.printColNamesOfBestR2Indices(self.bestR2Indices)
-        self.printBestRegressionLines()
         self.applyFilters()
-#        self.whereTheMagicHappens()
+        self.printColNamesOfBestR2Indices(self.bestR2Indices)
+    def test(self):
+        for i in self.stockSymbols:
+            print self.getCurrentPredictionRow(i)
 #grab all rows out of day summary table
     def loadDaySummaries(self):
         queryString = "select * from " + self.__inputTableName
@@ -103,7 +99,6 @@ class Predictor:
         for row in self.daySummaries:
             if not row[c.hourpercentchange] == -10 and not row[c.daypercentchange] == -10:
                 self.cleanDaySummaries.append(row)
-#TODO: here would be a good place to apply filters or a dynamic filter
 #we are filtering based on totalMentions and positivelistedcount (and 
 #percent day change to make sure our rows have stock information
     def applyFilters(self):
@@ -136,25 +131,8 @@ class Predictor:
             breakIndex = -1
             for listedFilter in range(int(minListed), int(maxListed), int(listedInc)):
                 breakIndex = listedFilter
-            #make query based on filter
-                queryString = "select * from " + self.__inputTableName + " where totalMentions > " + str(mentionFilter) + " and positive_listed_count > " + str(listedFilter) + " and percent_day_change > -9.9"
-                self.cur.execute(queryString)
-            #set result of query to cleandaysummaries
-                newTempData = []
-                self.clearArrays()
-                for row in self.cur.fetchall():
-                    self.cleanDaySummaries.append(row)
-                dataRemaining = float(len(self.cleanDaySummaries))/unfilteredDataLength
-#                print("we have only this percent of data remaining: " + str(dataRemaining))
-                if dataRemaining < .24:
+                if self.performFilterEvaluation(mentionFilter, listedFilter, unfilteredDataLength):
                     break
-            #loadX and Y arrays
-                self.loadYArrays()
-                self.loadXArrays()
-            #create correlation matrix
-                self.createCorrelationMatrix()
-            #get best correlation value
-                self.bestR2Indices =  self.getBestR2Indices()
             #if better than current value
                 if self.rVals[self.bestR2Indices[0]][0] > bestR2:
                 #change indices and best value
@@ -165,9 +143,43 @@ class Predictor:
             #possible listedFilter
             if breakIndex == int(minListed):
                 break
+        print("The best r^2 value is: " + str(bestR2) + " when we use at least " + str(c.dataRemaining) + " of the data.")
         #save filters as member variables to use when computing predictions
+        self.mentionFilter = bestMentionFilter
+        print("mention filter: > " + str(bestMentionFilter))
+        print("listed filter: > " + str(bestListedFilter))
+        self.listedFilter = bestListedFilter
         #make one final computation so member variables reflect best R val
-        print("The best r^2 value is: " + str(bestR2) " when we use at least " + str(dataRemaining) + " of the data.")
+        self.performFilterEvaluation(self.mentionFilter, self.listedFilter, unfilteredDataLength)
+        #sanity check to make sure data is in the right state 
+        print self.rVals[self.bestR2Indices[0]][0]
+
+
+#this performs filter on the data and leaves the member arrays in a state
+#that allows us to see if the r2 value produced is better than current best
+#return True if it broke because it filtered too much data, false otherwise
+    def performFilterEvaluation(self, mentionFilter, listedFilter, unfilteredDataLength):
+    #make query based on filter
+        queryString = "select * from " + self.__inputTableName + " where totalMentions > " + str(mentionFilter) + " and positive_listed_count > " + str(listedFilter) + " and percent_day_change > -9.9"
+        self.cur.execute(queryString)
+    #set result of query to cleandaysummaries
+        newTempData = []
+        self.clearArrays()
+        for row in self.cur.fetchall():
+            self.cleanDaySummaries.append(row)
+        dataRemaining = float(len(self.cleanDaySummaries))/unfilteredDataLength
+#                print("we have only this percent of data remaining: " + str(dataRemaining))
+        if dataRemaining < c.dataRemaining:
+            return True
+    #loadX and Y arrays
+        self.loadYArrays()
+        self.loadXArrays()
+    #create correlation matrix
+        self.createCorrelationMatrix()
+    #get best correlation value
+        self.bestR2Indices =  self.getBestR2Indices()
+        return False
+
 #create two arrays for the first hour percent change and day percent change
 #these we will use for our y values
     def loadYArrays(self):
@@ -326,7 +338,6 @@ class Predictor:
                 dayPerformance.append(self.daySummaries[i][c.daypercentchange])
         hourPerformance = sorted(hourPerformance)
         dayPerformance = sorted(dayPerformance)
-        print dayPerformance
         dayLength = len(dayPerformance)
         hourLength = len(hourPerformance)
         for i in range(4):
@@ -348,48 +359,199 @@ class Predictor:
         slope = self.slopes[lineIndex][isHour]
         #get intercept
         intercept = self.intercepts[lineIndex][isHour]
+        if xcoord is None:
+            return intercept
         #plug in and return
         return slope * xcoord + intercept
+#takes raw prediction as input and returns the day prediction as a string
+#return the hour prediciotn when isHour is 1
+    def raw2StringPrediction(self, raw, isHour):
+        if raw == -99:
+            return "Not enough Twitter data"
+        percentiles = [[0 for x in range(4)] for y in range(2)]
+        percentiles[0] = self.dayPercentiles
+        percentiles[1] = self.hourPercentiles
 
+        if raw < percentiles[isHour][0]:
+            return "Strong Sell"
+        elif raw > percentiles[isHour][0] and raw < percentiles[isHour][1]:
+            return "Sell"
+        elif raw > percentiles[isHour][1] and raw < percentiles[isHour][2]:
+            return "Hold"
+        elif raw > percentiles[isHour][2] and raw < percentiles[isHour][3]:
+            return "Buy"
+        return "Strong Buy"
+
+#computes the weight rawPrediciont, isHour = 1 when we get hour predictions
+#return -99 if the row doesn't satisfy the filters
+#they must have at least one tweet to satisfy the filter
+    def computeWeightedRawPrediction(self, row, isHour):
+        #check if filters are satisfied
+        if row[c.totalmentionsindex] < self.mentionFilter or row[c.positivelistedcountindex] < self.listedFilter or row[c.totalmentionsindex] < 1:
+            return -99
+        print row
+        if isHour == 1:
+            offset = 3
+            arrayOffset = 1
+        else:
+            offset = 0
+            arrayOffset = 0
+        xcoord = row[c.infocols + self.bestR2Indices[0 + offset]]
+        y0 = self.plugIntoRegression(0+ offset, xcoord)
+        xcoord = row[c.infocols + self.bestR2Indices[1+ offset]]
+        y1 = self.plugIntoRegression(1+ offset, xcoord)
+        xcoord = row[c.infocols + self.bestR2Indices[2+ offset]]
+        y2 = self.plugIntoRegression(2+ offset, xcoord)
+        r0 = self.rVals[self.bestR2Indices[0+ offset]][0 + arrayOffset]
+        r1 = self.rVals[self.bestR2Indices[1+ offset]][0+ arrayOffset]
+        r2 = self.rVals[self.bestR2Indices[2+ offset]][0+ arrayOffset]
+        weightSum = r0 + r1 + r2
+        numerator = y0*r0 + y1*r1 + y2*r2
+        rawPrediction = numerator/weightSum
+        return rawPrediction
 #function that determines the avg daily mentions of every stock based on symbol
 
 #function that queries to see what % of today's tweets are positive
-
-#function that takes stock, day, pos/nge/neutral and returns tweet_id of tweet of the day
-#this is workhorse function that uses everything et up from load data to:
-#make a prediction for every stock
-#grab the tweet of the day
-#grab the % total mention volume and pos/neg %s
-#writes these as a row into the database of current predictions
-#write a row to the historical predictions table if we don't have the 
-    #open price of the stock (update row if needed)
-    def whereTheMagicHappens(self):
+#returns [dayprediction, hourPrediction] for stock with given symbol
+    def getPredictions(self, symbol):
 #for every stock we're looking at
-        for i in range(len(stocks)):
     #grab that stocks current day summary row
-            queryString = "select * from " + self.__inputTableName + " where symbol = \"" + stocks[i] + "\" and date = \"" + self.date + "\""
-            self.cur.execute(queryString);
-            row = self.cur.fetchall()
-            print stocks[i]
-            if len(row) != 1:#sanity check
-                print("ERROR ERROR ERROR: returned multiple rows for one stock we are predicting in Predictor.py whereTheMagicHappens()")
-            row = row[0]
-        #TODO: if stock satisfies the filters we defined above
-            #plug into regression equations for first hour and day
-            xcoord = row[c.infocols + self.bestR2Indices[0]]
-            print("the x coord is: " + str(xcoord))
-            print("regression val is: " + str(self.plugIntoRegression(0, xcoord)))
-        #write predictions to row
-    #else, write "not enough data"
-    #add avg daily mention number, %pos/neg to the row
-    #grab tweet id of tweet of the day
-    
-    #add/update the row in historicalpredictions table
-    #add/update row in current predicitons table
+        queryString = "select * from " + self.__inputTableName + " where symbol = \"" + symbol + "\" and date = \"" + self.date + "\""
+        self.cur.execute(queryString);
+        row = self.cur.fetchall()
+        if len(row) != 1:#sanity check
+            print("ERROR ERROR ERROR: returned multiple rows for one stock we are predicting in Predictor.py getPredicitons()")
+        row = row[0]
+        dayPrediction = ""
+        hourPrediction = ""
+        #plug into regression equations for first hour and day
+        rawDay = self.computeWeightedRawPrediction(row, 0)
+        rawHour = self.computeWeightedRawPrediction(row, 1)
+        returnVal = []
+        returnVal.append(self.raw2StringPrediction(rawDay, 0))
+        returnVal.append(self.raw2StringPrediction(rawHour, 1))
+        return returnVal
+    def getAvgDailyMentions(self, symbol):
+        statement = "select avg(totalMentions) from daySummaries "
+        statement += "where symbol = \""
+        statement += symbol + "\" group by symbol"
+        self.cur.execute(statement)
+        for row in self.cur.fetchall():
+            return row[0]
+    def getCurrentDailyMentions(self, symbol):
+        statement = "select totalMentions from daySummaries "
+        statement += "where symbol = \""
+        statement += symbol + "\" and date = \""
+        statement += self.date + "\""
+        self.cur.execute(statement)
+        for row in self.cur.fetchall():
+            return row[0]
+    def getNextDay(self):
+        year = int(self.date[:4])
+        month = int(self.date[5:7])
+        day = int(self.date[8:])
+        date = [year, month, day]
+        daysInEachMonth = [31,28,31,30,31,30,31,31,30,31,30,31]
+#check if last day of month and year
+        if date[2] == 31 and date[1] == 12:
+            date[0] += 1
+            date[2] = 1
+            date[1] = 1
+#check if last day of month
+        elif date[2] == daysInEachMonth[date[1] - 1]:
+            date[1] += 1
+            date[2] = 1
+        else:
+            date[2] += 1
+            toReturn = str(date[0]) + '-' + str(date[1]) + '-' + str(date[2])
+        return toReturn
+    def getSignedDailyMentions(self, symbol, isPositive):
+        statement = "select count(*) from tweets where tweet_time > "
+        statement += "\'" + self.date + "\' and tweet_time < "
+        statement += "\'" + self.getNextDay() + "\' and stock_symbol = "
+        statement += "\"$" + symbol + "\" and score "
+        if isPositive:
+            statement += ">"
+        else:
+            statement += "<"
+        statement += "0.31"
+        self.cur.execute(statement)
+        for row in self.cur.fetchall():
+            return row[0]
+    def getInfluentialTweetId(self, symbol, prediction):
+        if prediction == "Buy" or prediction == "Strong Buy":
+            offset = 0
+            statement = "select tweet_id, score, followers_count from tweets where tweet_time > "
+            statement += "\'" + self.date + "\' and tweet_time < "
+            statement += "\'" + self.getNextDay() + "\' and stock_symbol ="
+            statement += "\"$" + symbol + "\""
+#highest sentiment * followers score
+        elif prediction == "Sell" or prediction == "Strong Sell":
+            offset = 0.31
+            statement = "select tweet_id, score, followers_count from tweets where tweet_time > "
+            statement += "\'" + self.date + "\' and tweet_time < "
+            statement += "\'" + self.getNextDay() + "\' and stock_symbol ="
+            statement += "\"$" + symbol + "\""
+#lowest sentiment * followers score
+        else:
+            statement = "select tweet_id from tweets where tweet_time > "
+            statement += "\'" + self.date + "\' and tweet_time < "
+            statement += "\'" + self.getNextDay() + "\' and stock_symbol ="
+            statement += "\"$" + symbol + "\" order by followers_count"
+            statement += " desc limit 1"
+        self.cur.execute(statement)
+        rows = self.cur.fetchall()
+        if len(rows) == 1:
+            return rows[0][0]
+        bestScore = 0
+        bestId = rows[0][0]
+        for i in range(len(rows)):
+            if rows[i][1] is None:
+                continue
+            elif offset == 0 and rows[i][1]*rows[i][2] > bestScore:
+                bestId = rows[i][0]
+                bestScore = rows[i][1]*rows[i][2]
+            elif offset == 0.31 and (rows[i][1] - offset)*rows[i][2] < bestScore:
+                bestScore = (rows[i][1] - offset)*rows[i][2]
+                bestId = rows[i][0]
+        return bestId
+    def getClosingPrice(self, symbol):
+        closeHour = 20
+        nextDay = self.getNextDay()
+        queryString = "select price, time_alt from stocks where symbol = \"" + symbol + "\" and time_alt >= \"" + self.date + "\" and time_alt < \"" + nextDay + "\""
+        self.cur.execute(queryString)
+        for row in self.cur.fetchall():
+            if row[1].hour == closeHour:
+                return row[0]
+        return -1
 
 
-stocks = ['BA','UNH','WFC','T','BP','PCG','KO','IBM','MSFT','MAR']
-a = Predictor('2016-06-02', stocks, "ticktalk", 
-"daySummaries", "predictionHistory","currentPredictions",
-"root", "", "localhost")
-a.test()
+#highest number of followers
+#this creates a row with everything the current predictions table needs
+#for a give stock symbol
+    def getCurrentPredictionRow(self, symbol):
+        toReturn = self.getPredictions(symbol)
+        volumeOfDailyMentions = self.getCurrentDailyMentions(symbol)/self.getAvgDailyMentions(symbol)
+        positiveMentions = self.getSignedDailyMentions(symbol, True)
+        negativeMentions = self.getSignedDailyMentions(symbol, False)
+        posPer = 100*(float(positiveMentions) /(positiveMentions + negativeMentions))
+        negPer = 100 - posPer
+        dummyrow = [self.getInfluentialTweetId(symbol,toReturn[0]),'test company name',symbol,self.getClosingPrice(symbol),self.date,volumeOfDailyMentions,posPer,negPer,self.getCurrentDailyMentions(symbol)]
+        dummyrow.append(toReturn[1])
+        dummyrow.append(toReturn[0])
+        return dummyrow
+#TODO: update stock price
+    def getHistoricalPredictionRow(self, symbol):
+        toReturn = []
+        queryString = "select stockName from " + self.__inputTableName + " where symbol = \"" + symbol + "\""
+        self.cur.execute(queryString)
+        for row in self.cur.fetchall():
+            toReturn.append(row[0])
+            break
+        toReturn.append(symbol)
+        toReturn.append(self.getCurrentPredictionRow(symbol)[10])
+        toReturn.append(-3)
+        toReturn.append(self.date)
+        return toReturn
+
+

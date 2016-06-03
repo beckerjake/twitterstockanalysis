@@ -15,4 +15,4 @@ totalmentionsindex = infocols + tweetcols - 1#last tweet col
 positivelistedcountindex = infocols + 5 - 1#5 = number of tweet cols before it
 
 #used to adjust the coarseness of our filter
-dataRemaining = .6
+dataRemaining = .2

@@ -139,5 +139,5 @@ def moveOldTweetsToNewDatabase(inputTableName,cursor, outputTableName, numTweets
     return len(unscoredtweets)
         
 
-a = moveOldTweetsToNewDatabase("tweets",cur, "", 2000/18)
+a = moveOldTweetsToNewDatabase("tweets",cur, "", 2000/31)
 #moveNewTweetsToNewDatabase("tweets", cur, "", 2000 - a) 
