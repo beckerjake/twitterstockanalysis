@@ -3,6 +3,7 @@ import unirest
 import json
 import pymysql
 import decimal
+import GetDate
 debug = False
 #global list for the field types of a row in the "scoredTweets" table
 scoredTweetFieldTypes = ['text', 'float','text', 'text', 'text', 'text', 'text', 'text', 'text', 'int', 'int', 'int', 'int', 'int', 'int', 'int', 'int', 'text']
@@ -124,7 +125,9 @@ def moveNewTweetsToNewDatabase(inputTableName,cursor, outputTableName, numTweets
 #grab all tweets and assign a sentiment score to them
 #tweets come from inputTableName, and go to outputTableName
 def moveOldTweetsToNewDatabase(inputTableName,cursor, outputTableName, numTweets):
-    queryStatement = "select tweet_id, tweet_text from " + inputTableName + " where symbol_mentioned = 1 and score IS NULL limit " + str(numTweets) + ";"
+    date = GetDate.getDate()
+    print date
+    queryStatement = "select tweet_id, tweet_text from " + inputTableName + " where symbol_mentioned = 1 and score IS NULL and (hour(tweet_time) >= 20 or hour(tweet_time) < 14) limit " + str(numTweets) + ";"
     cursor.execute(queryStatement)
     global scoredTweetFieldTypes
     unscoredtweets = cur.fetchall()
@@ -136,5 +139,5 @@ def moveOldTweetsToNewDatabase(inputTableName,cursor, outputTableName, numTweets
     return len(unscoredtweets)
         
 
-a = moveOldTweetsToNewDatabase("tweets",cur, "", 2000)
-moveNewTweetsToNewDatabase("tweets", cur, "", 2000 - a) 
+a = moveOldTweetsToNewDatabase("tweets",cur, "", 2000/18)
+#moveNewTweetsToNewDatabase("tweets", cur, "", 2000 - a) 

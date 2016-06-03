@@ -62,6 +62,9 @@ class Predictor:
         self.slopes = 0
         self.intercepts = 0
         self.bestR2Indices = []
+        #20 40 60 80
+        self.dayPercentiles = []
+        self.hourPercentiles = []
         #connect to database
         connectString = "host=\"" + host + "\", user=\"" + user + "\", passwd=\"" + password + "\", db=\"" + databaseName + "\""
         self.db = pymysql.connect(host=host, user=user, passwd=password, db=databaseName)
@@ -73,17 +76,26 @@ class Predictor:
         self.loadCleanDaySummaries()
         self.loadYArrays()
         self.loadXArrays()
-    def test(self):
         self.createCorrelationMatrix()
         self.bestR2Indices = self.getBestR2Indices()
+        self.computePercentiles()
+    def test(self):
         self.printColNamesOfBestR2Indices(self.bestR2Indices)
         self.printBestRegressionLines()
+        self.applyFilters()
+#        self.whereTheMagicHappens()
 #grab all rows out of day summary table
     def loadDaySummaries(self):
         queryString = "select * from " + self.__inputTableName
         self.cur.execute(queryString)
         for row in self.cur.fetchall():
             self.daySummaries.append(row)
+#this function clears all the member arrays we need for computing an
+#individual regression
+    def clearArrays(self):
+        del self.cleanDaySummaries[:]
+        del self.dayChanges[:]
+        del self.hourChanges[:]
 #this functions takes out any daySummaries that don't have the complete
 #stock information
 #these won't be used to make predictions
@@ -92,7 +104,70 @@ class Predictor:
             if not row[c.hourpercentchange] == -10 and not row[c.daypercentchange] == -10:
                 self.cleanDaySummaries.append(row)
 #TODO: here would be a good place to apply filters or a dynamic filter
-
+#we are filtering based on totalMentions and positivelistedcount (and 
+#percent day change to make sure our rows have stock information
+    def applyFilters(self):
+        #get range of totalmentions and
+        #get range of positive listed count
+        maxMention = -1
+        minMention = 999999
+        maxListed = -1
+        minListed = 99999999
+        for i in range(len(self.cleanDaySummaries)):
+            if self.cleanDaySummaries[i][c.totalmentionsindex] > maxMention:
+                maxMention = self.cleanDaySummaries[i][c.totalmentionsindex] 
+            if self.cleanDaySummaries[i][c.totalmentionsindex] < minMention:
+                minMention = self.cleanDaySummaries[i][c.totalmentionsindex] 
+            if self.cleanDaySummaries[i][c.positivelistedcountindex] > maxListed:
+                maxListed = self.cleanDaySummaries[i][c.positivelistedcountindex] 
+            if self.cleanDaySummaries[i][c.positivelistedcountindex] < minListed: 
+                minListed = self.cleanDaySummaries[i][c.positivelistedcountindex] 
+        #100th increments of each
+        mentionInc = (maxMention - minMention)/100
+        listedInc = (maxListed - minListed)/200
+        #set up best filter values and best filter r2
+        #all filter values are read as attributeVal > filtervalue
+        bestMentionFilter = -1
+        bestListedFilter = -1
+        bestR2 = -1
+        unfilteredDataLength = len(self.cleanDaySummaries)
+        #double for loop
+        for mentionFilter in range(int(minMention), int(maxMention), int(mentionInc)):
+            breakIndex = -1
+            for listedFilter in range(int(minListed), int(maxListed), int(listedInc)):
+                breakIndex = listedFilter
+            #make query based on filter
+                queryString = "select * from " + self.__inputTableName + " where totalMentions > " + str(mentionFilter) + " and positive_listed_count > " + str(listedFilter) + " and percent_day_change > -9.9"
+                self.cur.execute(queryString)
+            #set result of query to cleandaysummaries
+                newTempData = []
+                self.clearArrays()
+                for row in self.cur.fetchall():
+                    self.cleanDaySummaries.append(row)
+                dataRemaining = float(len(self.cleanDaySummaries))/unfilteredDataLength
+#                print("we have only this percent of data remaining: " + str(dataRemaining))
+                if dataRemaining < .24:
+                    break
+            #loadX and Y arrays
+                self.loadYArrays()
+                self.loadXArrays()
+            #create correlation matrix
+                self.createCorrelationMatrix()
+            #get best correlation value
+                self.bestR2Indices =  self.getBestR2Indices()
+            #if better than current value
+                if self.rVals[self.bestR2Indices[0]][0] > bestR2:
+                #change indices and best value
+                    bestR2 = self.rVals[self.bestR2Indices[0]][0] 
+                    bestMentionFilter = mentionFilter
+                    bestListedFilter = listedFilter
+            #here we break again if we're below the limit on the coarsest
+            #possible listedFilter
+            if breakIndex == int(minListed):
+                break
+        #save filters as member variables to use when computing predictions
+        #make one final computation so member variables reflect best R val
+        print("The best r^2 value is: " + str(bestR2) " when we use at least " + str(dataRemaining) + " of the data.")
 #create two arrays for the first hour percent change and day percent change
 #these we will use for our y values
     def loadYArrays(self):
@@ -150,7 +225,6 @@ class Predictor:
             self.rVals[i][1] = r2[0]
             self.slopes[i][1] = w[0]
             self.intercepts[i][1] = w[1]
-        print self.rVals
 #find the indices of three best indicators based on r^2 val for both dep vars
 #find the indices of the three best r^2 vals in rVals
 #returned in form [bestday, 2day, 3day, besthour, 2hour, 3hour]
@@ -196,62 +270,115 @@ class Predictor:
 #takes input form getBestR2Indices
     def printColNamesOfBestR2Indices(self, indices):
         print("The best R2 val for day change comes from " +
-                updateColNames[indices[0] +  c.infocols] + ": \n"
+                updateColNames[indices[0] +  c.updateinfocols] + ": \n"
                 + str(self.rVals[indices[0]][0]))
         print("The 2nd best R2 val for day change comes from " +
-                updateColNames[indices[1] +  c.infocols] + ": \n"
+                updateColNames[indices[1] +  c.updateinfocols] + ": \n"
                 + str(self.rVals[indices[1]][0]))
         print("The 3rd best R2 val for day change comes from " +
-                updateColNames[indices[2] +  c.infocols] + ": \n"
+                updateColNames[indices[2] +  c.updateinfocols] + ": \n"
                 + str(self.rVals[indices[2]][0]))
         print("The best R2 val for hour change comes from " +
-                updateColNames[indices[3] +  c.infocols] + ": \n"
+                updateColNames[indices[3] +  c.updateinfocols] + ": \n"
                 + str(self.rVals[indices[3]][1]))
         print("The 2nd best R2 val for hour change comes from " +
-                updateColNames[indices[4] +  c.infocols] + ": \n"
+                updateColNames[indices[4] +  c.updateinfocols] + ": \n"
                 + str(self.rVals[indices[4]][1]))
         print("The 3rd best R2 val for hour change comes from " +
-                updateColNames[indices[5] +  c.infocols] + ": \n"
+                updateColNames[indices[5] +  c.updateinfocols] + ": \n"
                 + str(self.rVals[indices[5]][1]))
 #this function prints the regression lines for the most correlated line
     def printBestRegressionLines(self):
         print("Best day line -- " + 
-                updateColNames[self.bestR2Indices[0]+c.infocols] +
+                updateColNames[self.bestR2Indices[0]+c.updateinfocols] +
                 "\n y = " + str(self.slopes[self.bestR2Indices[0]][0]) +
                 "x + " + str(self.intercepts[self.bestR2Indices[0]][0]))
         print("2nd best day line -- " + 
-                updateColNames[self.bestR2Indices[1]+c.infocols] +
+                updateColNames[self.bestR2Indices[1]+c.updateinfocols] +
                 "\n y = " + str(self.slopes[self.bestR2Indices[1]][0]) +
                 "x + " + str(self.intercepts[self.bestR2Indices[1]][0]))
         print("3nd best day line -- " + 
-                updateColNames[self.bestR2Indices[2]+c.infocols] +
+                updateColNames[self.bestR2Indices[2]+c.updateinfocols] +
                 "\n y = " + str(self.slopes[self.bestR2Indices[2]][0]) +
                 "x + " + str(self.intercepts[self.bestR2Indices[2]][0]))
         print("\nBest hour line -- " + 
-                updateColNames[self.bestR2Indices[3]+c.infocols] +
+                updateColNames[self.bestR2Indices[3]+c.updateinfocols] +
                 "\n y = " + str(self.slopes[self.bestR2Indices[3]][1]) +
                 "x + " + str(self.intercepts[self.bestR2Indices[3]][1]))
         print("2nd best hour line -- " + 
-                updateColNames[self.bestR2Indices[4]+c.infocols] +
+                updateColNames[self.bestR2Indices[4]+c.updateinfocols] +
                 "\n y = " + str(self.slopes[self.bestR2Indices[4]][1]) +
                 "x + " + str(self.intercepts[self.bestR2Indices[4]][1]))
         print("3rd best hour line -- " + 
-                updateColNames[self.bestR2Indices[5]+c.infocols] +
+                updateColNames[self.bestR2Indices[5]+c.updateinfocols] +
                 "\n y = " + str(self.slopes[self.bestR2Indices[5]][1]) +
                 "x + " + str(self.intercepts[self.bestR2Indices[5]][1]))
 
 #determine cutoff values for predicted growth->reccomendation
+#this is done be grabbing the performance data and computing
+#20th, 40th, 60th, and 80th percentiles are stored in self.percentiles
+    def computePercentiles(self):
+        hourPerformance = []
+        dayPerformance = []
+        for i in range(len(self.daySummaries)):
+            if self.daySummaries[i][c.daypercentchange] != -10 and self.daySummaries[i][c.hourpercentchange] != -10:
+                hourPerformance.append(self.daySummaries[i][c.hourpercentchange])
+                dayPerformance.append(self.daySummaries[i][c.daypercentchange])
+        hourPerformance = sorted(hourPerformance)
+        dayPerformance = sorted(dayPerformance)
+        print dayPerformance
+        dayLength = len(dayPerformance)
+        hourLength = len(hourPerformance)
+        for i in range(4):
+            self.dayPercentiles.append(dayPerformance[int((.2 + i*.2)*dayLength)])
+            self.hourPercentiles.append(hourPerformance[int((.2 + i*.2)*hourLength)])
+        
+#this function takes index into bestr2indices and the associated x coord
+#returns the result of plugging it into the regression specified by
+#slopes and intercepts
+    def plugIntoRegression(self, r2Index, xcoord):
+        #get index into slopes/regression
+        lineIndex = self.bestR2Indices[r2Index]
+        #get day/hour day = 0, hour = 1
+        if r2Index > 3:
+            isHour = 1
+        else:
+            isHour = 0
+        #get slope
+        slope = self.slopes[lineIndex][isHour]
+        #get intercept
+        intercept = self.intercepts[lineIndex][isHour]
+        #plug in and return
+        return slope * xcoord + intercept
 
 #function that determines the avg daily mentions of every stock based on symbol
 
 #function that queries to see what % of today's tweets are positive
 
 #function that takes stock, day, pos/nge/neutral and returns tweet_id of tweet of the day
-
+#this is workhorse function that uses everything et up from load data to:
+#make a prediction for every stock
+#grab the tweet of the day
+#grab the % total mention volume and pos/neg %s
+#writes these as a row into the database of current predictions
+#write a row to the historical predictions table if we don't have the 
+    #open price of the stock (update row if needed)
+    def whereTheMagicHappens(self):
 #for every stock we're looking at
+        for i in range(len(stocks)):
     #grab that stocks current day summary row
-    #if stock satisfies the filters we defined above
-        #plug into regression equations for first hour and day
+            queryString = "select * from " + self.__inputTableName + " where symbol = \"" + stocks[i] + "\" and date = \"" + self.date + "\""
+            self.cur.execute(queryString);
+            row = self.cur.fetchall()
+            print stocks[i]
+            if len(row) != 1:#sanity check
+                print("ERROR ERROR ERROR: returned multiple rows for one stock we are predicting in Predictor.py whereTheMagicHappens()")
+            row = row[0]
+        #TODO: if stock satisfies the filters we defined above
+            #plug into regression equations for first hour and day
+            xcoord = row[c.infocols + self.bestR2Indices[0]]
+            print("the x coord is: " + str(xcoord))
+            print("regression val is: " + str(self.plugIntoRegression(0, xcoord)))
         #write predictions to row
     #else, write "not enough data"
     #add avg daily mention number, %pos/neg to the row
@@ -262,7 +389,7 @@ class Predictor:
 
 
 stocks = ['BA','UNH','WFC','T','BP','PCG','KO','IBM','MSFT','MAR']
-a = Predictor('2016-05-06', stocks, "ticktalk", 
+a = Predictor('2016-06-02', stocks, "ticktalk", 
 "daySummaries", "predictionHistory","currentPredictions",
 "root", "", "localhost")
 a.test()
