@@ -11,12 +11,7 @@
 
     <title>TickTalk</title>
 
-	<!-- Placed at the end of the document so the pages load faster -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-    <script>window.jQuery || document.write('<script src="/docs/assets/js/vendor/jquery.min.js"><\/script>')</script>
-    <script src="docs/dist/js/bootstrap.min.js"></script>
-	
-    <!-- Bootstrap core CSS -->
+	<!-- Bootstrap core CSS -->
     <link href="docs/dist/css/bootstrap.min.css" rel="stylesheet">
 
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
@@ -25,12 +20,19 @@
     <!-- Custom styles for this template -->
     <link href="docs/examples/dashboard/dashboard.css" rel="stylesheet">
 	
+		<!-- bxSlider CSS file -->
+	<link href="docs/examples/dashboard/jquery.bxslider.css" rel="stylesheet" />
+	
+	<!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script>window.jQuery || document.write('<script src="/docs/assets/js/vendor/jquery.min.js"><\/script>')</script>
+    <script src="docs/dist/js/bootstrap.min.js"></script>
+	
 	
 	<!-- bxSlider Javascript file -->
 	<script src="docs/examples/dashboard/jquery.bxslider.min.js"></script>
 	
-	<!-- bxSlider CSS file -->
-	<link href="docs/examples/dashboard/jquery.bxslider.css" rel="stylesheet" />
+
 
     <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
     <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
@@ -154,7 +156,7 @@
 			event.preventDefault();
 		});
  
-		$('.bxslider').bxSlider({
+		$("#bxslider").bxSlider({
 			adaptiveHeight: true,
 			mode: 'fade',
 			minSlides: 1,
