@@ -129,7 +129,9 @@ body {
     margin: auto;
 }
 
-/*http://stackoverflow.com/questions/33362751/how-to-center-vertically-a-h1-in-middle-of-a-div-container*/
+/*http://stackoverflow.com/questions/33362751/how-to-center-vertically-a-h1-in-middle-of-a-div-container
+https://css-tricks.com/snippets/css/a-guide-to-flexbox/
+*/
 		.container{
 			/*text-align:center;*/
 			display: flex;
