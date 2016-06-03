@@ -19,6 +19,12 @@
 
     <!-- Custom styles for this template -->
     <link href="docs/examples/dashboard/dashboard.css" rel="stylesheet">
+	
+	<!-- bxSlider Javascript file -->
+	<script src="docs/examples/dashboard/jquery.bxslider.min.js"></script>
+	
+	<!-- bxSlider CSS file -->
+	<link href="docs/examples/dashboard/jquery.bxslider.css" rel="stylesheet" />
 
     <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
     <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
@@ -143,9 +149,11 @@
 
 			$("#extra_" + $(this).attr('id').substr(5)).slideToggle("slow");
 			event.preventDefault();
-			
-			
-
+		});
+ 
+		$('.bxslider').bxSlider({
+			adaptiveHeight: true,
+			mode: 'fade'
 		});
  
 });
