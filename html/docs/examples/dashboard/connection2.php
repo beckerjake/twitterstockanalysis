@@ -90,6 +90,12 @@ if (mysqli_num_rows($result) > 0)
 		
 		
 		
+		
+		echo"<svg height=\"100\" width=\"100\">
+  <circle cx=\"50\" cy=\"5\" r=\"40\" stroke=\"black\" stroke-width=\"3\" fill=\"red\" />
+</svg>";
+		
+		
 	echo "	
 		<div id=\"myCarousel\" class=\"carousel slide\" data-ride=\"carousel\">
   <!-- Indicators -->
