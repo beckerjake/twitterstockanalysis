@@ -89,7 +89,7 @@ if (mysqli_num_rows($result) > 0)
 					echo "  </div>"; */
 		
 		
-		$svg_side_length = 200;
+		$svg_side_length = 100;
 		$spacer_side_length = 100;
 		$default_rad = $svg_side_length/2;
 		$per_daily_avg = 100/100;
