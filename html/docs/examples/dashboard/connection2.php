@@ -101,20 +101,20 @@ if (mysqli_num_rows($result) > 0)
   </ol>
 
   <!-- Wrapper for slides -->
-  <div class=\"carousel-inner\" role=\"listbox\">
+  <div class=\"carousel-inner div-responsive center-block\" role=\"listbox\">
     <div class=\"item active\">
       ".$tweet."
     </div>
 
-    <div class=\"item\">
+    <div class=\"item div-responsive center-block\">
       ".$tweet."
     </div>
 
-    <div class=\"item\">
+    <div class=\"item div-responsive center-block\">
       ".$tweet."
     </div>
 
-    <div class=\"item\">
+    <div class=\"item div-responsive center-block\">
       ".$tweet."
     </div>
   </div>
