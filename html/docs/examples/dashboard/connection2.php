@@ -111,11 +111,11 @@ if (mysqli_num_rows($result) > 0)
     </div>
 
     <div class=\"item\">
-      text 3
+      ".$tweet."
     </div>
 
     <div class=\"item\">
-      text 4
+      ".$tweet."
     </div>
   </div>
 
