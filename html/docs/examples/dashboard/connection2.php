@@ -101,21 +101,21 @@ if (mysqli_num_rows($result) > 0)
 		$pos_tweets_radius = pow($per_pos_tweets,0.5) * $daily_avg_radius;
 		
 		$svg_neg_side_length = 2 * $neg_tweets_radius;
-		if (svg_neg_side_length < 100)
+		if ($svg_neg_side_length < 100)
 		{
-			svg_neg_side_length = 100;
+			$svg_neg_side_length = 100;
 		}
 		
 		$svg_daily_avg_side_length = 2 * $daily_avg_radius;
-		if (svg_daily_avg_side_length < 100)
+		if ($svg_daily_avg_side_length < 100)
 		{
-			svg_daily_avg_side_length = 100;
+			$svg_daily_avg_side_length = 100;
 		}
 		
 		$svg_pos_side_length = 2 * $pos_tweets_radius;
-		if (svg_pos_side_length < 100)
+		if ($svg_pos_side_length < 100)
 		{
-			svg_pos_side_length = 100;
+			$svg_pos_side_length = 100;
 		}
 		
 		$fontsize = 36;
