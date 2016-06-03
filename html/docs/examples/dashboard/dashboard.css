@@ -125,7 +125,7 @@ body {
   border-top: none; 
 }
 
-.carousel-inner > .item > div {
+.carousel-inner > .item > img {
     margin: auto;
 }
 
