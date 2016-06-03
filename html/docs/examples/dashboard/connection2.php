@@ -96,7 +96,7 @@ if (mysqli_num_rows($result) > 0)
 			echo "<li>".$tweet."</li>";
 		echo "</ul>";
 		
-		echo $tweet;
+		//echo $tweet;
 		
 		
 		
