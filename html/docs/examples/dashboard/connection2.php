@@ -105,7 +105,14 @@ if (mysqli_num_rows($result) > 0)
 		$svg_pos_side_length = 2 * $pos_tweets_radius;
 
 		//https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/text-anchor
-		echo"<div style=\"text-align:center;\">
+		echo"
+		
+		.container{
+			text-align:center;
+			align-items: center; /* align vertical */
+		}
+		
+		<div class=\"container\" style=\"text-align:center;\">
 				<svg height=".$svg_neg_side_length." width=".$svg_neg_side_length.">
 					<circle cx=".$neg_tweets_radius." cy=".$neg_tweets_radius." r=".$neg_tweets_radius." stroke=\"black\" stroke-width=\"0\" fill=\"lightcoral\" />
 					<text text-anchor=\"middle\" x=".$neg_tweets_radius." y=".$neg_tweets_radius." fill=\"white\">".$per_neg_tweets."</text>
