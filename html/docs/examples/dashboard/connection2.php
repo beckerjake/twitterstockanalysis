@@ -22,16 +22,15 @@ if (!$con)
     die("Connection failed: " . mysqli_connect_error());
 }
 
-$url = "https://publish.twitter.com/oembed?url=https%3A%2F%2Ftwitter.com%2FInterior%2Fstatus%2F507185938620219395";
-$json = file_get_contents($url);
-$json_data = json_decode($json, true);
-$tweet = $json_data["html"];
-
 
 //$sql = "SELECT TOP " .$numStocks. " * FROM  ticktalk.stocks";
 //$sql = "SELECT * FROM (SELECT * FROM ticktalk.daySummaries order by id desc limit ".$numStocks.") unsorted order by id asc";
 //$sql = "SELECT * FROM (SELECT * FROM ticktalk.daySummaries order by id desc limit ".$numStocks.") unsorted order by stockName asc";
-$sql = "SELECT * FROM (SELECT * FROM ticktalk.daySummaries order by id desc limit ".$numStocks.") unsorted order by trim(leading 'the ' from lower(stockName)) asc";
+
+
+//$sql = "SELECT * FROM (SELECT * FROM ticktalk.daySummaries order by id desc limit ".$numStocks.") unsorted order by trim(leading 'the ' from lower(stockName)) asc";
+
+$sql = "SELECT * FROM (SELECT * FROM ticktalk.recommendations order by time_alt desc limit ".$numStocks.") unsorted order by trim(leading 'the ' from lower(symbol)) asc";
 $result = mysqli_query($con, $sql);
 
 if (mysqli_num_rows($result) > 0) 
@@ -42,8 +41,8 @@ if (mysqli_num_rows($result) > 0)
 				<tr>
 					<th align=center><b>Company</b></th>
 					<th align=center><b>Symbol</b></th>
-					<th align=center><b>Sentiment</b></th>
-					<th align=center><b>Closing Price</b></th>
+					<th align=center><b>Recommendation</b></th>
+					<th align=center><b>Previous Closing Price</b></th>
 					<th align=center><b>More Data</b></th>
 				</tr>
 			</thead>";
@@ -54,16 +53,29 @@ if (mysqli_num_rows($result) > 0)
 		$counter = $counter + 1;
 		  
 		$symbol = $row["symbol"];
-		$stockName = $row["stockName"];
+		$stockName = $row["issuer_name"];
+		$recommendation = $row["recommendation"];
+		$end_price = $row["end_price"];
+		$tweet_id = $row["influential_tweet_id"];
 		$time_period = "7d";
+		
+		$per_avg_daily_mentions = $row["per_avg_daily_mentions"];
+		$per_above_avg = $row["per_above_avg"];
+		$per_below_avg = $row["per_below_avg"];
+		  
+		$url = "https://publish.twitter.com/oembed?url=https%3A%2F%2Ftwitter.com%2Fstatus%2F".$tweet_id."";
+		$json = file_get_contents($url);
+		$json_data = json_decode($json, true);
+		$tweet = $json_data["html"];  
+		  
 		  
 		//Table Data
 		
 		echo "<tr>";
 			echo "<td>".$stockName."</td>";
 			echo "<td>".$symbol."</td>";
-			echo "<td>Neutral</td>";
-			echo "<td>".$row["end_price"]."</td>";
+			echo "<td>".$recommendation."</td>";
+			echo "<td>".$end_price."</td>";
 			echo "<td><a href=\"#\" id=\"show_".$counter."\">Show Data</a></td>";
 		echo "</tr>";
           
@@ -89,16 +101,16 @@ if (mysqli_num_rows($result) > 0)
 					echo "  </div>"; */
 		
 		
-		$svg_side_length = 100;
+		$svg_side_length = 200;
 		$spacer_side_length = 100;
 		$default_rad = $svg_side_length/2;
-		$per_daily_avg = 100/100;
-		$per_neg_tweets = 25/100;
-		$per_pos_tweets = 75/100;
+		$per_daily_avg = round($per_avg_daily_mentions,0);
+		$per_neg_tweets = round($per_below_avg,0);
+		$per_pos_tweets = round($per_above_avg,0);
 		
 		$daily_avg_radius = $per_daily_avg * $default_rad;
-		$neg_tweets_radius = pow($per_neg_tweets,0.5) * $daily_avg_radius;
-		$pos_tweets_radius = pow($per_pos_tweets,0.5) * $daily_avg_radius;
+		$neg_tweets_radius = pow($per_neg_tweets/100,0.5) * $daily_avg_radius;
+		$pos_tweets_radius = pow($per_pos_tweets/100,0.5) * $daily_avg_radius;
 		
 		$svg_neg_side_length = 2 * $neg_tweets_radius;
 		if ($svg_neg_side_length < 100)
@@ -155,8 +167,8 @@ if (mysqli_num_rows($result) > 0)
   </ol>
 
   <!-- Wrapper for slides -->
-  <div class=\"carousel-inner div-responsive hidden-container center-block\" role=\"listbox\" overflow:hidden>
-    <div class=\"item active\">
+  <div class=\"carousel-inner div-responsive center-block\" role=\"listbox\" overflow:hidden>
+    <div class=\"item active hidden-container\">
       ".$tweet."
     </div>
 
