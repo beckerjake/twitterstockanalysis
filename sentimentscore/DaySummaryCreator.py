@@ -3,7 +3,7 @@ import sys
 from sys import argv
 from TweetDaySummary import TweetDaySummary
 from StockDaySummary import StockDaySummary
-
+import stocks as s
 #this file uses tweet and stock day summary objects to create and add rows
 #to the day summary table
 #New/current days are added with all stock price information as NULL
@@ -52,11 +52,7 @@ def checkDate(date):
         return False
     return True
 
-#list of stocks that we will query from our database
-stocks = ['BA','UNH','WFC','T','BP','PCG','KO','IBM','MSFT','MAR']
 
-#TODO: create function that sees if day/stock key already exists
-#TODO: create function that does update of the tweet aggregations
 #this function does and sql update by using the same field values
 #as sql insert and updating where we have the same symbol and day
 def sqlUpdate(tableName, fieldValues):
@@ -109,10 +105,10 @@ def main(arg1):
     if not checkDate(date):
         sys.exit("Incorrectly formatted date!")
 #for every stock
-    for i in range(len(stocks)):
+    for i in range(len(s.stocks)):
 #create stock and tweet day summary objects
-        tweetSum = TweetDaySummary(date, stocks[i], "ticktalk", "tweets", "root", "", "localhost")
-        stockSum = StockDaySummary(date, stocks[i], "ticktalk", "stocks", "root", "", "localhost")
+        tweetSum = TweetDaySummary(date, s.stocks[i], "ticktalk", "tweets", "root", "", "localhost")
+        stockSum = StockDaySummary(date, s.stocks[i], "ticktalk", "stocks", "root", "", "localhost")
         daySummary = tweetSum.returnTweetDaySummary()
         daySummary += stockSum.returnStockDaySummary()
         print daySummary
