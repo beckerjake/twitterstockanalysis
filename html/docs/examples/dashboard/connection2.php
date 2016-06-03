@@ -103,19 +103,19 @@ if (mysqli_num_rows($result) > 0)
 		//https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/text-anchor
 		echo"<div style=\"text-align:center;\">
 				<svg height=".$svg_side_length." width=".$svg_side_length.">
-					<circle cx=\"100\" cy=\"100\" r=".$default_rad." stroke=\"black\" stroke-width=\"0\" fill=\"lightcoral\" />
+					<circle cx=\"100\" cy=\"100\" r=".$neg_tweets_radius." stroke=\"black\" stroke-width=\"0\" fill=\"lightcoral\" />
 					<text text-anchor=\"middle\" x=\"100\" y=\"100\" fill=\"white\">".$per_neg_tweets."</text>
 					<style><![CDATA[text{font: bold 36px Helvetica, sans-serif;}]]></style>
 				</svg>
 				<svg height=".$spacer_side_length." width=".$spacer_side_length."></svg>
 				<svg height=".$svg_side_length." width=".$svg_side_length.">
-					<circle cx=\"100\" cy=\"100\" r=".$default_rad." stroke=\"black\" stroke-width=\"0\" fill=\"grey\" />
+					<circle cx=\"100\" cy=\"100\" r=".$daily_avg_radius." stroke=\"black\" stroke-width=\"0\" fill=\"grey\" />
 					<text text-anchor=\"middle\" x=\"100\" y=\"100\" fill=\"white\">".$per_daily_avg."</text>
 					<style><![CDATA[text{font: bold 36px Helvetica, sans-serif;}]]></style>
 				</svg>
 				<svg height=".$spacer_side_length." width=".$spacer_side_length."></svg>
 				<svg height=".$svg_side_length." width=".$svg_side_length.">
-					<circle cx=\"100\" cy=\"100\" r=".$default_rad." stroke=\"black\" stroke-width=\"0\" fill=\"lightgreen\" />
+					<circle cx=\"100\" cy=\"100\" r=".$pos_tweets_radius." stroke=\"black\" stroke-width=\"0\" fill=\"lightgreen\" />
 					<text text-anchor=\"middle\" x=\"100\" y=\"100\" fill=\"white\">".$per_pos_tweets."</text>
 					<style><![CDATA[text{font: bold 36px Helvetica, sans-serif;}]]></style>
 				</svg>
