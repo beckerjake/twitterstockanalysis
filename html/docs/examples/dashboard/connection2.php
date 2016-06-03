@@ -89,11 +89,96 @@ if (mysqli_num_rows($result) > 0)
 					echo "  </div>"; */
 		
 		
+		$svg_side_length = 200;
+		$spacer_side_length = 100;
+		$default_rad = $svg_side_length/2;
+		$per_daily_avg = 100/100;
+		$per_neg_tweets = 25/100;
+		$per_pos_tweets = 75/100;
+		
+		$daily_avg_radius = $per_daily_avg * $default_rad;
+		$neg_tweets_radius = $per_neg_tweets * $daily_avg_radius;
+		$pos_tweets_radius = $per_pos_tweets * $daily_avg_radius;
+		
+		$svg_neg_side_length = 2 * $neg_tweets_radius;
+		$svg_daily_avg_side_length = 2 * $daily_avg_radius;
+		$svg_pos_side_length = 2 * $pos_tweets_radius;
+
+		//https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/text-anchor
+		//http://stackoverflow.com/questions/442164/how-to-get-an-outline-effect-on-text-in-svg
+		echo"	
+		<div class=\"container\" style=\"text-align:center;\">
+				<svg height=".$svg_neg_side_length." width=".$svg_neg_side_length.">
+					<circle cx=".$neg_tweets_radius." cy=".$neg_tweets_radius." r=".$neg_tweets_radius." stroke=\"black\" stroke-width=\"0\" fill=\"lightcoral\" />
+					<text text-anchor=\"middle\" x=".$neg_tweets_radius." y=".$neg_tweets_radius." fill=\"white\">".$per_neg_tweets."</text>
+					<style><![CDATA[text{font: bold 36px Helvetica, sans-serif; stroke-width: 1px; stroke: #000000;}]]></style>
+				</svg>
+				<svg height=".$spacer_side_length." width=".$spacer_side_length."></svg>
+				<svg height=".$svg_daily_avg_side_length." width=".$svg_daily_avg_side_length.">
+					<circle cx=".$daily_avg_radius." cy=".$daily_avg_radius." r=".$daily_avg_radius." stroke=\"black\" stroke-width=\"0\" fill=\"grey\" />
+					<text text-anchor=\"middle\" x=".$daily_avg_radius." y=".$daily_avg_radius." fill=\"white\">".$per_daily_avg."</text>
+					<style><![CDATA[text{font: bold 36px Helvetica, sans-serif; stroke-width: 1px; stroke: #000000;}]]></style>
+				</svg>
+				<svg height=".$spacer_side_length." width=".$spacer_side_length."></svg>
+				<svg height=".$svg_pos_side_length." width=".$svg_pos_side_length.">
+					<circle cx=".$pos_tweets_radius." cy=".$pos_tweets_radius." r=".$pos_tweets_radius." stroke=\"black\" stroke-width=\"0\" fill=\"lightgreen\" />
+					<text text-anchor=\"middle\" x=".$pos_tweets_radius." y=".$pos_tweets_radius." fill=\"white\">".$per_pos_tweets."</text>
+					<style><![CDATA[text{font: bold 36px Helvetica, sans-serif; stroke-width: 1px; stroke: #000000;}]]></style>
+				</svg>
+			</div>";
+		
+		
+	echo "	
+		<div id=\"myCarousel\" class=\"carousel slide\" data-ride=\"carousel\">
+  <!-- Indicators -->
+  <ol class=\"carousel-indicators\">
+    <li data-target=\"#myCarousel\" data-slide-to=\"0\" class=\"active\"></li>
+    <li data-target=\"#myCarousel\" data-slide-to=\"1\"></li>
+    <li data-target=\"#myCarousel\" data-slide-to=\"2\"></li>
+    <li data-target=\"#myCarousel\" data-slide-to=\"3\"></li>
+  </ol>
+
+  <!-- Wrapper for slides -->
+  <div class=\"carousel-inner div-responsive center-block\" role=\"listbox\">
+    <div class=\"item active\">
+      ".$tweet."
+    </div>
+
+    <div class=\"item div-responsive center-block\">
+      ".$tweet."
+    </div>
+
+    <div class=\"item div-responsive center-block\">
+      ".$tweet."
+    </div>
+
+    <div class=\"item div-responsive center-block\">
+      ".$tweet."
+    </div>
+  </div>
+
+  <!-- Left and right controls -->
+  <a class=\"left carousel-control\" href=\"#myCarousel\" role=\"button\" data-slide=\"prev\">
+    <span class=\"glyphicon glyphicon-chevron-left\" aria-hidden=\"true\"></span>
+    <span class=\"sr-only\">Previous</span>
+  </a>
+  <a class=\"right carousel-control\" href=\"#myCarousel\" role=\"button\" data-slide=\"next\">
+    <span class=\"glyphicon glyphicon-chevron-right\" aria-hidden=\"true\"></span>
+    <span class=\"sr-only\">Next</span>
+  </a>
+</div>
+		";
+		
 		
 		echo "<ul class=\"bxslider\">";
+			/* echo "<li>".$tweet."</li>";
 			echo "<li>".$tweet."</li>";
-			echo "<li>".$tweet."</li>";
-			echo "<li>".$tweet."</li>";
+			echo "<li>".$tweet."</li>"; */
+			
+			echo "<li>tweet</li>";
+			echo "<li>tweet</li>";
+			echo "<li>tweet</li>";
+			
 		echo "</ul>";
 		
 		//echo $tweet;
