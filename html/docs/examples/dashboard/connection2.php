@@ -88,7 +88,18 @@ if (mysqli_num_rows($result) > 0)
 					echo "  </table>";
 					echo "  </div>"; */
 		
+		
+		
+		echo "<ul class=\"bxslider\">";
+			echo "<li>".$tweet."</li>";
+			echo "<li>".$tweet."</li>";
+			echo "<li>".$tweet."</li>";
+		echo "</ul>";
+		
 		echo $tweet;
+		
+		
+		
 		
 		 //More Data (Yahoo-populated)
 		 echo  "<div class=\"table-responsive\" align=\"center\">";
