@@ -107,19 +107,19 @@ if (mysqli_num_rows($result) > 0)
 		//https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/text-anchor
 		echo"<div style=\"text-align:center;\">
 				<svg height=".$svg_neg_side_length." width=".$svg_neg_side_length.">
-					<circle cx=\"100\" cy=\"100\" r=".$neg_tweets_radius." stroke=\"black\" stroke-width=\"0\" fill=\"lightcoral\" />
+					<circle cx=".$neg_tweets_radius." cy=".$neg_tweets_radius." r=".$neg_tweets_radius." stroke=\"black\" stroke-width=\"0\" fill=\"lightcoral\" />
 					<text text-anchor=\"middle\" x=".$neg_tweets_radius." y=".$neg_tweets_radius." fill=\"white\">".$per_neg_tweets."</text>
 					<style><![CDATA[text{font: bold 36px Helvetica, sans-serif;}]]></style>
 				</svg>
 				<svg height=".$spacer_side_length." width=".$spacer_side_length."></svg>
 				<svg height=".$svg_daily_avg_side_length." width=".$svg_daily_avg_side_length.">
-					<circle cx=\"100\" cy=\"100\" r=".$daily_avg_radius." stroke=\"black\" stroke-width=\"0\" fill=\"grey\" />
+					<circle cx=".$daily_avg_radius." cy=".$daily_avg_radius." r=".$daily_avg_radius." stroke=\"black\" stroke-width=\"0\" fill=\"grey\" />
 					<text text-anchor=\"middle\" x=".$daily_avg_radius." y=".$daily_avg_radius." fill=\"white\">".$per_daily_avg."</text>
 					<style><![CDATA[text{font: bold 36px Helvetica, sans-serif;}]]></style>
 				</svg>
 				<svg height=".$spacer_side_length." width=".$spacer_side_length."></svg>
 				<svg height=".$svg_pos_side_length." width=".$svg_pos_side_length.">
-					<circle cx=\"100\" cy=\"100\" r=".$pos_tweets_radius." stroke=\"black\" stroke-width=\"0\" fill=\"lightgreen\" />
+					<circle cx=".$pos_tweets_radius." cy=".$pos_tweets_radius." r=".$pos_tweets_radius." stroke=\"black\" stroke-width=\"0\" fill=\"lightgreen\" />
 					<text text-anchor=\"middle\" x=".$pos_tweets_radius." y=".$pos_tweets_radius." fill=\"white\">".$per_pos_tweets."</text>
 					<style><![CDATA[text{font: bold 36px Helvetica, sans-serif;}]]></style>
 				</svg>
