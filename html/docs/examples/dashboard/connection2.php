@@ -91,9 +91,20 @@ if (mysqli_num_rows($result) > 0)
 		
 		
 		
-		echo"<svg height=\"100\" width=\"100\">
-  <circle cx=\"50\" cy=\"5\" r=\"40\" stroke=\"black\" stroke-width=\"3\" fill=\"red\" />
-</svg>";
+		echo"<div style=\"text-align:center;\">
+				<svg height=\"200\" width=\"200\">
+					<circle cx=\"100\" cy=\"100\" r=\"100\" stroke=\"black\" stroke-width=\"0\" fill=\"lightcoral\" />
+					<text text-anchor=\"middle\" x=\"100\" y=\"100\" color=\"white\">25</text>
+				</svg>
+				<svg height=\"200\" width=\"200\">
+					<circle cx=\"100\" cy=\"100\" r=\"100\" stroke=\"black\" stroke-width=\"0\" fill=\"grey\" />
+					<text text-anchor=\"middle\" x=\"100\" y=\"100\" color=\"white\">100</text>
+				</svg>
+				<svg height=\"200\" width=\"200\">
+					<circle cx=\"100\" cy=\"100\" r=\"100\" stroke=\"black\" stroke-width=\"0\" fill=\"lightgreen\" />
+					<text text-anchor=\"middle\" x=\"100\" y=\"100\" color=\"white\">75</text>
+				</svg>
+			</div>";
 		
 		
 	echo "	
