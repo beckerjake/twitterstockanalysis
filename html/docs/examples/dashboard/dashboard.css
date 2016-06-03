@@ -129,3 +129,8 @@ body {
     margin: auto;
 }
 
+/*http://stackoverflow.com/questions/33362751/how-to-center-vertically-a-h1-in-middle-of-a-div-container*/
+		.container{
+			text-align:center;
+			align-items: center; /* align vertical */
+		}
