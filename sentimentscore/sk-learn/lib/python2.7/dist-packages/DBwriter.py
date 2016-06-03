@@ -19,13 +19,14 @@ updateColNames = [
 'first_hour_recommendation',
 'day_recommendation']
 class DBwriter:
-    def __init__(self, date):
+    def __init__(self, date, writeHour):
         self.date = date
+        self.writeHour = writeHour
         self.currentTableName = "recommendations"
         self.historicalTableName = "historical_performance"
 #use the get date class TODO
 #TODO import stocks from the sentimentscore folder
-        self.a = Predictor.Predictor('2016-06-02', s.stocks, "ticktalk", 
+        self.a = Predictor.Predictor(self.date, s.stocks, "ticktalk", 
         "daySummaries", 
         "root", "", "localhost")
         host = 'localhost'
@@ -99,17 +100,18 @@ class DBwriter:
         updateStatement = "update " + tableName + " set "
         updateStatement += updateColNames[0] + "=\"" + row[0] + "\", "
         startIndex = 3
-        for i in range(startIndex, len(row)- 3):
+        for i in range(startIndex, len(row)- 2):
             if i == 4:
                 updateStatement += updateColNames[4] + "=\"" + row[4] + "\", "
             else:
                 updateStatement += updateColNames[i] + '=' + str(row[i])
                 updateStatement += ", "
+        if self.writeHour > 0:
+            updateStatement += updateColNames[9] + "=\"" + row[9] + "\", "
+        else:
+            updateStatement += updateColNames[9] + "=\"" + row[10] + "\", "
         for i in range(len(row) - 2, len(row)):
-            updateStatement += updateColNames[i] + "=\"" + row[i] + "\", "
-            if i % 2 == 0:
-                updateStatement += updateColNames[i] + "=\"" + row[i] + "\", "
-#TODO:time based update
+            updateStatement += updateColNames[i+1] + "=\"" + row[i] + "\", "
        #take out the last comma and space
         updateStatement = updateStatement[:-2]
 
@@ -119,7 +121,8 @@ class DBwriter:
 #returns update statement that only updates the prediction of historical row
     def sqlUpdateHistorical(self, tableName, row):
         statement = "update " + tableName + " set "
-        statement += "recommendation=\"" + row[2] + "\""
+        statement += "recommendation=\"" + row[2] + "\", "
+        statement += "performance=" + str(row[3]) + " "
         statement += " where symbol=\"" + row[1] + "\" and "
         statement += "date=\"" + row[4] + "\""
         return statement
@@ -149,8 +152,6 @@ class DBwriter:
 
 
 
-b = DBwriter('2016-06-02')
-b.updateHistoricalPredictions()
 
 
 

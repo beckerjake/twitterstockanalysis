@@ -76,6 +76,7 @@ class Predictor:
         self.loadCleanDaySummaries()
         self.computePercentiles()
         self.applyFilters()
+        self.printColNamesOfBestR2Indices(self.bestR2Indices)
     def test(self):
         for i in self.stockSymbols:
             print self.getCurrentPredictionRow(i)
@@ -358,6 +359,8 @@ class Predictor:
         slope = self.slopes[lineIndex][isHour]
         #get intercept
         intercept = self.intercepts[lineIndex][isHour]
+        if xcoord is None:
+            return intercept
         #plug in and return
         return slope * xcoord + intercept
 #takes raw prediction as input and returns the day prediction as a string
@@ -381,10 +384,12 @@ class Predictor:
 
 #computes the weight rawPrediciont, isHour = 1 when we get hour predictions
 #return -99 if the row doesn't satisfy the filters
+#they must have at least one tweet to satisfy the filter
     def computeWeightedRawPrediction(self, row, isHour):
         #check if filters are satisfied
-        if row[c.totalmentionsindex] < self.mentionFilter or row[c.positivelistedcountindex] < self.listedFilter:
+        if row[c.totalmentionsindex] < self.mentionFilter or row[c.positivelistedcountindex] < self.listedFilter or row[c.totalmentionsindex] < 1:
             return -99
+        print row
         if isHour == 1:
             offset = 3
             arrayOffset = 1
@@ -426,26 +431,146 @@ class Predictor:
         returnVal.append(self.raw2StringPrediction(rawDay, 0))
         returnVal.append(self.raw2StringPrediction(rawHour, 1))
         return returnVal
-            
+    def getAvgDailyMentions(self, symbol):
+        statement = "select avg(totalMentions) from daySummaries "
+        statement += "where symbol = \""
+        statement += symbol + "\" group by symbol"
+        self.cur.execute(statement)
+        for row in self.cur.fetchall():
+            return row[0]
+    def getCurrentDailyMentions(self, symbol):
+        statement = "select totalMentions from daySummaries "
+        statement += "where symbol = \""
+        statement += symbol + "\" and date = \""
+        statement += self.date + "\""
+        self.cur.execute(statement)
+        for row in self.cur.fetchall():
+            return row[0]
+    def getPreviousDay(self):
+        year = int(self.date[:4])
+        month = int(self.date[5:7])
+        day = int(self.date[8:])
+        date = [year, month, day]
+        daysInEachMonth = [31,28,31,30,31,30,31,31,30,31,30,31]
+#check if first day of month and year
+        if date[2] == 1 and date[1] == 1:
+            date[0] -= 1
+            date[2] = 31
+            date[1] = 12
+#check if first day of month
+        elif date[2] == 1:
+            date[1] -= 1
+            date[2] = daysInEachMonth[date[1] - 1]
+        else:
+            date[2] -= 1
+        toReturn = str(date[0]) + '-' + str(date[1]) + '-' + str(date[2])
+        return toReturn
+    def getNextDay(self):
+        year = int(self.date[:4])
+        month = int(self.date[5:7])
+        day = int(self.date[8:])
+        date = [year, month, day]
+        daysInEachMonth = [31,28,31,30,31,30,31,31,30,31,30,31]
+#check if last day of month and year
+        if date[2] == 31 and date[1] == 12:
+            date[0] += 1
+            date[2] = 1
+            date[1] = 1
+#check if last day of month
+        elif date[2] == daysInEachMonth[date[1] - 1]:
+            date[1] += 1
+            date[2] = 1
+        else:
+            date[2] += 1
+        toReturn = str(date[0]) + '-' + str(date[1]) + '-' + str(date[2])
+        return toReturn
+    def getSignedDailyMentions(self, symbol, isPositive):
+        statement = "select count(*) from tweets where tweet_time > "
+        statement += "\'" + self.date + "\' and tweet_time < "
+        statement += "\'" + self.getNextDay() + "\' and stock_symbol = "
+        statement += "\"$" + symbol + "\" and score "
+        if isPositive:
+            statement += ">"
+        else:
+            statement += "<"
+        statement += "0.31"
+        self.cur.execute(statement)
+        for row in self.cur.fetchall():
+            return row[0]
+    def getInfluentialTweetId(self, symbol, prediction):
+        if prediction == "Buy" or prediction == "Strong Buy":
+            offset = 0
+            statement = "select tweet_id, score, followers_count from tweets where tweet_time > "
+            statement += "\'" + self.date + "\' and tweet_time < "
+            statement += "\'" + self.getNextDay() + "\' and stock_symbol ="
+            statement += "\"$" + symbol + "\""
+#highest sentiment * followers score
+        elif prediction == "Sell" or prediction == "Strong Sell":
+            offset = 0.31
+            statement = "select tweet_id, score, followers_count from tweets where tweet_time > "
+            statement += "\'" + self.date + "\' and tweet_time < "
+            statement += "\'" + self.getNextDay() + "\' and stock_symbol ="
+            statement += "\"$" + symbol + "\""
+#lowest sentiment * followers score
+        else:
+            statement = "select tweet_id from tweets where tweet_time > "
+            statement += "\'" + self.date + "\' and tweet_time < "
+            statement += "\'" + self.getNextDay() + "\' and stock_symbol ="
+            statement += "\"$" + symbol + "\" order by followers_count"
+            statement += " desc limit 1"
+        self.cur.execute(statement)
+        rows = self.cur.fetchall()
+        if len(rows) == 1:
+            return rows[0][0]
+        bestScore = 0
+        bestId = rows[0][0]
+        for i in range(len(rows)):
+            if rows[i][1] is None:
+                continue
+            elif offset == 0 and rows[i][1]*rows[i][2] > bestScore:
+                bestId = rows[i][0]
+                bestScore = rows[i][1]*rows[i][2]
+            elif offset == 0.31 and (rows[i][1] - offset)*rows[i][2] < bestScore:
+                bestScore = (rows[i][1] - offset)*rows[i][2]
+                bestId = rows[i][0]
+        return bestId
+    def getClosingPrice(self, symbol):
+        closeHour = 20
+        previousDay = self.getPreviousDay()
+        queryString = "select price, time_alt from stocks where symbol = \"" + symbol + "\" and time_alt >= \"" + previousDay + "\" and time_alt < \"" + self.date + "\""
+        self.cur.execute(queryString)
+        for row in self.cur.fetchall():
+            if row[1].hour == closeHour:
+                return row[0]
+        return -1
+
+
+#highest number of followers
 #this creates a row with everything the current predictions table needs
 #for a give stock symbol
-#TODO: add all the other stuff in the row
     def getCurrentPredictionRow(self, symbol):
         toReturn = self.getPredictions(symbol)
-        dummyrow = ['123','test company name',symbol,100,self.date,.69,.69,.31,1000]
+        volumeOfDailyMentions = self.getCurrentDailyMentions(symbol)/self.getAvgDailyMentions(symbol)
+        positiveMentions = self.getSignedDailyMentions(symbol, True)
+        negativeMentions = self.getSignedDailyMentions(symbol, False)
+        posPer = 100*(float(positiveMentions) /(positiveMentions + negativeMentions))
+        negPer = 100 - posPer
+        dummyrow = [self.getInfluentialTweetId(symbol,toReturn[0]),'test company name',symbol,self.getClosingPrice(symbol),self.date,volumeOfDailyMentions,posPer,negPer,self.getCurrentDailyMentions(symbol)]
         dummyrow.append(toReturn[1])
         dummyrow.append(toReturn[0])
         return dummyrow
     def getHistoricalPredictionRow(self, symbol):
         toReturn = []
-        queryString = "select stockName from " + self.__inputTableName + " where symbol = \"" + symbol + "\""
+        queryString = "select stockName,percent_day_change from " + self.__inputTableName + " where symbol = \"" + symbol + "\" and date = \"" + self.date + "\""
         self.cur.execute(queryString)
+        tempRow = []
         for row in self.cur.fetchall():
             toReturn.append(row[0])
+            tempRow = row
             break
         toReturn.append(symbol)
         toReturn.append(self.getCurrentPredictionRow(symbol)[10])
-        toReturn.append(-2)
+        toReturn.append(tempRow[1])
         toReturn.append(self.date)
         return toReturn
 

@@ -112,7 +112,7 @@ class StockDaySummary:
             halfHour = 30
             stockPrices = [] 
 #compute the timestamp of the next day
-            nextDay = self.date[:-2] + "%02d" % (int(self.date[-2:]) + 1)
+            nextDay = self.getNextDay()
             queryString = "select price, time_alt from " + self.__tableName + " where symbol = \"" + self.stockSymbol + "\" and time_alt >= \"" + self.date + "\" and time_alt < \"" + nextDay + "\""
             self.cur.execute(queryString)
             for row in self.cur.fetchall():
@@ -125,6 +125,25 @@ class StockDaySummary:
                     break
             return stockPrices
 
+    def getNextDay(self):
+        year = int(self.date[:4])
+        month = int(self.date[5:7])
+        day = int(self.date[8:])
+        date = [year, month, day]
+        daysInEachMonth = [31,28,31,30,31,30,31,31,30,31,30,31]
+#check if last day of month and year
+        if date[2] == 31 and date[1] == 12:
+            date[0] += 1
+            date[2] = 1
+            date[1] = 1
+#check if last day of month
+        elif date[2] == daysInEachMonth[date[1] - 1]:
+            date[1] += 1
+            date[2] = 1
+        else:
+            date[2] += 1
+            toReturn = str(date[0]) + '-' + str(date[1]) + '-' + str(date[2])
+        return toReturn
     def test(self):
         print self.returnStockDaySummary()
 
