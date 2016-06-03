@@ -114,7 +114,7 @@ if (mysqli_num_rows($result) > 0)
       text 3
     </div>
 
-    <div class="item">
+    <div class=\"item\">
       text 4
     </div>
   </div>
