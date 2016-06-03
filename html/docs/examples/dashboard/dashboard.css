@@ -125,3 +125,7 @@ body {
   border-top: none; 
 }
 
+.carousel-inner > .item > div {
+    margin: 0 auto;
+}
+
