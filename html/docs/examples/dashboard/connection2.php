@@ -63,7 +63,7 @@ if (mysqli_num_rows($result) > 0)
 		$per_above_avg = $row["per_above_avg"];
 		$per_below_avg = $row["per_below_avg"];
 		  
-		$url = "https://publish.twitter.com/oembed?url=https%3A%2F%2Ftwitter.com%2Fstatuses%2F".$tweet_id."";
+		$url = "https://publish.twitter.com/oembed?url=https%3A%2F%2Ftwitter.com%2FInterior%2Fstatus%2F".$tweet_id."";
 		$json = file_get_contents($url);
 		$json_data = json_decode($json, true);
 		$tweet = $json_data["html"];  
