@@ -75,7 +75,7 @@ if (mysqli_num_rows($result) > 0)
 			echo "<td>".$stockName."</td>";
 			echo "<td>".$symbol."</td>";
 			echo "<td>".$recommendation."</td>";
-			echo "<td>".$end_price."</td>";
+			echo "<td>".round($end_price,2)."</td>";
 			echo "<td><a href=\"#\" id=\"show_".$counter."\">Show Data</a></td>";
 		echo "</tr>";
           
