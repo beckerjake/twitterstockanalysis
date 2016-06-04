@@ -84,22 +84,7 @@ if (mysqli_num_rows($result) > 0)
 			echo " <td colspan=\"5\">";
 				echo "<div id=\"extra_".$counter."\" style=\"display: none;\">";
           
-				//More Data (Calculated)
-				/* //echo  "<div class=\"table-responsive\" align=\"center\">";
-					echo  "<div class=\"table-responsive\">"; //left aligned
-					echo "  <table class=\"table\">";
-					echo "<caption> Calculated </caption>";
-					//for the tweet
-					echo "  <tr>";
-					echo "  <td colspan=\"5\">";
-					//echo "<td>";
-					echo $tweet;
-					echo "  </td>";
-					echo "  </tr>";
-		  
-					echo "  </table>";
-					echo "  </div>"; */
-		
+		//More Data (Calculated)
 		
 		$svg_side_length = 200;
 		$spacer_side_length = 100;
@@ -155,8 +140,8 @@ if (mysqli_num_rows($result) > 0)
 				</svg>
 			</div>";
 		
-		
-	echo "	
+//carousel
+/* 	echo "	
 		<div id=\"myCarousel\" class=\"carousel slide\" data-ride=\"carousel\">
   <!-- Indicators -->
   <ol class=\"carousel-indicators\">
@@ -195,7 +180,7 @@ if (mysqli_num_rows($result) > 0)
     <span class=\"sr-only\">Next</span>
   </a>
 </div>
-		";
+		"; */
 		
 		
 /* 		echo "<ul class=\"bxslider\">";
