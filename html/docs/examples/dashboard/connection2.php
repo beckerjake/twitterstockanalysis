@@ -195,8 +195,8 @@ if (mysqli_num_rows($result) > 0)
 		
 		
 		
-		
-		 //More Data (Yahoo-populated)
+		//charts
+		 /* //More Data (Yahoo-populated)
 		 echo  "<div class=\"table-responsive\" align=\"center\">";
 
 			echo " <table class=\"table\">";
@@ -226,7 +226,7 @@ if (mysqli_num_rows($result) > 0)
 		 
 					echo " </tr>";
 			echo "</table>";
-		echo "</div>";
+		echo "</div>"; */
 		  
 		  
 		  //headlines
