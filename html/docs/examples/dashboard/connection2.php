@@ -120,7 +120,7 @@ if (mysqli_num_rows($result) > 0)
 		//percentages
 		//https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/text-anchor
 		//http://stackoverflow.com/questions/442164/how-to-get-an-outline-effect-on-text-in-svg
-		/* echo"	
+		echo"	
 		<div class=\"container\" style=\"text-align:center;\">
 				<svg height=".$svg_neg_side_length." width=".$svg_neg_side_length.">
 					<circle cx=".($svg_neg_side_length/2)." cy=".($svg_neg_side_length/2)." r=".$neg_tweets_radius." stroke=\"black\" stroke-width=\"0\" fill=\"lightcoral\" />
@@ -139,7 +139,7 @@ if (mysqli_num_rows($result) > 0)
 					<text text-anchor=\"middle\" x=".$pos_tweets_radius." y=".($pos_tweets_radius-$fontsize/2)." fill=\"white\">".$per_pos_tweets."</text>
 					<style><![CDATA[text{font: bold ".$fontsize."px Helvetica, sans-serif; stroke-width: 1px; stroke: #000000;}]]></style>
 				</svg>
-			</div>"; */
+			</div>";
 		
 //carousel
 	echo "	
