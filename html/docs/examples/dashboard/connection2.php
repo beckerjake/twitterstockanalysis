@@ -142,7 +142,7 @@ if (mysqli_num_rows($result) > 0)
 			</div>"; */
 		
 //carousel
-/* 	echo "	
+	echo "	
 		<div id=\"myCarousel\" class=\"carousel slide\" data-ride=\"carousel\">
   <!-- Indicators -->
   <ol class=\"carousel-indicators\">
@@ -181,7 +181,7 @@ if (mysqli_num_rows($result) > 0)
     <span class=\"sr-only\">Next</span>
   </a>
 </div>
-		"; */
+		";
 		
 		
 /* 		echo "<ul class=\"bxslider\">";
