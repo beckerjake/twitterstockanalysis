@@ -93,7 +93,8 @@ if (mysqli_num_rows($result) > 0)
 		$per_neg_tweets = round($per_below_avg,0);
 		$per_pos_tweets = round($per_above_avg,0);
 		
-		$daily_avg_radius = pow($per_daily_avg/100 * $default_rad, 0.5);
+		//$daily_avg_radius = pow($per_daily_avg/100 * $default_rad, 0.5); //this worked as planned, but circles ended up being too small
+		$daily_avg_radius = $default_rad;
 		$neg_tweets_radius = pow($per_neg_tweets/100,0.5) * $daily_avg_radius;
 		$pos_tweets_radius = pow($per_pos_tweets/100,0.5) * $daily_avg_radius;
 		
