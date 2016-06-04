@@ -123,15 +123,19 @@ if (mysqli_num_rows($result) > 0)
 		//percentages
 		//https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/text-anchor
 		//http://stackoverflow.com/questions/442164/how-to-get-an-outline-effect-on-text-in-svg
+		
+							//<svg height=".($svg_neg_side_length+label_fontsize +$margin)." width=".$svg_neg_side_length.">
+
+							//<text fontsize=".$label_fontsize."px text-anchor=\"middle\" alignment-baseline=\"middle\" x=".$neg_tweets_radius." y=".($neg_tweets_radius*2+$label_fontsize/2)." fill=\"white\">Tweets below average sentiment</text>
+
+		
 		echo"	
 		<div class=\"container\" style=\"text-align:center;\">
-				<svg height=".$spacer_side_length." width=".$spacer_side_length."></svg> //this is a hack TODO change this
-				<svg height=".($svg_neg_side_length+label_fontsize +$margin)." width=".$svg_neg_side_length.">
+				<svg height=".$spacer_side_length." width=".$spacer_side_length."></svg>
+				<svg height=".($svg_neg_side_length)." width=".$svg_neg_side_length.">
 					<circle cx=".($svg_neg_side_length/2)." cy=".($svg_neg_side_length/2)." r=".$neg_tweets_radius." stroke=\"black\" stroke-width=\"0\" fill=\"lightcoral\" />
 					<text text-anchor=\"middle\" alignment-baseline=\"middle\" x=".$neg_tweets_radius." y=".($neg_tweets_radius)." fill=\"white\">".$per_neg_tweets."%</text>
 					<style><![CDATA[text{font: bold ".$fontsize."px Helvetica, sans-serif; stroke-width: 1px; stroke: #000000;}]]></style>
-					<text fontsize=".$label_fontsize."px text-anchor=\"middle\" alignment-baseline=\"middle\" x=".$neg_tweets_radius." y=".($neg_tweets_radius*2+$label_fontsize/2)." fill=\"white\">Tweets below average sentiment</text>
-
 				</svg>
 				<svg height=".$spacer_side_length." width=".$spacer_side_length."></svg>
 				<svg height=".$svg_daily_avg_side_length." width=".$svg_daily_avg_side_length.">
