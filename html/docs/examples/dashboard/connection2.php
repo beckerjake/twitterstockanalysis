@@ -93,9 +93,9 @@ if (mysqli_num_rows($result) > 0)
 		$per_neg_tweets = round($per_below_avg,0);
 		$per_pos_tweets = round($per_above_avg,0);
 		
-		$daily_avg_radius = $per_daily_avg * $default_rad;
-		$neg_tweets_radius = pow($per_neg_tweets/100,0.5) * pow($daily_avg_radius/100, 0.5);
-		$pos_tweets_radius = pow($per_pos_tweets/100,0.5) * pow($daily_avg_radius/100, 0.5);
+		$daily_avg_radius = $per_daily_avg/100 * $default_rad;
+		$neg_tweets_radius = pow($per_neg_tweets/100,0.5) * pow($daily_avg_radius, 0.5);
+		$pos_tweets_radius = pow($per_pos_tweets/100,0.5) * pow($daily_avg_radius, 0.5);
 		
 		$svg_neg_side_length = 2 * $neg_tweets_radius;
 		if ($svg_neg_side_length < 100)
