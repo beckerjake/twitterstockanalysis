@@ -130,7 +130,7 @@ if (mysqli_num_rows($result) > 0)
 					<circle cx=".($svg_neg_side_length/2)." cy=".($svg_neg_side_length/2)." r=".$neg_tweets_radius." stroke=\"black\" stroke-width=\"0\" fill=\"lightcoral\" />
 					<text text-anchor=\"middle\" alignment-baseline=\"middle\" x=".$neg_tweets_radius." y=".($neg_tweets_radius)." fill=\"white\">".$per_neg_tweets."%</text>
 					<style><![CDATA[text{font: bold ".$fontsize."px Helvetica, sans-serif; stroke-width: 1px; stroke: #000000;}]]></style>
-					<text fontsize=".$label_fontsize."px text-anchor=\"middle\" alignment-baseline=\"middle\" x=".$neg_tweets_radius." y=".($neg_tweets_radius*2+$label_fontsize/2)." fill=\"white\">"Tweets below average sentiment"%</text>
+					<text fontsize=".$label_fontsize."px text-anchor=\"middle\" alignment-baseline=\"middle\" x=".$neg_tweets_radius." y=".($neg_tweets_radius*2+$label_fontsize/2)." fill=\"white\">Tweets below average sentiment</text>
 
 				</svg>
 				<svg height=".$spacer_side_length." width=".$spacer_side_length."></svg>
