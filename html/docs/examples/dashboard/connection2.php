@@ -94,8 +94,8 @@ if (mysqli_num_rows($result) > 0)
 		$per_pos_tweets = round($per_above_avg,0);
 		
 		$daily_avg_radius = $per_daily_avg * $default_rad;
-		$neg_tweets_radius = pow($per_neg_tweets/100,0.5) * $daily_avg_radius;
-		$pos_tweets_radius = pow($per_pos_tweets/100,0.5) * $daily_avg_radius;
+		$neg_tweets_radius = pow($per_neg_tweets/100,0.5) * pow($daily_avg_radius, 0.5);
+		$pos_tweets_radius = pow($per_pos_tweets/100,0.5) * pow($daily_avg_radius, 0.5);
 		
 		$svg_neg_side_length = 2 * $neg_tweets_radius;
 		if ($svg_neg_side_length < 100)
@@ -120,26 +120,26 @@ if (mysqli_num_rows($result) > 0)
 		//percentages
 		//https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/text-anchor
 		//http://stackoverflow.com/questions/442164/how-to-get-an-outline-effect-on-text-in-svg
-		/* echo"	
+		echo"	
 		<div class=\"container\" style=\"text-align:center;\">
 				<svg height=".$svg_neg_side_length." width=".$svg_neg_side_length.">
 					<circle cx=".($svg_neg_side_length/2)." cy=".($svg_neg_side_length/2)." r=".$neg_tweets_radius." stroke=\"black\" stroke-width=\"0\" fill=\"lightcoral\" />
-					<text text-anchor=\"middle\" x=".$neg_tweets_radius." y=".($neg_tweets_radius-$fontsize/2)." fill=\"white\">".$per_neg_tweets."</text>
+					<text text-anchor=\"middle\" alignment-baseline=\"middle\" x=".$neg_tweets_radius." y=".($neg_tweets_radius)." fill=\"white\">".$per_neg_tweets."</text>
 					<style><![CDATA[text{font: bold ".$fontsize."px Helvetica, sans-serif; stroke-width: 1px; stroke: #000000;}]]></style>
 				</svg>
 				<svg height=".$spacer_side_length." width=".$spacer_side_length."></svg>
 				<svg height=".$svg_daily_avg_side_length." width=".$svg_daily_avg_side_length.">
 					<circle cx=".($svg_daily_avg_side_length/2)." cy=".($svg_daily_avg_side_length/2)." r=".$daily_avg_radius." stroke=\"black\" stroke-width=\"0\" fill=\"grey\" />
-					<text text-anchor=\"middle\" x=".$daily_avg_radius." y=".($daily_avg_radius-$fontsize/2)." fill=\"white\">".$per_daily_avg."</text>
+					<text text-anchor=\"middle\" alignment-baseline=\"middle\" x=".$daily_avg_radius." y=".($daily_avg_radius)." fill=\"white\">".$per_daily_avg."</text>
 					<style><![CDATA[text{font: bold ".$fontsize."px Helvetica, sans-serif; stroke-width: 1px; stroke: #000000;}]]></style>
 				</svg>
 				<svg height=".$spacer_side_length." width=".$spacer_side_length."></svg>
 				<svg height=".$svg_pos_side_length." width=".$svg_pos_side_length.">
 					<circle cx=".($svg_pos_side_length/2)." cy=".($svg_pos_side_length/2)." r=".$pos_tweets_radius." stroke=\"black\" stroke-width=\"0\" fill=\"lightgreen\" />
-					<text text-anchor=\"middle\" x=".$pos_tweets_radius." y=".($pos_tweets_radius-$fontsize/2)." fill=\"white\">".$per_pos_tweets."</text>
+					<text text-anchor=\"middle\" alignment-baseline=\"middle\" x=".$pos_tweets_radius." y=".($pos_tweets_radius)." fill=\"white\">".$per_pos_tweets."</text>
 					<style><![CDATA[text{font: bold ".$fontsize."px Helvetica, sans-serif; stroke-width: 1px; stroke: #000000;}]]></style>
 				</svg>
-			</div>"; */
+			</div>";
 		
 //carousel
 	echo "	
