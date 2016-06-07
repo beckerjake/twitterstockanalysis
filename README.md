@@ -25,9 +25,9 @@ We use multiple Node.js modules:
 * [twitter-stream-channels](https://www.npmjs.com/package/twitter-stream-channels)
 
 To install these modules (after installing Node.js):
-`$ npm install request`
-`$ npm install mysql`
-`$ npm install twitter-stream-channels`
+* `$ npm install request`
+* `$ npm install mysql`
+* `$ npm install twitter-stream-channels`
 
 We use `$ crontab -e` to set intervals at which to run the scripts that determine sentiment scores and collect stock quotes from Yahoo! Finanace.
 
@@ -38,7 +38,18 @@ Node Twitter streaming APIs:
 * https://www.npmjs.com/package/twitter-stream-channels (used in latest version of the project)
 * https://github.com/topheman/twitter-stream-channels
 
-Linux (`screen`, `crontab`, etc.)
+Amazon Web Services:
+* http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/AccessingInstances.html
+* http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/AccessingInstancesLinux.html
+* http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/install-LAMP.html
+* http://stackoverflow.com/questions/26245942/how-do-i-leave-node-js-server-on-ec2-running-forever
+
+Linux (`screen`, `crontab`, etc.):
+* http://unix.stackexchange.com/questions/74695/where-do-i-set-followsymlinks
+* http://stackoverflow.com/questions/210120/remove-a-symlink-to-a-directory
+* http://www.thegeekstuff.com/2010/10/linux-ln-command-examples/
+* https://www.linux.com/learn/how-move-files-using-linux-commands-or-file-managers
+* http://superuser.com/questions/295591/what-is-the-meaning-of-chmod-666
 * http://stackoverflow.com/questions/19904992/mysqldump-without-password-in-crontab
 * http://askubuntu.com/questions/85558/verify-if-crontab-works
 * http://superuser.com/questions/81262/how-to-execute-shell-script-via-crontab
