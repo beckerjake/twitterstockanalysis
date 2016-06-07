@@ -30,6 +30,7 @@ if (!$con)
 
 //$sql = "SELECT * FROM (SELECT * FROM ticktalk.daySummaries order by id desc limit ".$numStocks.") unsorted order by trim(leading 'the ' from lower(stockName)) asc";
 
+
 $sql = "SELECT * FROM (SELECT * FROM ticktalk.recommendations order by time_alt desc limit ".$numStocks.") unsorted order by trim(leading 'the ' from lower(symbol)) asc";
 $result = mysqli_query($con, $sql);
 
@@ -131,7 +132,6 @@ if (mysqli_num_rows($result) > 0)
 		
 		echo"	
 		<div class=\"container\" style=\"text-align:center;\">
-				<svg height=".$spacer_side_length." width=".$spacer_side_length."></svg>
 				<svg height=".($svg_neg_side_length)." width=".$svg_neg_side_length.">
 					<circle cx=".($svg_neg_side_length/2)." cy=".($svg_neg_side_length/2)." r=".$neg_tweets_radius." stroke=\"black\" stroke-width=\"0\" fill=\"lightcoral\" />
 					<text text-anchor=\"middle\" alignment-baseline=\"middle\" x=".$neg_tweets_radius." y=".($neg_tweets_radius)." fill=\"white\">".$per_neg_tweets."%</text>
@@ -184,7 +184,14 @@ echo
         <td>Recommendation</td>";
         foreach ($recommendation_arr as $rec)
 		{
-			echo "<td>".$rec."</td>";
+			if ($rec == "Not enough Twitter data")
+			{
+				echo "<td>Insufficient Data</td>";
+			}
+			else
+			{
+				echo "<td>".$rec."</td>";
+			}
 		}
      echo "</tr>
       <tr>

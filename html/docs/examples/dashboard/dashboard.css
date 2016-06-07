@@ -136,7 +136,7 @@ https://css-tricks.com/snippets/css/a-guide-to-flexbox/
 			/*text-align:center;*/
 			display: flex;
 			/* justify-content: space-around; */
-			/* justify-content: center; */
+			 justify-content: center; 
 			align-items: center; /* align vertical */
 		}
 
