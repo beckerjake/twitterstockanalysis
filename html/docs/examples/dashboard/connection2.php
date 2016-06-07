@@ -215,17 +215,17 @@ echo
 
 	if ($recommendation == "Buy" || $recommendation == "Strong Buy")
 	{
-		$sql_tweet = "SELECT * FROM (SELECT score, followers_count, tweet_id, score * followers_count as 'impressions' FROM ticktalk.tweets) impressions_unsorted where impressions is not null order by impressions desc limit 5";
+		$sql_tweet = "SELECT * FROM (SELECT score, followers_count, tweet_id, stock_symbol, score * followers_count as 'impressions' FROM ticktalk.tweets where stock_symbol='$".$symbol."') impressions_unsorted where impressions is not null order by impressions desc limit 5";
 		$result_tweet = mysqli_query($con, $sql_tweet);
 	}
 	else if ($recommendation == "Sell" || $recommendation == "Strong Sell")
 	{
-		$sql_tweet = "SELECT * FROM (SELECT      score, followers_count, tweet_id,     score * followers_count as 'impressions'  FROM ticktalk.tweets) impressions_unsorted where impressions is not null order by impressions asc limit 5";
+		$sql_tweet = "SELECT * FROM (SELECT score, followers_count, tweet_id, stock_symbol, score * followers_count as 'impressions' FROM ticktalk.tweets where stock_symbol='$".$symbol."') impressions_unsorted where impressions is not null order by impressions asc limit 5";
 		$result_tweet = mysqli_query($con, $sql_tweet);
 	}
 	else
 	{
-		$sql_tweet = "SELECT * FROM ticktalk.tweets where score is not null order by followers_count desc limit 5";
+		$sql_tweet = "SELECT * FROM ticktalk.tweets where stock_symbol='$".$symbol."' and score is not null order by followers_count desc limit 5";
 		$result_tweet = mysqli_query($con, $sql_tweet);
 	}
 
