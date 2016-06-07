@@ -63,10 +63,10 @@ if (mysqli_num_rows($result) > 0)
 		$per_above_avg = $row["per_above_avg"];
 		$per_below_avg = $row["per_below_avg"];
 		  
-		$url = "https://publish.twitter.com/oembed?url=https%3A%2F%2Ftwitter.com%2FInterior%2Fstatus%2F".$tweet_id."";
+		/* $url = "https://publish.twitter.com/oembed?url=https%3A%2F%2Ftwitter.com%2FInterior%2Fstatus%2F".$tweet_id."";
 		$json = file_get_contents($url);
 		$json_data = json_decode($json, true);
-		$tweet = $json_data["html"];  
+		$tweet = $json_data["html"];   */
 		  
 		  
 		//Table Data
@@ -207,6 +207,39 @@ echo
 //http://stackoverflow.com/questions/10521257/is-it-possible-to-have-multiple-twitter-bootstrap-carousels-on-one-page
 //for tutorial on carousels:
 //http://www.w3schools.com/bootstrap/bootstrap_ref_js_carousel.asp
+//reference for multiplying columns in sql select statement:
+//http://stackoverflow.com/questions/5693259/how-can-a-query-multiply-2-cell-for-each-row-mysql
+
+
+	$result_tweet = "";
+
+	if ($recommendation == "Buy" || $recommendation == "Strong Buy")
+	{
+		$sql_tweet = "SELECT * FROM (SELECT score, followers_count, tweet_id, score * followers_count as 'impressions' FROM ticktalk.tweets) impressions_unsorted where impressions is not null order by impressions desc limit 5";
+		$result_tweet = mysqli_query($con, $sql_tweet);
+	}
+	else if ($recommendation == "Sell" || $recommendation == "Strong Sell")
+	{
+		$sql_tweet = "SELECT * FROM (SELECT      score, followers_count, tweet_id,     score * followers_count as 'impressions'  FROM ticktalk.tweets) impressions_unsorted where impressions is not null order by impressions asc limit 5";
+		$result_tweet = mysqli_query($con, $sql_tweet);
+	}
+	else
+	{
+		$sql_tweet = "SELECT * FROM ticktalk.tweets where score is not null order by followers_count desc limit 5";
+		$result_tweet = mysqli_query($con, $sql_tweet);
+	}
+
+	
+	$tweet_arr = array();
+	
+	if ($result_tweet != "")
+	{
+	  while($row_tweet = mysqli_fetch_assoc($result_tweet))
+	  {
+		  $tweet_arr[] = $row_tweet["tweet_id"];
+	  }
+	
+	
 	echo "	
 		<div id=\"myCarousel_".$counter."\" class=\"carousel slide\" data-ride=\"carousel\">
   <!-- Indicators -->
@@ -219,21 +252,37 @@ echo
 
   <!-- Wrapper for slides -->
   <div class=\"carousel-inner div-responsive center-block\" role=\"listbox\" overflow:hidden>
-    <div class=\"item div-responsive active hidden-container\">
-      ".$tweet."
-    </div>
-
-    <div class=\"item div-responsive hidden-container center-block\">
-      ".$tweet."
-    </div>
-
-    <div class=\"item div-responsive hidden-container center-block\">
-      ".$tweet."
-    </div>
-
-    <div class=\"item div-responsive hidden-container center-block\">
-      ".$tweet."
-    </div>
+  
+  ";
+		$tweet_counter = 0;
+		foreach ($tweet_arr as $tweet_id)
+		{
+			$tweet_counter = $tweet_counter+1;
+			$url = "https://publish.twitter.com/oembed?url=https%3A%2F%2Ftwitter.com%2FInterior%2Fstatus%2F".$tweet_id."";
+			$json = file_get_contents($url);
+			$json_data = json_decode($json, true);
+			$tweet = $json_data["html"];  
+			
+			if ($tweet_counter == 1)
+			{
+				echo "
+					<div class=\"item div-responsive active hidden-container\">
+					".$tweet."
+					</div>
+				";
+			}
+			else
+			{
+				echo "
+					<div class=\"item div-responsive hidden-container center-block\">
+					".$tweet."
+					</div>
+				";
+			}
+		}
+  
+  echo "
+	
   </div>
 
   <!-- Left and right controls -->
@@ -247,7 +296,7 @@ echo
   </a>
 </div>
 		";
-		
+	}
 		
 /* 		echo "<ul class=\"bxslider\">";
 	
