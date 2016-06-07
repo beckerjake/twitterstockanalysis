@@ -143,3 +143,13 @@ https://css-tricks.com/snippets/css/a-guide-to-flexbox/
 .hidden-container{
 	overflow:hidden
 }		
+
+/* http://stackoverflow.com/questions/26915087/how-to-get-the-td-in-html-tables-to-fit-content-and-let-a-specific-td-fill */
+table-bordered{
+    width:100%;
+	table-layout: auto;
+    border-collapse: collapse;
+}
+table-bordered td{
+    white-space: nowrap;  /** added **/
+}
