@@ -151,6 +151,58 @@ if (mysqli_num_rows($result) > 0)
 				</svg>
 			</div>";
 		
+		//historical table
+		
+		$sql_historical = "SELECT * FROM ticktalk.historical_performance where symbol='".$symbol."' order by date desc";
+		$result_historical = mysqli_query($con, $sql_historical);
+		
+echo"		<div class=\"container\">
+  <h2>Bordered Table</h2>
+  <p>The .table-bordered class adds borders to a table:</p>            
+  <table class=\"table table-bordered\">
+    <thead>
+      <tr>
+	  
+	  <th></th>";
+	  
+	  $recommendation_arr = array();
+	  $performance_arr = array();
+	  while($row_historical = mysqli_fetch_assoc($result_historical))
+	  {
+		  $recommendation_arr[] = $row_historical["recommendation"];
+		  $performance_arr[] = round($row_historical["performance"]*100);
+		  
+		  $date_arr = explode('-',$row_historical["date"]);
+		  $date_formatted = $date_arr[1]."/".$date_arr[2]."/".$date_arr[0];
+		  echo "<th>".$date_formatted."</th>";
+	  }
+		
+		
+     echo "</tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Recommendation</td>";
+        foreach ($recommendation_arr as $rec)
+		{
+			echo "<td>".$rec."</td>";
+		}
+      "</tr>
+      <tr>
+        <td>Performance</td>";
+        
+		 foreach ($performance_arr as $per)
+		{
+			echo "<td>".$per."%</td>";
+		}
+      
+	  echo "</tr>
+    </tbody>
+  </table>
+</div>";
+
+		
+		
 //carousel
 	echo "	
 		<div id=\"myCarousel\" class=\"carousel slide\" data-ride=\"carousel\">
