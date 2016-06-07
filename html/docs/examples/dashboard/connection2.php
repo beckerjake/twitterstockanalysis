@@ -156,9 +156,8 @@ if (mysqli_num_rows($result) > 0)
 		$sql_historical = "SELECT * FROM ticktalk.historical_performance where symbol='".$symbol."' order by date desc";
 		$result_historical = mysqli_query($con, $sql_historical);
 		
-echo"		<div class=\"container\">
-  <h2>Bordered Table</h2>
-  <p>The .table-bordered class adds borders to a table:</p>            
+echo
+"<div class=\"container\">          
   <table class=\"table table-bordered\">
     <thead>
       <tr>
@@ -170,7 +169,7 @@ echo"		<div class=\"container\">
 	  while($row_historical = mysqli_fetch_assoc($result_historical))
 	  {
 		  $recommendation_arr[] = $row_historical["recommendation"];
-		  $performance_arr[] = round($row_historical["performance"]*100);
+		  $performance_arr[] = round($row_historical["performance"]*100, 2);
 		  
 		  $date_arr = explode('-',$row_historical["date"]);
 		  $date_formatted = $date_arr[1]."/".$date_arr[2]."/".$date_arr[0];
@@ -216,7 +215,7 @@ echo"		<div class=\"container\">
 
   <!-- Wrapper for slides -->
   <div class=\"carousel-inner div-responsive center-block\" role=\"listbox\" overflow:hidden>
-    <div class=\"item active hidden-container\">
+    <div class=\"item div-responsive active hidden-container\">
       ".$tweet."
     </div>
 
