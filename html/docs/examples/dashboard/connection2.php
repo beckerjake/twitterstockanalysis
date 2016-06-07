@@ -131,6 +131,7 @@ if (mysqli_num_rows($result) > 0)
 
 		
 		echo"	
+		<p><font size=\"4\">Tweets Breakdown</font></p> 
 		<div class=\"container\" style=\"text-align:center;\">
 				<svg height=".($svg_neg_side_length)." width=".$svg_neg_side_length.">
 					<circle cx=".($svg_neg_side_length/2)." cy=".($svg_neg_side_length/2)." r=".$neg_tweets_radius." stroke=\"black\" stroke-width=\"0\" fill=\"lightcoral\" />
@@ -157,7 +158,10 @@ if (mysqli_num_rows($result) > 0)
 		$result_historical = mysqli_query($con, $sql_historical);
 		
 echo
-"<div class=\"container\">          
+"
+<br>
+<div class=\"container\">       
+<p><font size=\"4\">Hisotrical Performance</font></p> 
   <table class=\"table table-bordered\">
     <thead>
       <tr>
@@ -248,6 +252,7 @@ echo
 	
 	
 	echo "	
+	<p><font size=\"4\">Influential Tweets</font></p>
 		<div id=\"myCarousel_".$counter."\" class=\"carousel slide\" data-ride=\"carousel\">
   <!-- Indicators -->
   <ol class=\"carousel-indicators\">
