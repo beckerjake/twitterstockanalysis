@@ -187,7 +187,7 @@ echo"		<div class=\"container\">
 		{
 			echo "<td>".$rec."</td>";
 		}
-      "</tr>
+     echo "</tr>
       <tr>
         <td>Performance</td>";
         
