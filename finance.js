@@ -3,6 +3,8 @@
 var request = require('request')
 var mysql = require('mysql')
 
+// Initialize the MySQL connection
+// Resource - https://github.com/felixge/node-mysql
 var connection = mysql.createConnection({
 	host: 'localhost',
 	user: 'root',
@@ -14,6 +16,7 @@ connection.connect();
 
 var url = "http://finance.yahoo.com/webservice/v1/symbols/BA,UNH,WFC,T,BP,PCG,KO,IBM,MSFT,MAR,ATVI,ED,FISV,CERN,MHK,MSI/quote?format=json&view=detail"
 
+// Resource - https://github.com/request/request
 request({
 	url: url,
 	json: true

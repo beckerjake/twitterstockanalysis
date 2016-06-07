@@ -2,6 +2,7 @@ var TwitterStreamChannels = require('twitter-stream-channels');
 var mysql = require('mysql');
 
 // Initialize the MySQL connection
+// Resource - https://github.com/felixge/node-mysql
 var connection = mysql.createConnection({
 	host: 'localhost',
 	user: 'root',
@@ -12,6 +13,7 @@ var connection = mysql.createConnection({
 connection.connect();
 
 // Initialize the TwitterStreamChannels client
+// Resource - https://www.npmjs.com/package/twitter-stream-channels
 var client = new TwitterStreamChannels({
    consumer_key: process.env.TWITTER_CONSUMER_KEY,
    consumer_secret: process.env.TWITTER_CONSUMER_SECRET,
@@ -20,6 +22,7 @@ var client = new TwitterStreamChannels({
 });
 
 // Keywords to listen for, organized into 'channels' by relevant stock.
+//	Using arrays of strings here makes it easy to add new keywords for a stock
 var channels = {
 	"keywords_ba": 		['\$BA','Boeing'],
 	"keywords_unh": 	['\$UNH', 'United Healthcare'],

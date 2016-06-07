@@ -1,5 +1,5 @@
 # TickTalk - Stock Analysis Using Twitter
-## Project for CS 130 - UCLA - Spring 2016
+## Project for CS 130 - *UCLA Spring 2016*
 
 ### Using TickTalk
 
@@ -25,9 +25,9 @@ We use multiple Node.js modules:
 * [twitter-stream-channels](https://www.npmjs.com/package/twitter-stream-channels)
 
 To install these modules (after installing Node.js):
-    $ npm install request
-    $ npm install mysql
-    $ npm install twitter-stream-channels
+`$ npm install request`
+`$ npm install mysql`
+`$ npm install twitter-stream-channels`
 
 We use `$ crontab -e` to set intervals at which to run the scripts that determine sentiment scores and collect stock quotes from Yahoo! Finanace.
 
@@ -37,6 +37,18 @@ Node Twitter streaming APIs:
 * https://www.npmjs.com/package/twitter (used in older versions of the project)
 * https://www.npmjs.com/package/twitter-stream-channels (used in latest version of the project)
 * https://github.com/topheman/twitter-stream-channels
+
+Linux (`screen`, `crontab`, etc.)
+* http://stackoverflow.com/questions/19904992/mysqldump-without-password-in-crontab
+* http://askubuntu.com/questions/85558/verify-if-crontab-works
+* http://superuser.com/questions/81262/how-to-execute-shell-script-via-crontab
+* http://stackoverflow.com/questions/7194102/node-js-script-not-executing-from-crontab
+* http://askubuntu.com/questions/54364/how-do-you-set-the-timezone-for-crontab
+* http://www.thegeekstuff.com/2009/06/15-practical-crontab-examples/
+* http://crontab.guru/#05_*_*_*_1-5
+* http://askubuntu.com/questions/8653/how-to-keep-processes-running-after-ending-ssh-session
+* http://stackoverflow.com/questions/537942/how-to-list-running-screen-sessions
+* https://www.rackaid.com/blog/linux-screen-tutorial-and-how-to/
 
 JavaScript:
 * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions
@@ -120,14 +132,7 @@ MySQL:
 * http://stackoverflow.com/questions/26154243/catch-handle-mysql-duplicate-entry-error-with-nodejs-passportjs-express-con
 * http://stackoverflow.com/questions/29051490/not-able-to-store-more-than-20-tweets-to-database-using-twitter-4j-and-java
 * http://www.w3schools.com/php/php_mysql_update.asp
-* http://stackoverflow.com/questions/19904992/mysqldump-without-password-in-crontab
-* http://askubuntu.com/questions/85558/verify-if-crontab-works
-* http://superuser.com/questions/81262/how-to-execute-shell-script-via-crontab
-* http://stackoverflow.com/questions/7194102/node-js-script-not-executing-from-crontab
 * http://ubuntuforums.org/showthread.php?t=1433024
-* http://askubuntu.com/questions/54364/how-do-you-set-the-timezone-for-crontab
-* http://www.thegeekstuff.com/2009/06/15-practical-crontab-examples/
-* http://crontab.guru/#05_*_*_*_1-5
-* http://askubuntu.com/questions/8653/how-to-keep-processes-running-after-ending-ssh-session
-* http://stackoverflow.com/questions/537942/how-to-list-running-screen-sessions
-* https://www.rackaid.com/blog/linux-screen-tutorial-and-how-to/
+
+Markdown:
+* https://blog.ghost.org/markdown/
