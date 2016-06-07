@@ -125,11 +125,6 @@ if (mysqli_num_rows($result) > 0)
 		//https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/text-anchor
 		//http://stackoverflow.com/questions/442164/how-to-get-an-outline-effect-on-text-in-svg
 		
-							//<svg height=".($svg_neg_side_length+label_fontsize +$margin)." width=".$svg_neg_side_length.">
-
-							//<text fontsize=".$label_fontsize."px text-anchor=\"middle\" alignment-baseline=\"middle\" x=".$neg_tweets_radius." y=".($neg_tweets_radius*2+$label_fontsize/2)." fill=\"white\">Tweets below average sentiment</text>
-
-		
 		echo"	
 		<p><font size=\"4\">Tweets Breakdown</font></p> 
 		<div class=\"container\" style=\"text-align:center;\">
@@ -160,8 +155,8 @@ if (mysqli_num_rows($result) > 0)
 echo
 "
 <br>
+<p><font size=\"4\">Historical Performance</font></p> 
 <div class=\"container\">       
-<p><font size=\"4\">Hisotrical Performance</font></p> 
   <table class=\"table table-bordered\">
     <thead>
       <tr>
