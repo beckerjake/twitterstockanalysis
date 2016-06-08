@@ -202,7 +202,8 @@
 			slideWidth: 500
 		});
 		
-		var randorder = shuffle([0,1,2,3,4,5,6,7,8,9]);
+		var randorder = [0,1,2,3,4,5,6,7,8,9];
+		randorder.shuffle();
 		var images = ['t.png', 'ba.png', 'bp.png', 'ibm.png', 'ko.png', 'mar.png', 'msft.png', 'pcg.png', 'unh.png', 'wfc.png'];
 		document.getElementById("header_img_1").src='html/img/' + images[Math.floor(Math.random() * images.length)] + '';
 		document.getElementById("header_img_2").src='html/img/' + images[Math.floor(Math.random() * images.length)] + '';
