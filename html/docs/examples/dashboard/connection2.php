@@ -126,9 +126,7 @@ if (mysqli_num_rows($result) > 0)
 		
 		echo"	
 		<p><font size=\"4\">Tweets Breakdown</font></p> 
-		<p><font size=\"3\">Grey represents percent growth over average.</font></p> 
-		<p><font size=\"3\">Red represents percent negative tweets.</font></p> 
-		<p><font size=\"3\">Green represents percent positive tweets. </font></p> 
+		<p><font size=\"2\">Grey represents percent growth over average - Red represents percent negative tweets - Green represents percent positive tweets </font></p> 
 		<div class=\"container\" style=\"text-align:center;\">
 				<svg height=".($svg_neg_side_length)." width=".$svg_neg_side_length.">
 					<circle cx=".($svg_neg_side_length/2)." cy=".($svg_neg_side_length/2)." r=".$neg_tweets_radius." stroke=\"black\" stroke-width=\"0\" fill=\"lightcoral\" />
