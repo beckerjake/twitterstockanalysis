@@ -200,7 +200,14 @@ echo
         
 		 foreach ($performance_arr as $per)
 		{
-			echo "<td>".$per."%</td>";
+			if ($per == "-1000")
+			{
+				echo "<td>TBD</td>";
+			}
+			else
+			{
+				echo "<td>".$per."%</td>";
+			}
 		}
       
 	  echo "</tr>
