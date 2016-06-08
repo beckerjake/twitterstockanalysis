@@ -115,7 +115,7 @@
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-1 main">
           <h1 class="page-header">Recommendations</h1>
 
-          <div class="row placeholders">
+          <!-- <div class="row placeholders">
             <div class="col-xs-6 col-sm-3 placeholder">
               <img src="data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" width="200" height="200" class="img-responsive" alt="Generic placeholder thumbnail">
               <h4>T</h4>
@@ -136,8 +136,31 @@
               <h4>WFC</h4>
               <span class="text-muted">Wells Fargo & Company</span>
             </div>
-          </div>
+          </div> -->
 
+		  <div class="row placeholders">
+            <div class="col-xs-6 col-sm-3 placeholder" id="header_img_1">
+              <img src="data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" width="200" height="200" class="img-responsive" alt="Generic placeholder thumbnail">
+              <h4>T</h4>
+              <span class="text-muted">AT&T</span>
+            </div>
+            <div class="col-xs-6 col-sm-3 placeholder id="header_img_2">
+              <img src="data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" width="200" height="200" class="img-responsive" alt="Generic placeholder thumbnail">
+              <h4>BP</h4>
+              <span class="text-muted">BP</span>
+            </div>
+            <div class="col-xs-6 col-sm-3 placeholder  id="header_img_3">
+              <img src="data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" width="200" height="200" class="img-responsive" alt="Generic placeholder thumbnail">
+              <h4>KO</h4>
+              <span class="text-muted">The Coca-Cola Company</span>
+            </div>
+            <div class="col-xs-6 col-sm-3 placeholder id="header_img_4">
+              <img src="data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" width="200" height="200" class="img-responsive" alt="Generic placeholder thumbnail">
+              <h4>WFC</h4>
+              <span class="text-muted">Wells Fargo & Company</span>
+            </div>
+          </div>
+		  
           <h2 class="sub-header">All Stocks</h2>
 		  
 		  
@@ -178,7 +201,18 @@
 			maxSlides: 2,
 			slideWidth: 500
 		});
- 
+		
+		var randorder = shuffle([0,1,2,3,4,5,6,7,8,9]);
+		var images = ['t.png', 'ba.png', 'bp.png', 'ibm.png', 'ko.png', 'mar.png', 'msft.png', 'pcg.png', 'unh.png', 'wfc.png'];
+		document.getElementById("header_img_1").src='html/img/' + images[Math.floor(Math.random() * images.length)] + '';
+		document.getElementById("header_img_2").src='html/img/' + images[Math.floor(Math.random() * images.length)] + '';
+		document.getElementById("header_img_3").src='html/img/' + images[Math.floor(Math.random() * images.length)] + '';
+		document.getElementById("header_img_4").src='html/img/' + images[Math.floor(Math.random() * images.length)] + '';
+		
+<!--  $('#header_img_1').css({'img': 'url(html/img/' + images[Math.floor(Math.random() * images.length)] + ')'}); -->
+<!--   $('#header_img_2').css({'img': 'url(html/img/' + images[Math.floor(Math.random() * images.length)] + ')'}); -->
+<!--    $('#header_img_3').css({'img': 'url(html/img/' + images[Math.floor(Math.random() * images.length)] + ')'}); -->
+<!--     $('#header_img_4').css({'img': 'url(html/img/' + images[Math.floor(Math.random() * images.length)] + ')'}); -->
 });
 
 
