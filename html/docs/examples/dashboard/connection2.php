@@ -64,11 +64,6 @@ if (mysqli_num_rows($result) > 0)
 		$per_above_avg = $row["per_above_avg"];
 		$per_below_avg = $row["per_below_avg"];
 		  
-		/* $url = "https://publish.twitter.com/oembed?url=https%3A%2F%2Ftwitter.com%2FInterior%2Fstatus%2F".$tweet_id."";
-		$json = file_get_contents($url);
-		$json_data = json_decode($json, true);
-		$tweet = $json_data["html"];   */
-		  
 		  
 		//Table Data
 		
@@ -86,6 +81,10 @@ if (mysqli_num_rows($result) > 0)
 				echo "<div id=\"extra_".$counter."\" style=\"display: none;\">";
           
 		//More Data (Calculated)
+		//svg circle tutorial:http://www.w3schools.com/svg/svg_circle.asp
+		//svg circle sandbox: http://www.w3schools.com/svg/tryit.asp?filename=trysvg_myfirst
+		//svg text anchor: https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/text-anchor
+		//svg text outline: http://stackoverflow.com/questions/442164/how-to-get-an-outline-effect-on-text-in-svg
 		
 		$svg_side_length = 200;
 		$spacer_side_length = 100;
@@ -264,6 +263,8 @@ echo
 		$tweet_counter = 0;
 		foreach ($tweet_arr as $tweet_id)
 		{
+			
+			//oembed documentation: https://dev.twitter.com/rest/reference/get/statuses/oembed
 			$tweet_counter = $tweet_counter+1;
 			$url = "https://publish.twitter.com/oembed?url=https%3A%2F%2Ftwitter.com%2FInterior%2Fstatus%2F".$tweet_id."";
 			$json = file_get_contents($url);

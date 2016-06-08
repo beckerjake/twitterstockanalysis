@@ -1,6 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
+  
+<!-- 	NOTE: Most of our code in this document is built upon a jQuery template, available on the bootstrap homepage @ http://getbootstrap.com/2.3.2/getting-started.html. We were new to web app development, so we basically built off of the skeleton, and manipulated it to fit our needs.
+ -->  
+  
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -194,13 +198,6 @@
 			event.preventDefault();
 		});
  
-		$('.bxslider').bxSlider({
-			adaptiveHeight: true,
-			mode: 'fade',
-			minSlides: 1,
-			maxSlides: 2,
-			slideWidth: 500
-		});
 		
 		<!--source of shuffle: http://stackoverflow.com/questions/2450954/how-to-randomize-shuffle-a-javascript-array -->
 		function shuffle(array) {
@@ -265,12 +262,7 @@
 		document.getElementById('header_img_4').src='img/' + images[3] + '';
 		document.getElementById('header_ticker_4').innerHTML = tickers[images[3]];
 		document.getElementById('header_company_4').innerHTML = companies[images[3]];
-		
-		
-<!--  $('#header_img_1').css({'img': 'url(html/img/' + images[Math.floor(Math.random() * images.length)] + ')'}); -->
-<!--   $('#header_img_2').css({'img': 'url(html/img/' + images[Math.floor(Math.random() * images.length)] + ')'}); -->
-<!--    $('#header_img_3').css({'img': 'url(html/img/' + images[Math.floor(Math.random() * images.length)] + ')'}); -->
-<!--     $('#header_img_4').css({'img': 'url(html/img/' + images[Math.floor(Math.random() * images.length)] + ')'}); -->
+
 });
 
 

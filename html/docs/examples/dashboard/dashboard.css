@@ -140,7 +140,7 @@ https://css-tricks.com/snippets/css/a-guide-to-flexbox/
 			align-items: center; /* align vertical */
 		}
 
-.hidden-container{
+/* attempt to fix overflow: http://stackoverflow.com/questions/10193007/overflow-just-one-element-in-a-div*/.hidden-container{
 	overflow:hidden
 }		
 
