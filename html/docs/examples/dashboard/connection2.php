@@ -125,8 +125,8 @@ if (mysqli_num_rows($result) > 0)
 		//http://stackoverflow.com/questions/442164/how-to-get-an-outline-effect-on-text-in-svg
 		
 		echo"	
-		<p><font size=\"4\">Tweets Breakdown</font></p> 
-		<p><font size=\"2\">Grey represents percent growth over average - Red represents percent negative tweets - Green represents percent positive tweets </font></p> 
+		<font size=\"4\">Tweets Breakdown</font><br>
+		<p><font size=\"2\">Grey represents percent of number of tweets compared to average - Red represents percent negative tweets - Green represents percent positive tweets </font></p> 
 		<div class=\"container\" style=\"text-align:center;\">
 				<svg height=".($svg_neg_side_length)." width=".$svg_neg_side_length.">
 					<circle cx=".($svg_neg_side_length/2)." cy=".($svg_neg_side_length/2)." r=".$neg_tweets_radius." stroke=\"black\" stroke-width=\"0\" fill=\"lightcoral\" />
