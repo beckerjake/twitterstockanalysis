@@ -150,12 +150,12 @@ Markdown:
 
 Logo images:
 * https://c1.staticflickr.com/8/7277/7651088336_1c8cf7d664.jpg
-* http://www.7men.nl/wp-content/uploads/2015/12/IBM-banner.jpg
+* http://innovationtoday.net/wp-content/uploads/2016/01/Inno-Today-IBM-Logo-300x300.jpg
 * https://upload.wikimedia.org/wikipedia/commons/thumb/2/21/Pacific_Gas_and_Electric_Company_(logo).svg/2000px-Pacific_Gas_and_Electric_Company_(logo).svg.png
 * http://logok.org/wp-content/uploads/2015/02/Marriott-logo.png
-* https://upload.wikimedia.org/wikipedia/commons/thumb/b/b3/Wells_Fargo_Bank.svg/2000px-Wells_Fargo_Bank.svg.png
 * http://www.bp.com/content/dam/bp/images/general/graphics/1-1/bp-logo.jpg
 * https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/Microsoft_logo.svg/2000px-Microsoft_logo.svg.png
 * http://vignette4.wikia.nocookie.net/logopedia/images/5/59/Coca-Cola_logo_2007.jpg/revision/latest?cb=20150801090518
 * http://www.underconsideration.com/brandnew/archives/att_2016_globe_detail.png
 * http://alliancehh.org/wp-content/uploads/2014/01/l92820-wells-fargo-logo-88711.png
+* http://logonoid.com/images/unitedhealth-logo.png
