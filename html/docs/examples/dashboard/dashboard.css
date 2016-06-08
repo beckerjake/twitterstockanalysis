@@ -136,10 +136,26 @@ https://css-tricks.com/snippets/css/a-guide-to-flexbox/
 			/*text-align:center;*/
 			display: flex;
 			/* justify-content: space-around; */
-			/* justify-content: center; */
+			 justify-content: center; 
 			align-items: center; /* align vertical */
 		}
 
 .hidden-container{
 	overflow:hidden
 }		
+
+/* http://stackoverflow.com/questions/26915087/how-to-get-the-td-in-html-tables-to-fit-content-and-let-a-specific-td-fill */
+.table-bordered-custom>thead>tr>th,
+.table-bordered-custom>tbody>tr>th, 
+.table-bordered-custom>tfoot>tr>th, 
+.table-bordered-custom>thead>tr>td, 
+.table-bordered-custom>tbody>tr>td, 
+.table-bordered-custom>tfoot>tr>td{
+	table-layout: auto;
+	width: 100px;
+    border-collapse: collapse;
+	white-space: nowrap;  /** added **/
+	margin: 0;
+	padding: 5px;
+	text-align: center;
+}

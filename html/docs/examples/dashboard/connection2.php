@@ -30,6 +30,7 @@ if (!$con)
 
 //$sql = "SELECT * FROM (SELECT * FROM ticktalk.daySummaries order by id desc limit ".$numStocks.") unsorted order by trim(leading 'the ' from lower(stockName)) asc";
 
+
 $sql = "SELECT * FROM (SELECT * FROM ticktalk.recommendations order by time_alt desc limit ".$numStocks.") unsorted order by trim(leading 'the ' from lower(symbol)) asc";
 $result = mysqli_query($con, $sql);
 
@@ -63,10 +64,10 @@ if (mysqli_num_rows($result) > 0)
 		$per_above_avg = $row["per_above_avg"];
 		$per_below_avg = $row["per_below_avg"];
 		  
-		$url = "https://publish.twitter.com/oembed?url=https%3A%2F%2Ftwitter.com%2FInterior%2Fstatus%2F".$tweet_id."";
+		/* $url = "https://publish.twitter.com/oembed?url=https%3A%2F%2Ftwitter.com%2FInterior%2Fstatus%2F".$tweet_id."";
 		$json = file_get_contents($url);
 		$json_data = json_decode($json, true);
-		$tweet = $json_data["html"];  
+		$tweet = $json_data["html"];   */
 		  
 		  
 		//Table Data
@@ -124,14 +125,9 @@ if (mysqli_num_rows($result) > 0)
 		//https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/text-anchor
 		//http://stackoverflow.com/questions/442164/how-to-get-an-outline-effect-on-text-in-svg
 		
-							//<svg height=".($svg_neg_side_length+label_fontsize +$margin)." width=".$svg_neg_side_length.">
-
-							//<text fontsize=".$label_fontsize."px text-anchor=\"middle\" alignment-baseline=\"middle\" x=".$neg_tweets_radius." y=".($neg_tweets_radius*2+$label_fontsize/2)." fill=\"white\">Tweets below average sentiment</text>
-
-		
 		echo"	
+		<p><font size=\"4\">Tweets Breakdown</font></p> 
 		<div class=\"container\" style=\"text-align:center;\">
-				<svg height=".$spacer_side_length." width=".$spacer_side_length."></svg>
 				<svg height=".($svg_neg_side_length)." width=".$svg_neg_side_length.">
 					<circle cx=".($svg_neg_side_length/2)." cy=".($svg_neg_side_length/2)." r=".$neg_tweets_radius." stroke=\"black\" stroke-width=\"0\" fill=\"lightcoral\" />
 					<text text-anchor=\"middle\" alignment-baseline=\"middle\" x=".$neg_tweets_radius." y=".($neg_tweets_radius)." fill=\"white\">".$per_neg_tweets."%</text>
@@ -151,48 +147,163 @@ if (mysqli_num_rows($result) > 0)
 				</svg>
 			</div>";
 		
+		//historical table
+		
+		$sql_historical = "SELECT * FROM ticktalk.historical_performance where symbol='".$symbol."' order by date desc";
+		$result_historical = mysqli_query($con, $sql_historical);
+		
+echo
+"
+<br>
+<p><font size=\"4\">Historical Performance</font></p> 
+<div class=\"container\">       
+  <table class=\"table table-bordered table-bordered-custom\">
+    <thead>
+      <tr>
+	  
+	  <th></th>";
+	  
+	  $recommendation_arr = array();
+	  $performance_arr = array();
+	  while($row_historical = mysqli_fetch_assoc($result_historical))
+	  {
+		  $recommendation_arr[] = $row_historical["recommendation"];
+		  $performance_arr[] = round($row_historical["performance"]*100, 2);
+		  
+		  $date_arr = explode('-',$row_historical["date"]);
+		  $date_formatted = $date_arr[1]."/".$date_arr[2]."/".$date_arr[0];
+		  echo "<th>".$date_formatted."</th>";
+	  }
+		
+		
+     echo "</tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Recommendation</td>";
+        foreach ($recommendation_arr as $rec)
+		{
+			if ($rec == "Not enough Twitter data")
+			{
+				echo "<td>Insufficient Data</td>";
+			}
+			else
+			{
+				echo "<td>".$rec."</td>";
+			}
+		}
+     echo "</tr>
+      <tr>
+        <td>Performance</td>";
+        
+		 foreach ($performance_arr as $per)
+		{
+			echo "<td>".$per."%</td>";
+		}
+      
+	  echo "</tr>
+    </tbody>
+  </table>
+</div>";
+
+		
+		
 //carousel
+//for help with multiple carousels:
+//http://stackoverflow.com/questions/10521257/is-it-possible-to-have-multiple-twitter-bootstrap-carousels-on-one-page
+//for tutorial on carousels:
+//http://www.w3schools.com/bootstrap/bootstrap_ref_js_carousel.asp
+//reference for multiplying columns in sql select statement:
+//http://stackoverflow.com/questions/5693259/how-can-a-query-multiply-2-cell-for-each-row-mysql
+
+
+	$result_tweet = "";
+
+	if ($recommendation == "Buy" || $recommendation == "Strong Buy")
+	{
+		$sql_tweet = "SELECT * FROM (SELECT score, followers_count, tweet_id, stock_symbol, score * followers_count as 'impressions' FROM ticktalk.tweets where stock_symbol='$".$symbol."') impressions_unsorted where impressions is not null order by impressions desc limit 5";
+		$result_tweet = mysqli_query($con, $sql_tweet);
+	}
+	else if ($recommendation == "Sell" || $recommendation == "Strong Sell")
+	{
+		$sql_tweet = "SELECT * FROM (SELECT score, followers_count, tweet_id, stock_symbol, score * followers_count as 'impressions' FROM ticktalk.tweets where stock_symbol='$".$symbol."') impressions_unsorted where impressions is not null order by impressions asc limit 5";
+		$result_tweet = mysqli_query($con, $sql_tweet);
+	}
+	else
+	{
+		$sql_tweet = "SELECT * FROM ticktalk.tweets where stock_symbol='$".$symbol."' and score is not null order by followers_count desc limit 5";
+		$result_tweet = mysqli_query($con, $sql_tweet);
+	}
+
+	
+	$tweet_arr = array();
+	
+	if ($result_tweet != "")
+	{
+	  while($row_tweet = mysqli_fetch_assoc($result_tweet))
+	  {
+		  $tweet_arr[] = $row_tweet["tweet_id"];
+	  }
+	
+	
 	echo "	
-		<div id=\"myCarousel\" class=\"carousel slide\" data-ride=\"carousel\">
+	<p><font size=\"4\">Influential Tweets</font></p>
+		<div id=\"myCarousel_".$counter."\" class=\"carousel slide\" data-ride=\"carousel\">
   <!-- Indicators -->
   <ol class=\"carousel-indicators\">
-    <li data-target=\"#myCarousel\" data-slide-to=\"0\" class=\"active\"></li>
-    <li data-target=\"#myCarousel\" data-slide-to=\"1\"></li>
-    <li data-target=\"#myCarousel\" data-slide-to=\"2\"></li>
-    <li data-target=\"#myCarousel\" data-slide-to=\"3\"></li>
+    <li data-target=\"#myCarousel_".$counter."\" data-slide-to=\"0\" class=\"active\"></li>
+    <li data-target=\"#myCarousel_".$counter."\" data-slide-to=\"1\"></li>
+    <li data-target=\"#myCarousel_".$counter."\" data-slide-to=\"2\"></li>
+    <li data-target=\"#myCarousel_".$counter."\" data-slide-to=\"3\"></li>
   </ol>
 
   <!-- Wrapper for slides -->
   <div class=\"carousel-inner div-responsive center-block\" role=\"listbox\" overflow:hidden>
-    <div class=\"item active hidden-container\">
-      ".$tweet."
-    </div>
-
-    <div class=\"item div-responsive hidden-container center-block\">
-      ".$tweet."
-    </div>
-
-    <div class=\"item div-responsive hidden-container center-block\">
-      ".$tweet."
-    </div>
-
-    <div class=\"item div-responsive hidden-container center-block\">
-      ".$tweet."
-    </div>
+  
+  ";
+		$tweet_counter = 0;
+		foreach ($tweet_arr as $tweet_id)
+		{
+			$tweet_counter = $tweet_counter+1;
+			$url = "https://publish.twitter.com/oembed?url=https%3A%2F%2Ftwitter.com%2FInterior%2Fstatus%2F".$tweet_id."";
+			$json = file_get_contents($url);
+			$json_data = json_decode($json, true);
+			$tweet = $json_data["html"];  
+			
+			if ($tweet_counter == 1)
+			{
+				echo "
+					<div class=\"item div-responsive active hidden-container\">
+					".$tweet."
+					</div>
+				";
+			}
+			else
+			{
+				echo "
+					<div class=\"item div-responsive hidden-container center-block\">
+					".$tweet."
+					</div>
+				";
+			}
+		}
+  
+  echo "
+	
   </div>
 
   <!-- Left and right controls -->
-  <a class=\"left carousel-control\" href=\"#myCarousel\" role=\"button\" data-slide=\"prev\">
+  <a class=\"left carousel-control\" href=\"#myCarousel_".$counter."\" role=\"button\" data-slide=\"prev\">
     <span class=\"glyphicon glyphicon-chevron-left\" aria-hidden=\"true\"></span>
     <span class=\"sr-only\">Previous</span>
   </a>
-  <a class=\"right carousel-control\" href=\"#myCarousel\" role=\"button\" data-slide=\"next\">
+  <a class=\"right carousel-control\" href=\"#myCarousel_".$counter."\" role=\"button\" data-slide=\"next\">
     <span class=\"glyphicon glyphicon-chevron-right\" aria-hidden=\"true\"></span>
     <span class=\"sr-only\">Next</span>
   </a>
 </div>
 		";
-		
+	}
 		
 /* 		echo "<ul class=\"bxslider\">";
 	
