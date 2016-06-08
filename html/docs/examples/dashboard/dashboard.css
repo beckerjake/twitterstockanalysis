@@ -152,7 +152,7 @@ https://css-tricks.com/snippets/css/a-guide-to-flexbox/
 .table-bordered-custom>tbody>tr>td, 
 .table-bordered-custom>tfoot>tr>td{
 	table-layout: auto;
-	width: auto;
+	width: 100px;
     border-collapse: collapse;
 	white-space: nowrap;  /** added **/
 	margin: 0;
