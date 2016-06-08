@@ -145,12 +145,12 @@ https://css-tricks.com/snippets/css/a-guide-to-flexbox/
 }		
 
 /* http://stackoverflow.com/questions/26915087/how-to-get-the-td-in-html-tables-to-fit-content-and-let-a-specific-td-fill */
-.table-bordered>thead>tr>th,
-.table-bordered>tbody>tr>th, 
-.table-bordered>tfoot>tr>th, 
-.table-bordered>thead>tr>td, 
-.table-bordered>tbody>tr>td, 
-.table-bordered>tfoot>tr>td{
+.table-bordered-custom>thead>tr>th,
+.table-bordered-custom>tbody>tr>th, 
+.table-bordered-custom>tfoot>tr>th, 
+.table-bordered-custom>thead>tr>td, 
+.table-bordered-custom>tbody>tr>td, 
+.table-bordered-custom>tfoot>tr>td{
 	table-layout: auto;
     border-collapse: collapse;
 	white-space: nowrap;  /** added **/

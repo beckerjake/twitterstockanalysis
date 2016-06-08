@@ -157,7 +157,7 @@ echo
 <br>
 <p><font size=\"4\">Historical Performance</font></p> 
 <div class=\"container\">       
-  <table class=\"table table-bordered\">
+  <table class=\"table table-bordered table-bordered-custom\">
     <thead>
       <tr>
 	  
